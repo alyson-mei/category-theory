@@ -31,9 +31,14 @@
 \newcommand{\mc}{\mathcal}
 \newcommand{\ini}{\operatorname{ini}}
 \newcommand{\ter}{\operatorname{ter}}
+
 \newcommand{\List}{\operatorname{List}}
 \newcommand{\lop}{\operatorname{[ \ ]}}
 \newcommand{\len}{\operatorname{len}}
+
+\newcommand{\Exc}{\operatorname{Exc}}
+
+\newcommand{\Kl}{\operatorname{Kl}}
 \newcommand{\plus}{\operatorname{+}}
 
 \newcommand{\Cat}{\mathcal{C}at}
@@ -70,18 +75,29 @@
 
 \section{Introduction}
 
+
 \paragraph{Conventions.}
 Throughout this text, we adopt the following conventions:
 \begin{itemize}
-    \item All categories are assumed to be locally small.
-    \item Standard polymorphic notation is used freely when no ambiguity arises.
+    \item All categories are assumed to be locally small;
+    \item Standard polymorphic notation is used freely when no ambiguity arises;
     \item All diagrams are assumed to commute unless stated otherwise.
+\end{itemize}
+
+\paragraph{TODO:}
+\begin{itemize}
+    \item Specify the $\Delta$ framework;
+    \item Check the details for the Exception monad;
+    \item Consider algebras, Eilenberg–Moore category, etc.;
+    \item Write the comonads section.
 \end{itemize}
 
 
 
 
 \section{Monads}
+
+\subsection{Definition and examples}
 
 \begin{definition}[Monoid object]
 
@@ -152,135 +168,255 @@ satisfying the unit and associativity diagrams:
 \end{definition}
 
 \begin{example}[List monad]
-Consider the functor $\List : \mc{S}et \to \mc{S}et$, which sends a set to the set of all finite lists of its elements:
-% https://q.uiver.app/#q=WzAsNixbMiwwLCJcXExpc3QgIEEiXSxbMiwxLCJcXExpc3QgIEIiXSxbMCwwLCJBIl0sWzAsMSwiQiJdLFszLDAsIlthLCBiLCBjXSJdLFszLDEsIltmKGEpLCBmKGIpLCBmKGMpXSJdLFsyLDMsImYiXSxbMCwxLCJcXExpc3QgZiJdLFs0LDUsIlxcTGlzdCBmIiwwLHsic3R5bGUiOnsidGFpbCI6eyJuYW1lIjoibWFwcyB0byJ9fX1dXQ==
-\[\begin{tikzcd}
-	A && {\List  A} & {[a_1, a_2, ... a_n]} \\
-	B && {\List  B} & {[f(a_1), f(a_2), ..., f(a_n)]}
-	\arrow["f", from=1-1, to=2-1]
-	\arrow["{\List f}", from=1-3, to=2-3]
-	\arrow["{\List f}", maps to, from=1-4, to=2-4]
-\end{tikzcd}
-\text{.}
-\]
-
-From a categorical perspective, the functor $\List$ can be presented as follows:
-% https://q.uiver.app/#q=WzAsOCxbMCwwLCJcXG1je1N9ZXQiXSxbMSwwLCJcXG1je1N9ZXReXFxtYXRoYmJ7Tn0iXSxbMSwxLCJcXG1je1N9ZXReXFxtYXRoYmJ7Tn0iXSxbMCwxLCJcXG1je1N9ZXQiXSxbMywwLCJBIl0sWzQsMCwiQV5cXG1hdGhiYntOfSJdLFs0LDEsIihBXm4pX3tuIFxcaW4gXFxtYXRoYmJ7Tn19Il0sWzMsMSwiXFxjb3Byb2Rfe24gXFxpbiBcXG1hdGhiYntOfX0gQV5uIl0sWzAsMSwiXFxEZWx0YSJdLFswLDMsIlxcTGlzdCIsMl0sWzIsMywiXFxjb3Byb2Rfe24gXFxpbiBcXG1hdGhiYntOfX0gIl0sWzEsMiwiXFxwcm9kX3tuIFxcaW4gXFxtYXRoYmJ7Tn19XFx0aW1lc15uIl0sWzUsNiwiIiwwLHsic3R5bGUiOnsidGFpbCI6eyJuYW1lIjoibWFwcyB0byJ9fX1dLFs0LDUsIiIsMCx7InN0eWxlIjp7InRhaWwiOnsibmFtZSI6Im1hcHMgdG8ifX19XSxbNiw3LCIiLDAseyJzdHlsZSI6eyJ0YWlsIjp7Im5hbWUiOiJtYXBzIHRvIn19fV0sWzQsNywiXFxMaXN0IChBKSIsMix7InN0eWxlIjp7InRhaWwiOnsibmFtZSI6Im1hcHMgdG8ifX19XV0=
-\[\begin{tikzcd}
-	{\mc{S}et} & {\mc{S}et^\mathbb{N}} && A & {A^\mathbb{N}} \\
-	{\mc{S}et} & {\mc{S}et^\mathbb{N}} && {\coprod_{n \in \mathbb{N}} A^n} & {(A^n)_{n \in \mathbb{N}}}
-	\arrow["\Delta", from=1-1, to=1-2]
-	\arrow["\List"', from=1-1, to=2-1]
-	\arrow["{\prod_{n \in \mathbb{N}}\times^n}", from=1-2, to=2-2]
-	\arrow[maps to, from=1-4, to=1-5]
-	\arrow["{\List (A)}"', maps to, from=1-4, to=2-4]
-	\arrow[maps to, from=1-5, to=2-5]
-	\arrow["{\coprod_{n \in \mathbb{N}} }", from=2-2, to=2-1]
-	\arrow[maps to, from=2-5, to=2-4]
-\end{tikzcd}
-\text{.}\]
-
-//TODO: Specify the $\Delta$ framework
-
-This presentation gives rise to the following API:
-
-\begin{itemize}
-    \item The collection of constructors
-    $$
-    \lop_{n, A} :=  A^n \xto{i_n} \List A := \lambda a_1 \dots a_n. [a_1, \dots, a_n],
-    $$
-    in particular:
+    Consider the functor $\List : \mc{S}et \to \mc{S}et$, which sends a set to the set of all finite lists of its elements:
+    % https://q.uiver.app/#q=WzAsNixbMiwwLCJcXExpc3QgIEEiXSxbMiwxLCJcXExpc3QgIEIiXSxbMCwwLCJBIl0sWzAsMSwiQiJdLFszLDAsIlthLCBiLCBjXSJdLFszLDEsIltmKGEpLCBmKGIpLCBmKGMpXSJdLFsyLDMsImYiXSxbMCwxLCJcXExpc3QgZiJdLFs0LDUsIlxcTGlzdCBmIiwwLHsic3R5bGUiOnsidGFpbCI6eyJuYW1lIjoibWFwcyB0byJ9fX1dXQ==
+    \[\begin{tikzcd}
+    	A && {\List  A} & {[a_1, a_2, ... a_n]} \\
+    	B && {\List  B} & {[f(a_1), f(a_2), ..., f(a_n)]}
+    	\arrow["f", from=1-1, to=2-1]
+    	\arrow["{\List f}", from=1-3, to=2-3]
+    	\arrow["{\List f}", maps to, from=1-4, to=2-4]
+    \end{tikzcd}
+    \text{.}
+    \]
+    
+    From a categorical perspective, the functor $\List$ can be presented as follows:
+    % https://q.uiver.app/#q=WzAsOCxbMCwwLCJcXG1je1N9ZXQiXSxbMSwwLCJcXG1je1N9ZXReXFxtYXRoYmJ7Tn0iXSxbMSwxLCJcXG1je1N9ZXReXFxtYXRoYmJ7Tn0iXSxbMCwxLCJcXG1je1N9ZXQiXSxbMywwLCJBIl0sWzQsMCwiQV5cXG1hdGhiYntOfSJdLFs0LDEsIihBXm4pX3tuIFxcaW4gXFxtYXRoYmJ7Tn19Il0sWzMsMSwiXFxjb3Byb2Rfe24gXFxpbiBcXG1hdGhiYntOfX0gQV5uIl0sWzAsMSwiXFxEZWx0YSJdLFswLDMsIlxcTGlzdCIsMl0sWzIsMywiXFxjb3Byb2Rfe24gXFxpbiBcXG1hdGhiYntOfX0gIl0sWzEsMiwiXFxwcm9kX3tuIFxcaW4gXFxtYXRoYmJ7Tn19XFx0aW1lc15uIl0sWzUsNiwiIiwwLHsic3R5bGUiOnsidGFpbCI6eyJuYW1lIjoibWFwcyB0byJ9fX1dLFs0LDUsIiIsMCx7InN0eWxlIjp7InRhaWwiOnsibmFtZSI6Im1hcHMgdG8ifX19XSxbNiw3LCIiLDAseyJzdHlsZSI6eyJ0YWlsIjp7Im5hbWUiOiJtYXBzIHRvIn19fV0sWzQsNywiXFxMaXN0IChBKSIsMix7InN0eWxlIjp7InRhaWwiOnsibmFtZSI6Im1hcHMgdG8ifX19XV0=
+    \[\begin{tikzcd}
+    	{\mc{S}et} & {\mc{S}et^\mathbb{N}} && A & {A^\mathbb{N}} \\
+    	{\mc{S}et} & {\mc{S}et^\mathbb{N}} && {\coprod_{n \in \mathbb{N}} A^n} & {(A^n)_{n \in \mathbb{N}}}
+    	\arrow["\Delta", from=1-1, to=1-2]
+    	\arrow["\List"', from=1-1, to=2-1]
+    	\arrow["{\prod_{n \in \mathbb{N}}\times^n}", from=1-2, to=2-2]
+    	\arrow[maps to, from=1-4, to=1-5]
+    	\arrow["{\List (A)}"', maps to, from=1-4, to=2-4]
+    	\arrow[maps to, from=1-5, to=2-5]
+    	\arrow["{\coprod_{n \in \mathbb{N}} }", from=2-2, to=2-1]
+    	\arrow[maps to, from=2-5, to=2-4]
+    \end{tikzcd}
+    \text{.}\]
+    
+    
+    This presentation gives rise to the n API:
+    
     \begin{itemize}
-        \item The single-element list constructor
+        \item The collection of constructors
         $$
-        \eta_A : A \to \List A := \lambda a. [a],
+        \lop_{n, A} :=  A^n \xto{i_n} \List A := \lambda a_1 \dots a_n. [a_1, \dots, a_n],
         $$
-        \item The empty list constructor 
+        in particular:
+        \begin{itemize}
+            \item The single-element list constructor
+            $$
+            \eta_A : A \to \List A := \lambda a. [a],
+            $$
+            \item The empty list constructor 
+            $$
+            \lop_0 : 1 \to \List A := \lambda a. [];
+            $$
+        \end{itemize}
+        \item Length of a list via the power of $A$ in the coproduct:
         $$
-        \lop_0 : 1 \to \List A := \lambda a. [];
+        \len_A : \List A \to \mathbf{N};
         $$
+        \item List concatenation via the natural isomorphism $A^n \times A^m \cong A^{n+m}$:
+    % https://q.uiver.app/#q=WzAsOCxbMiwwLCJBXm0gXFx0aW1lcyBBXm4iXSxbMywwLCJcXExpc3QgQSBcXHRpbWVzIFxcTGlzdCBBIl0sWzIsMSwiQV57bSArIG59Il0sWzMsMSwiXFxMaXN0IEEiXSxbMCwwLCJcXGlkIFxcdGltZXMgXFxpZCJdLFsxLDAsIiBcXExpc3RcXHRpbWVzIFxcTGlzdCJdLFswLDEsIlxcaWQiXSxbMSwxLCJcXExpc3QiXSxbMCwxLCJpX20gXFx0aW1lcyBpX24iXSxbMCwyLCJcXGNvbmciLDJdLFsyLDMsImlfe20gKyBufSIsMl0sWzEsMywiK19BIl0sWzYsNywiaSIsMl0sWzUsNywiKyJdLFs0LDYsIlxcc2ltZXEiLDJdLFs0LDUsImkgXFx0aW1lcyBpIl1d
+    \[\begin{tikzcd}
+    	{\id \times \id} & { \List\times \List} & {A^m \times A^n} & {\List A \times \List A} \\
+    	\id & \List & {A^{m + n}} & {\List A}
+    	\arrow["{i \times i}", from=1-1, to=1-2]
+    	\arrow["\simeq"', from=1-1, to=2-1]
+    	\arrow["{+}", from=1-2, to=2-2]
+    	\arrow["{i_m \times i_n}", from=1-3, to=1-4]
+    	\arrow["\cong"', from=1-3, to=2-3]
+    	\arrow["{+_A}", from=1-4, to=2-4]
+    	\arrow["i"', from=2-1, to=2-2]
+    	\arrow["{i_{m + n}}"', from=2-3, to=2-4]
+    \end{tikzcd}
+    \text{,}
+    \]
+    $$+_A: \List A \times \List A \to \List A := \lambda l m. [l_0, ... l_{\len(l) - 1},   m_0, ..., m_{\len(m)  - 1}],$$
+    $$+_A : (\List A)^n \to \List A := \lambda l_0...l_n. l_0 + ... + l_n;$$
+    \item List destructors: 
+    $$\mu_A: \List(\List A) \to \List(A) := \lambda l. \sum_{i = 0}^{\len(l) - 1} l_i,$$
+    $$\mu_A : \List^nA \to \List A := \mu_A^{\circ n}.$$
     \end{itemize}
-    \item Length of a list via the power of $A$ in the coproduct:
+    
+    %Destructor is a left inverse to constructor. Using a polymorphic notation we can write:
+    %$$  \plus \circ \lop =  \id.$$
+    
+    First of all, this API provides an internal monoid structure on lists: for a fixed set $A$, we have a monoid object
     $$
-    \len_A : \List A \to \mathbf{N};
+    (\List A, [], +_A)
     $$
-    \item List concatenation via the natural isomorphism $A^n \times A^m \cong A^{n+m}$:
-% https://q.uiver.app/#q=WzAsOCxbMiwwLCJBXm0gXFx0aW1lcyBBXm4iXSxbMywwLCJcXExpc3QgQSBcXHRpbWVzIFxcTGlzdCBBIl0sWzIsMSwiQV57bSArIG59Il0sWzMsMSwiXFxMaXN0IEEiXSxbMCwwLCJcXGlkIFxcdGltZXMgXFxpZCJdLFsxLDAsIiBcXExpc3RcXHRpbWVzIFxcTGlzdCJdLFswLDEsIlxcaWQiXSxbMSwxLCJcXExpc3QiXSxbMCwxLCJpX20gXFx0aW1lcyBpX24iXSxbMCwyLCJcXGNvbmciLDJdLFsyLDMsImlfe20gKyBufSIsMl0sWzEsMywiK19BIl0sWzYsNywiaSIsMl0sWzUsNywiKyJdLFs0LDYsIlxcc2ltZXEiLDJdLFs0LDUsImkgXFx0aW1lcyBpIl1d
+    in $\mc{S}et$. The corresponding diagrams are straightforward in this case.
+    
+    Second, it provides a monad structure on $\List$:
+    $$
+    (\List, \eta: \id \to \List, \mu: \List^2 \to \List).
+    $$
+    
+    The corresponding diagrams:
+    % https://q.uiver.app/#q=WzAsNixbMCwwLCJcXExpc3QgQSJdLFsyLDAsIlxcTGlzdCAoXFxMaXN0IEEpIl0sWzIsMSwiXFxMaXN0IEEiXSxbMywwLCJsIl0sWzQsMCwiW2xdIl0sWzQsMSwibCA9IFtsXV8wIl0sWzAsMSwiXFxldGFfe1xcTGlzdCBBfSJdLFsxLDIsIlxcbXVfQSJdLFswLDIsIlxcaWQiLDJdLFs0LDUsIiIsMCx7InN0eWxlIjp7InRhaWwiOnsibmFtZSI6Im1hcHMgdG8ifX19XSxbMyw0LCIiLDAseyJzdHlsZSI6eyJ0YWlsIjp7Im5hbWUiOiJtYXBzIHRvIn19fV0sWzMsNSwiIiwyLHsic3R5bGUiOnsidGFpbCI6eyJuYW1lIjoibWFwcyB0byJ9fX1dXQ==
+    \[\begin{tikzcd}
+    	{\List A} && {\List (\List A)} & l & {[l]} \\
+    	&& {\List A} && {l = [l]_0}
+    	\arrow["{\eta_{\List A}}", from=1-1, to=1-3]
+    	\arrow["\id"', from=1-1, to=2-3]
+    	\arrow["{\mu_A}", from=1-3, to=2-3]
+    	\arrow[maps to, from=1-4, to=1-5]
+    	\arrow[maps to, from=1-4, to=2-5]
+    	\arrow[maps to, from=1-5, to=2-5]
+    \end{tikzcd}
+    \text{,}\]
+    % https://q.uiver.app/#q=WzAsNixbMCwwLCJcXExpc3QgKFxcTGlzdCBBKSJdLFsyLDAsIlxcTGlzdCBBIl0sWzAsMSwiXFxMaXN0IEEiXSxbNCwwLCJsIl0sWzMsMCwiW1tsXzBdLCAuLi4sIFtsX3tcXGxlbihsKSAtIDF9XV0iXSxbMywxLCJsID0gXFxzdW1fe2k9MH1ee1xcbGVuKGwpIC0gMX0gW2xfaV0iXSxbMSwyLCJcXGlkIl0sWzEsMCwiXFxMaXN0IFxcZXRhX0EiLDJdLFswLDIsIlxcbXVfQSIsMl0sWzQsNSwiIiwyLHsic3R5bGUiOnsidGFpbCI6eyJuYW1lIjoibWFwcyB0byJ9fX1dLFszLDQsIiIsMix7InN0eWxlIjp7InRhaWwiOnsibmFtZSI6Im1hcHMgdG8ifX19XSxbMyw1LCIiLDAseyJzdHlsZSI6eyJ0YWlsIjp7Im5hbWUiOiJtYXBzIHRvIn19fV1d
+    \[\begin{tikzcd}
+    	{\List (\List A)} && {\List A} & {[[l_0], ..., [l_{\len(l) - 1}]]} & l \\
+    	{\List A} &&& {l = \sum_{i=0}^{\len(l) - 1} [l_i]}
+    	\arrow["{\mu_A}"', from=1-1, to=2-1]
+    	\arrow["{\List \eta_A}"', from=1-3, to=1-1]
+    	\arrow["\id", from=1-3, to=2-1]
+    	\arrow[maps to, from=1-4, to=2-4]
+    	\arrow[maps to, from=1-5, to=1-4]
+    	\arrow[maps to, from=1-5, to=2-4]
+    \end{tikzcd}
+    \text{,}\]
+    % https://q.uiver.app/#q=WzAsOCxbMiwwLCJsIl0sWzMsMCwiWyBcXHN1bV97aiA9IDB9XntcXGxlbihsXzApIC0gMX0gKGxfMClfaiwgLi4uLCAgXFxzdW1fe2o9MH1ee1xcbGVuKGxfe1xcbGVuKGwpIC0gMX0gLSAxKX0gKGxfe1xcbGVuKGwpIC0gMX0pX2pdIl0sWzIsMSwiXFxzdW1fe2kgPSAwfV57XFxsZW4obCkgLSAxfSBsX2kiXSxbMCwwLCJcXExpc3ReMyBBIl0sWzAsMSwiXFxMaXN0XjIgQSJdLFsxLDAsIlxcTGlzdF4yIEEiXSxbMSwxLCJcXExpc3QgQSJdLFszLDEsIlxcc3VtX3tpLGp9IChsX3tpfSlqIl0sWzAsMSwiIiwwLHsic3R5bGUiOnsidGFpbCI6eyJuYW1lIjoibWFwcyB0byJ9fX1dLFswLDIsIiIsMix7InN0eWxlIjp7InRhaWwiOnsibmFtZSI6Im1hcHMgdG8ifX19XSxbMyw1LCJcXExpc3QgXFxtdV9BIl0sWzUsNiwiXFxtdV9BIl0sWzMsNCwiXFxtdV97XFxMaXN0IEF9IiwyXSxbNCw2LCJcXG11X0EiLDJdLFsxLDcsIiIsMCx7InN0eWxlIjp7InRhaWwiOnsibmFtZSI6Im1hcHMgdG8ifX19XSxbMiw3LCIiLDIseyJzdHlsZSI6eyJ0YWlsIjp7Im5hbWUiOiJtYXBzIHRvIn19fV1d
+    \[\begin{tikzcd}
+    	{\List^3 A} & {\List^2 A} & l & {[ \sum_{j = 0}^{\len(l_0) - 1} (l_0)_j, ...,  \sum_{j=0}^{\len(l_{\len(l) - 1} - 1)} (l_{\len(l) - 1})_j]} \\
+    	{\List^2 A} & {\List A} & {\sum_{i = 0}^{\len(l) - 1} l_i} & {\sum_{i,j} (l_{i})_j}
+    	\arrow["{\List \mu_A}", from=1-1, to=1-2]
+    	\arrow["{\mu_{\List A}}"', from=1-1, to=2-1]
+    	\arrow["{\mu_A}", from=1-2, to=2-2]
+    	\arrow[maps to, from=1-3, to=1-4]
+    	\arrow[maps to, from=1-3, to=2-3]
+    	\arrow[maps to, from=1-4, to=2-4]
+    	\arrow["{\mu_A}"', from=2-1, to=2-2]
+    	\arrow[maps to, from=2-3, to=2-4]
+    \end{tikzcd}
+    \text{.}
+    \]
+\end{example}
+
+
+\begin{example}[Exception monad]
+    Consider a type $E$ of exceptions (error values) and a functor $\Exc: \mc{C} \to \mc{S}$, which sends a type to its coproduct with the exceptions type:
+    % https://q.uiver.app/#q=WzAsNCxbMSwwLCJBICsgRSJdLFswLDAsIkEiXSxbMCwxLCJCIl0sWzEsMSwiQiArIEUiXSxbMSwyLCJmIiwyXSxbMCwzLCJmICsgXFxpZCJdXQ==
+    \[\begin{tikzcd}
+    	A & {A + E} \\
+    	B & {B + E}
+    	\arrow["f"', from=1-1, to=2-1]
+    	\arrow["{f + \id}", from=1-2, to=2-2]
+    \end{tikzcd}
+    \text{.}
+    \]
+    The monad structure
+    $$
+    (\Exc, \eta: \id \to \Exc, \mu: \Exc^2 \to \Exc).
+    $$
+    is defined as follows:
+    \begin{itemize}
+        \item[$\bullet$] Unit represents successful calculation: $$\eta_A := i_1: A \to A + E,$$
+        \item[$\bullet$] Multiplication represents the error propagation:
+        $$\mu_A: A + E + E \to A + E = \id_A + \nabla_{E, E} = \nabla_{A + E, E},$$
+        where $\nabla$ is the codiagonal map. 
+    \end{itemize}
+    The diagrams (commutativity is obvious on $\mc{S}$et):
+    % https://q.uiver.app/#q=WzAsNixbMiwwLCJBICsgRSArIEUiXSxbMCwwLCJBICsgRSJdLFsyLDEsIkEgKyBFIl0sWzMsMCwiQSArIEUgKyBFIl0sWzUsMCwiQSArIEUiXSxbMywxLCJBICsgRSJdLFswLDIsIlxcbmFibGFfe0EgKyBFLCBFfSJdLFsxLDIsIlxcaWQiLDJdLFsxLDAsIlxcZXRhX3tBICsgRX0gPSBpX3sxLCBBICsgRX0iXSxbNCw1LCJcXGlkIl0sWzMsNSwiXFxpZF97QX0gKyBcXG5hYmxhX3tFLCBFfSIsMl0sWzQsMywiXFxldGFfQSArIFxcaWRfRSA9IGlfezEsIEF9ICsgXFxpZF9FIiwyXV0=
 \[\begin{tikzcd}
-	{\id \times \id} & { \List\times \List} & {A^m \times A^n} & {\List A \times \List A} \\
-	\id & \List & {A^{m + n}} & {\List A}
-	\arrow["{i \times i}", from=1-1, to=1-2]
-	\arrow["\simeq"', from=1-1, to=2-1]
-	\arrow["{+}", from=1-2, to=2-2]
-	\arrow["{i_m \times i_n}", from=1-3, to=1-4]
-	\arrow["\cong"', from=1-3, to=2-3]
-	\arrow["{+_A}", from=1-4, to=2-4]
-	\arrow["i"', from=2-1, to=2-2]
-	\arrow["{i_{m + n}}"', from=2-3, to=2-4]
+	{A + E} && {A + E + E} & {A + E + E} && {A + E} \\
+	&& {A + E} & {A + E}
+	\arrow["{\eta_{A + E} = i_{1, A + E}}", from=1-1, to=1-3]
+	\arrow["\id"', from=1-1, to=2-3]
+	\arrow["{\nabla_{A + E, E}}", from=1-3, to=2-3]
+	\arrow["{\id_{A} + \nabla_{E, E}}"', from=1-4, to=2-4]
+	\arrow["{\eta_A + \id_E = i_{1, A} + \id_E}"', from=1-6, to=1-4]
+	\arrow["\id", from=1-6, to=2-4]
 \end{tikzcd}
 \text{,}
 \]
-$$+_A: \List A \times \List A \to \List A := \lambda l m. [l_0, ... l_{\len(l) - 1},   m_0, ..., m_{\len(m)  - 1}],$$
-$$+_A : (\List A)^n \to \List A := \lambda l_0...l_n. l_0 + ... + l_n;$$
-\item List destructors: 
-$$\mu_A: \List(\List A) \to \List(A) := \lambda l. \sum_{i = 0}^{\len(l) - 1} l_i,$$
-$$\mu_A : \List^nA \to \List A := \mu_A^{\circ n}.$$
-\end{itemize}
-
-%Destructor is a left inverse to constructor. Using a polymorphic notation we can write:
-%$$  \plus \circ \lop =  \id.$$
-
-First of all, this API provides an internal monoid structure on lists: for a fixed set $A$, we have a monoid object
-$$
-(\List A, [], +_A)
-$$
-in $\mc{S}et$. The corresponding diagrams are straightforward in this case.
-
-Second, it provides a monad structure on $\List$:
-$$
-(\List, \eta: \id \to \List, \mu: \List^2 \to \List).
-$$
-
-The corresponding diagrams:
-% https://q.uiver.app/#q=WzAsNixbMCwwLCJcXExpc3QgQSJdLFsyLDAsIlxcTGlzdCAoXFxMaXN0IEEpIl0sWzIsMSwiXFxMaXN0IEEiXSxbMywwLCJsIl0sWzQsMCwiW2xdIl0sWzQsMSwibCA9IFtsXV8wIl0sWzAsMSwiXFxldGFfe1xcTGlzdCBBfSJdLFsxLDIsIlxcbXVfQSJdLFswLDIsIlxcaWQiLDJdLFs0LDUsIiIsMCx7InN0eWxlIjp7InRhaWwiOnsibmFtZSI6Im1hcHMgdG8ifX19XSxbMyw0LCIiLDAseyJzdHlsZSI6eyJ0YWlsIjp7Im5hbWUiOiJtYXBzIHRvIn19fV0sWzMsNSwiIiwyLHsic3R5bGUiOnsidGFpbCI6eyJuYW1lIjoibWFwcyB0byJ9fX1dXQ==
+% https://q.uiver.app/#q=WzAsNCxbMCwwLCJBICszRSJdLFsyLDAsIkEgKzJFIl0sWzAsMiwiQSsyRSJdLFsyLDIsIkErRSJdLFswLDEsIlxcbmFibGFfe0EgKyBFfSArIFxcaWRfRSJdLFswLDIsIlxcbmFibGFfe0EgKyAyRSwgRX0iLDJdLFsyLDMsIlxcbmFibGFfe0ErRSwgRX0iLDJdLFsxLDMsIlxcbmFibGFfe0ErRSwgRX0iXV0=
 \[\begin{tikzcd}
-	{\List A} && {\List (\List A)} & l & {[l]} \\
-	&& {\List A} && {l = [l]_0}
-	\arrow["{\eta_{\List A}}", from=1-1, to=1-3]
-	\arrow["\id"', from=1-1, to=2-3]
-	\arrow["{\mu_A}", from=1-3, to=2-3]
-	\arrow[maps to, from=1-4, to=1-5]
-	\arrow[maps to, from=1-4, to=2-5]
-	\arrow[maps to, from=1-5, to=2-5]
-\end{tikzcd}
-\text{,}\]
-% https://q.uiver.app/#q=WzAsNixbMCwwLCJcXExpc3QgKFxcTGlzdCBBKSJdLFsyLDAsIlxcTGlzdCBBIl0sWzAsMSwiXFxMaXN0IEEiXSxbNCwwLCJsIl0sWzMsMCwiW1tsXzBdLCAuLi4sIFtsX3tcXGxlbihsKSAtIDF9XV0iXSxbMywxLCJsID0gXFxzdW1fe2k9MH1ee1xcbGVuKGwpIC0gMX0gW2xfaV0iXSxbMSwyLCJcXGlkIl0sWzEsMCwiXFxMaXN0IFxcZXRhX0EiLDJdLFswLDIsIlxcbXVfQSIsMl0sWzQsNSwiIiwyLHsic3R5bGUiOnsidGFpbCI6eyJuYW1lIjoibWFwcyB0byJ9fX1dLFszLDQsIiIsMix7InN0eWxlIjp7InRhaWwiOnsibmFtZSI6Im1hcHMgdG8ifX19XSxbMyw1LCIiLDAseyJzdHlsZSI6eyJ0YWlsIjp7Im5hbWUiOiJtYXBzIHRvIn19fV1d
-\[\begin{tikzcd}
-	{\List (\List A)} && {\List A} & {[[l_0], ..., [l_{\len(l) - 1}]]} & l \\
-	{\List A} &&& {l = \sum_{i=0}^{\len(l) - 1} [l_i]}
-	\arrow["{\mu_A}"', from=1-1, to=2-1]
-	\arrow["{\List \eta_A}"', from=1-3, to=1-1]
-	\arrow["\id", from=1-3, to=2-1]
-	\arrow[maps to, from=1-4, to=2-4]
-	\arrow[maps to, from=1-5, to=1-4]
-	\arrow[maps to, from=1-5, to=2-4]
-\end{tikzcd}
-\text{,}\]
-% https://q.uiver.app/#q=WzAsOCxbMiwwLCJsIl0sWzMsMCwiWyBcXHN1bV97aiA9IDB9XntcXGxlbihsXzApIC0gMX0gKGxfMClfaiwgLi4uLCAgXFxzdW1fe2o9MH1ee1xcbGVuKGxfe1xcbGVuKGwpIC0gMX0gLSAxKX0gKGxfe1xcbGVuKGwpIC0gMX0pX2pdIl0sWzIsMSwiXFxzdW1fe2kgPSAwfV57XFxsZW4obCkgLSAxfSBsX2kiXSxbMCwwLCJcXExpc3ReMyBBIl0sWzAsMSwiXFxMaXN0XjIgQSJdLFsxLDAsIlxcTGlzdF4yIEEiXSxbMSwxLCJcXExpc3QgQSJdLFszLDEsIlxcc3VtX3tpLGp9IChsX3tpfSlqIl0sWzAsMSwiIiwwLHsic3R5bGUiOnsidGFpbCI6eyJuYW1lIjoibWFwcyB0byJ9fX1dLFswLDIsIiIsMix7InN0eWxlIjp7InRhaWwiOnsibmFtZSI6Im1hcHMgdG8ifX19XSxbMyw1LCJcXExpc3QgXFxtdV9BIl0sWzUsNiwiXFxtdV9BIl0sWzMsNCwiXFxtdV97XFxMaXN0IEF9IiwyXSxbNCw2LCJcXG11X0EiLDJdLFsxLDcsIiIsMCx7InN0eWxlIjp7InRhaWwiOnsibmFtZSI6Im1hcHMgdG8ifX19XSxbMiw3LCIiLDIseyJzdHlsZSI6eyJ0YWlsIjp7Im5hbWUiOiJtYXBzIHRvIn19fV1d
-\[\begin{tikzcd}
-	{\List^3 A} & {\List^2 A} & l & {[ \sum_{j = 0}^{\len(l_0) - 1} (l_0)_j, ...,  \sum_{j=0}^{\len(l_{\len(l) - 1} - 1)} (l_{\len(l) - 1})_j]} \\
-	{\List^2 A} & {\List A} & {\sum_{i = 0}^{\len(l) - 1} l_i} & {\sum_{i,j} (l_{i})_j}
-	\arrow["{\List \mu_A}", from=1-1, to=1-2]
-	\arrow["{\mu_{\List A}}"', from=1-1, to=2-1]
-	\arrow["{\mu_A}", from=1-2, to=2-2]
-	\arrow[maps to, from=1-3, to=1-4]
-	\arrow[maps to, from=1-3, to=2-3]
-	\arrow[maps to, from=1-4, to=2-4]
-	\arrow["{\mu_A}"', from=2-1, to=2-2]
-	\arrow[maps to, from=2-3, to=2-4]
+	{A +3E} && {A +2E} \\
+	\\
+	{A+2E} && {A+E}
+	\arrow["{\nabla_{A + E} + \id_E}", from=1-1, to=1-3]
+	\arrow["{\nabla_{A + 2E, E}}"', from=1-1, to=3-1]
+	\arrow["{\nabla_{A+E, E}}", from=1-3, to=3-3]
+	\arrow["{\nabla_{A+E, E}}"', from=3-1, to=3-3]
 \end{tikzcd}
 \text{.}
 \]
+\end{example}
+
+
+
+\subsection{Kleisli category}
+
+\begin{definition}[Kleisli category]
+Let $(T, \eta, \mu)$ be a monad on $\mc{C}.$ The Kleisli category $\Kl(T)$  of the monad $T$ is defined as follows:
+\begin{itemize}
+    \item[$\bullet$] Objects of $\Kl(T)$ are the same as in $\mc{C},$
+    \item [$\bullet$]
+    For $A, B \in \obj(\mc{C})$, a morphism $f^\bullet: A \to B$ in $\Kl(T)$ is a morphism $f: A \to TB$ in $\mc{C}$,
+    \item[$\bullet$] Composition:
+% https://q.uiver.app/#q=WzAsMTAsWzAsMCwiQSJdLFsxLDAsIkIiXSxbMCwxLCJUQiJdLFsxLDEsIlRDIl0sWzMsMCwiQSJdLFsyLDAsIlRCIl0sWzMsMSwiVEMiXSxbMiwxLCJUXjJDIl0sWzUsMCwiQSJdLFs1LDEsIkMiXSxbMCwyLCJmIiwyXSxbMSwzLCJnIiwyXSxbNyw2LCJcXG11X0MiLDJdLFs0LDUsImYiLDJdLFs1LDcsIlRnIiwyXSxbNCw2LCJcXG11X0MgXFxjaXJjIFRnIFxcY2lyYyBmIl0sWzgsOSwiZl5cXGJ1bGxldCBcXGNpcmMgZ15cXGJ1bGxldCBcXGluIFxcS2woVCkiXV0=
+\[\begin{tikzcd}
+	A & B & TB & A && A \\
+	TB & TC & {T^2C} & TC && C
+	\arrow["f"', from=1-1, to=2-1]
+	\arrow["g"', from=1-2, to=2-2]
+	\arrow["Tg"', from=1-3, to=2-3]
+	\arrow["f"', from=1-4, to=1-3]
+	\arrow["{\mu_C \circ Tg \circ f}", from=1-4, to=2-4]
+	\arrow["{f^\bullet \circ g^\bullet \in \Kl(T)}", from=1-6, to=2-6]
+	\arrow["{\mu_C}"', from=2-3, to=2-4]
+\end{tikzcd}
+\text{,}\]
+    \item[$\bullet$] Identity morphism $\id_{A}^\bullet$ in $\Kl(T)$ is a morphism $\eta_A: A \to TA$ in $\mc{C}:$
+% https://q.uiver.app/#q=WzAsMTYsWzMsMCwiQSJdLFsyLDAsIlRBIl0sWzIsMSwiVF4yQiJdLFszLDEsIlRCIl0sWzAsMCwiQSJdLFswLDEsIlRCIl0sWzEsMCwiVEEiXSxbMSwxLCJUXjJCIl0sWzUsMCwiQSJdLFs1LDEsIkIiXSxbMywzLCJUQSJdLFsyLDMsIlReMkEiXSxbMywyLCJDIl0sWzIsMiwiVEEiXSxbNSwyLCJBIl0sWzUsMywiQiJdLFswLDEsIlxcZXRhX0EiLDJdLFsxLDIsIlRmIiwyXSxbMiwzLCJcXG11X0IiLDJdLFswLDMsIlxcbXVfQiBcXGNpcmMgXFxldGFfe1RCfSBcXGNpcmMgZiA9IGYiXSxbNSw3LCJcXGV0YV97VEJ9IiwyXSxbNCw1LCJmIiwyXSxbNCw2LCJcXGV0YV9BIl0sWzYsNywiVGYiXSxbOCw5LCJmIFxcY2lyYyBcXGlkXlxcYnVsbGV0X0EiXSxbMTEsMTAsIlxcbXVfQSIsMl0sWzEyLDEzLCJnIiwyXSxbMTMsMTEsIlRcXGV0YV9BIiwyXSxbMTIsMTAsIlxcbXVfQSBcXGNpcmMgVCBcXGV0YV9BIFxcY2lyYyBnID0gZyJdLFsxNCwxNSwiXFxpZF9BXlxcYnVsbGV0IFxcY2lyYyBnIl1d
+\[\begin{tikzcd}
+	A & TA & TA & A && A \\
+	TB & {T^2B} & {T^2B} & TB && B \\
+	&& TA & C && A \\
+	&& {T^2A} & TA && B
+	\arrow["{\eta_A}", from=1-1, to=1-2]
+	\arrow["f"', from=1-1, to=2-1]
+	\arrow["Tf", from=1-2, to=2-2]
+	\arrow["Tf"', from=1-3, to=2-3]
+	\arrow["{\eta_A}"', from=1-4, to=1-3]
+	\arrow["{\mu_B \circ \eta_{TB} \circ f = f}", from=1-4, to=2-4]
+	\arrow["{f \circ \id^\bullet_A}", from=1-6, to=2-6]
+	\arrow["{\eta_{TB}}"', from=2-1, to=2-2]
+	\arrow["{\mu_B}"', from=2-3, to=2-4]
+	\arrow["{T\eta_A}"', from=3-3, to=4-3]
+	\arrow["g"', from=3-4, to=3-3]
+	\arrow["{\mu_A \circ T \eta_A \circ g = g}", from=3-4, to=4-4]
+	\arrow["{\id_A^\bullet \circ g}", from=3-6, to=4-6]
+	\arrow["{\mu_A}"', from=4-3, to=4-4]
+\end{tikzcd} 
+\text{.}
+\]
+\end{itemize}
+\end{definition}
+
+\begin{example}[$\Kl(\List)$]
+One of the possible interpretations of $f: A \to TB$ is a non-deterministic calculation: $a$ is mapped by $f$ to the list of all possible results. The composition corresponds to getting all possible results from sequential non-deterministic calculations:  
+% https://q.uiver.app/#q=WzAsNyxbMSwwLCJCIl0sWzEsMSwiQyJdLFswLDAsIkEiXSxbMywwLCJbYl8wLCAuLi4sIGJfbl0iXSxbNCwwLCJhIl0sWzMsMSwiW1tiXzBeMCxiXzFeMCwuLi4sYl97bV8wfV4wXSAsIC4uLiBbYl8wXm4sYl8xXm4sLi4uLGJfe21fbn1ebl1dIl0sWzQsMSwiW2JfMF4wLGJfMV4wLC4uLixiX3ttXzB9XjAsIC4uLiwgYl8wXm4sYl8xXm4sLi4uLGJfe21fbn1ebl0iXSxbMiwwLCJmXlxcYnVsbGV0Il0sWzAsMSwiZ15cXGJ1bGxldCJdLFsyLDEsImdeXFxidWxsZXQgXFxjaXJjIGZeXFxidWxsZXQiLDJdLFs0LDMsImYiLDIseyJzdHlsZSI6eyJ0YWlsIjp7Im5hbWUiOiJtYXBzIHRvIn19fV0sWzMsNSwiVGcgPSBbZ18wKGJfMCksIC4uLiwgZ19uKGJfbildIiwyLHsic3R5bGUiOnsidGFpbCI6eyJuYW1lIjoibWFwcyB0byJ9fX1dLFs1LDYsIlxcbXVfQiA9IFxcc3VtX2kgZ19pKGJfaSkiLDIseyJvZmZzZXQiOjEsInN0eWxlIjp7InRhaWwiOnsibmFtZSI6Im1hcHMgdG8ifX19XSxbNCw2LCIiLDAseyJzdHlsZSI6eyJ0YWlsIjp7Im5hbWUiOiJtYXBzIHRvIn19fV1d
+\[\begin{tikzcd}
+	A & B && {[b_0, ..., b_n]} & a \\
+	& C && {[[b_0^0,b_1^0,...,b_{m_0}^0] , ... [b_0^n,b_1^n,...,b_{m_n}^n]]} & {[b_0^0,b_1^0,...,b_{m_0}^0, ..., b_0^n,b_1^n,...,b_{m_n}^n]}
+	\arrow["{f^\bullet}", from=1-1, to=1-2]
+	\arrow["{g^\bullet \circ f^\bullet}"', from=1-1, to=2-2]
+	\arrow["{g^\bullet}", from=1-2, to=2-2]
+	\arrow["{Tg = [g_0(b_0), ..., g_n(b_n)]}"', maps to, from=1-4, to=2-4]
+	\arrow["f"', maps to, from=1-5, to=1-4]
+	\arrow[maps to, from=1-5, to=2-5]
+	\arrow["{\mu_B = \sum_i g_i(b_i)}"', shift right, maps to, from=2-4, to=2-5]
+\end{tikzcd}
+\text{.}
+\]
+
 \end{example}
 
 \newpage
