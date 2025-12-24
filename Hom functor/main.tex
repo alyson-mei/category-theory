@@ -1,0 +1,191 @@
+\documentclass[12pt]{article}
+% Page setup
+\usepackage[margin=1in]{geometry}
+\usepackage{parskip}
+\usepackage{titling}
+\setlength{\droptitle}{-6em} 
+
+% Math packages
+\usepackage{amsmath, amsthm, amssymb, amsfonts}
+\usepackage{mathtools}
+\makeatletter
+\g@addto@macro\th@plain{\normalfont} % remove italics from theorems (plain style)
+\makeatother
+
+% Commutative diagrams
+\usepackage{tikz-cd}
+
+
+% Theorem environments
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{fact}[theorem]{Fact}
+\newtheorem{remark}[theorem]{Remark}
+
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+
+% Useful commands for category theory
+\newcommand{\mc}{\mathcal}
+\newcommand{\ini}{\operatorname{ini}}
+\newcommand{\ter}{\operatorname{ter}}
+
+\newcommand{\List}{\operatorname{List}}
+\newcommand{\lop}{\operatorname{[ \ ]}}
+\newcommand{\len}{\operatorname{len}}
+
+\newcommand{\Exc}{\operatorname{Exception}}
+
+\newcommand{\Kl}{\operatorname{Kl}}
+\newcommand{\plus}{\operatorname{+}}
+
+\newcommand{\Cat}{\mathcal{C}at}
+\newcommand{\Vect}{\mathrm{Vect}_\mathbf{k}}
+\newcommand{\Hom}{\operatorname{Hom}}
+\newcommand{\Nat}{\operatorname{Nat}}
+\newcommand{\id}{\mathrm{id}}
+\newcommand{\op}{\mathrm{op}}
+\newcommand{\obj}{\operatorname{obj}}
+\newcommand{\arr}{\operatorname{arr}}
+\newcommand{\adj}{\operatorname{adj}}
+\newcommand{\coadj}{\operatorname{coadj}}
+\newcommand{\colim}{\operatorname*{colim}}
+
+% Arrows
+\newcommand{\ra}{\rightarrow}
+\newcommand{\from}{\leftarrow}
+\newcommand{\To}{\Rightarrow}
+\newcommand{\xto}{\xrightarrow}
+\newcommand{\xfrom}{\xleftarrow}
+
+\renewcommand{\labelitemi}{--} % Level 1: Dashes
+\renewcommand{\labelitemii}{$\circ$} % Level 2: Circles
+\renewcommand{\labelitemiii}{$\bullet$} % Level 3: Bullets (default)
+
+
+\title{Hom functor}
+\author{Alyson Mei}
+\date{\today}
+
+\begin{document}
+
+
+\maketitle
+
+\section{Intro}
+
+\paragraph{Conventions.}
+\begin{itemize}
+    \item We use $\lambda$-notation for functors and assume it implicitly tracks variance.
+    \item All categories with set-valued Hom functors are assumed to be locally small.
+    \item For brevity, when the context is clear, we write
+    \[
+        A,B := \Hom(A,B) := \mathcal{C}(A,B).
+    \]
+\end{itemize}
+\paragraph{TODO.}
+\begin{itemize}
+    \item Hom functors in monoidal categories.
+    \item Enriched categories.
+\end{itemize}
+\newpage
+
+\section{Set-valued Hom functor}
+
+\begin{definition}[Hom functor]
+Set-valued Hom functor $$\lambda AB.\mc{C}(A,B): \mc{C}^\op \times \mathcal{C} \to \mc{S}et,$$
+is defined as follows:
+\begin{itemize}
+    \item[$\bullet$] $\mc{C}(A, B)$ is the set of morphisms from $A$ to $B$,
+    \item its action on morphisms is given by
+    \[
+        \mathcal{C}(f,g) := \lambda \varphi.\, g \circ \varphi \circ f,
+    \]
+    i.e.\ by pre- and post-composition:
+    % https://q.uiver.app/#q=WzAsMTAsWzUsMCwiXFxtY3tDfShBLEIpIl0sWzUsMSwiXFxtY3tDfShBJyxCJykiXSxbMCwwLCJBIl0sWzAsMSwiQSciXSxbMSwwLCJCIl0sWzEsMSwiQiciXSxbMiwwLCJBIl0sWzIsMSwiQSciXSxbMywwLCJCIl0sWzMsMSwiQiciXSxbMywyLCJmIl0sWzQsNSwiZyIsMl0sWzAsMSwiXFxtY3tDfShmLGcpID0gXFxsYW1iZGEgXFx2YXJwaGkuIGcgXFxjaXJjIFxcdmFycGhpIFxcY2lyYyBmIl0sWzYsOCwiXFx2YXJwaGkiXSxbNyw2LCJmIl0sWzgsOSwiZyJdLFs3LDksImcgXFxjaXJjIFxcdmFycGhpIFxcY2lyYyBmIiwyXV0=
+    \[\begin{tikzcd}
+    	A & B & A & B && {\mc{C}(A,B)} \\
+    	{A'} & {B'} & {A'} & {B'} && {\mc{C}(A',B')}
+    	\arrow["g"', from=1-2, to=2-2]
+    	\arrow["\varphi", from=1-3, to=1-4]
+    	\arrow["g", from=1-4, to=2-4]
+    	\arrow["{\mc{C}(f,g) = \lambda \varphi. g \circ \varphi \circ f}", from=1-6, to=2-6]
+    	\arrow["f", from=2-1, to=1-1]
+    	\arrow["f", from=2-3, to=1-3]
+    	\arrow["{g \circ \varphi \circ f}"', from=2-3, to=2-4]
+    \end{tikzcd}
+    \text{.}
+    \]
+\end{itemize}
+We will often write $A,B$ or $\Hom(A,B)$ instead of $\mathcal{C}(A,B)$ when the context is clear.
+
+\begin{definition}[Covariant and contravariant Hom functors]
+The functors
+\[
+    \lambda A.\,\mathcal{C}(A,-) : \mathcal{C} \to \mathcal{S}et
+    \quad\text{and}\quad
+    \lambda B.\,\mathcal{C}(-,B) : \mathcal{C}^{\op} \to \mathcal{S}et
+\]
+are called the covariant and contravariant Hom functors, respectively. They are obtained from the bifunctor $\mathcal{C}(-,-)$ by fixing one argument.  
+The induced action on morphisms is given by \emph{post-composition} and \emph{pre-composition}, respectively: 
+% https://q.uiver.app/#q=WzAsOCxbMSwwLCJcXG1je0N9KEEsIC0pKEIpID0gXFxtY3tDfShBLCBCKSJdLFswLDAsIkIiXSxbMCwxLCJCJyJdLFsxLDEsIlxcbWN7Q30oQSwgLSkoQicpID0gXFxtY3tDfShBLCBCJykiXSxbMywwLCJBIl0sWzMsMSwiQSciXSxbNCwwLCJcXG1je0N9KC0sIEIpKEEnKSA9IFxcbWN7Q30oQSwgQikiXSxbNCwxLCJcXG1je0N9KC0sIEIpKEEpID0gXFxtY3tDfShBJywgQikiXSxbMSwyLCJnIiwyXSxbMCwzLCJcXG1je0N9KEEsIC0pKGcpID0gZyBcXGNpcmMgLSJdLFs1LDQsImYiXSxbNiw3LCJcXG1je0N9KC0sIEIpKGYpID0gLSBcXGNpcmMgZiJdXQ==
+\[\begin{tikzcd}
+	B & {\mc{C}(A, -)(B) = \mc{C}(A, B)} && A & {\mc{C}(-, B)(A') = \mc{C}(A, B)} \\
+	{B'} & {\mc{C}(A, -)(B') = \mc{C}(A, B')} && {A'} & {\mc{C}(-, B)(A) = \mc{C}(A', B)}
+	\arrow["g"', from=1-1, to=2-1]
+	\arrow["{\mc{C}(A, -)(g) = g \circ -}", from=1-2, to=2-2]
+	\arrow["{\mc{C}(-, B)(f) = - \circ f}", from=1-5, to=2-5]
+	\arrow["f", from=2-4, to=1-4]
+\end{tikzcd}
+\text{.}
+\]
+
+Natural transformations between covariant (resp.\ contravariant) Hom functors are induced by \emph{pre-composition} (resp.\ \emph{post-composition}):
+\[\begin{tikzcd}
+	{\mc{C}} && {\mathcal{S}et} && {\mc{C}^\op} && {\mathcal{S}et}
+	\arrow[""{name=0, anchor=center, inner sep=0}, "{A, \_}",  bend left = 24pt, from=1-1, to=1-3]
+	\arrow[""{name=1, anchor=center, inner sep=0}, "{B, \_}"', bend right = 24pt, from=1-1, to=1-3]
+	\arrow[""{name=2, anchor=center, inner sep=0}, "{\_, A }", bend left = 24pt, from=1-5, to=1-7]
+	\arrow[""{name=3, anchor=center, inner sep=0}, "{\_, B}"', bend right = 24pt, from=1-5, to=1-7]
+	\arrow["\alpha", shorten <=4pt, shorten >=4pt, Rightarrow, from=0, to=1]
+	\arrow["\beta", shorten <=4pt, shorten >=4pt, Rightarrow, from=2, to=3]
+\end{tikzcd}\]
+% https://q.uiver.app/#q=WzAsMjQsWzMsMCwiQSwgWCJdLFszLDEsIkEsIFkiXSxbNCwwLCJCLFgiXSxbNCwxLCJCLFkiXSxbMCwwLCJYIl0sWzAsMSwiWSJdLFsxLDEsIkIiXSxbMSwwLCJBIl0sWzUsMCwiXFx2YXJwaGkiXSxbNiwwLCJcXHZhcnBoaSBcXGNpcmMgXFxhbHBoYV9cXGJ1bGxldCJdLFs1LDEsImYgXFxjaXJjIFxcdmFycGhpIl0sWzYsMSwiZiBcXGNpcmMgXFx2YXJwaGkgXFxjaXJjIFxcYWxwaGFfXFxidWxsZXQiXSxbMywyLCJYLCBBIl0sWzMsMywiIFksIEEiXSxbNCwyLCJYLCBCIl0sWzQsMywiWSxCIl0sWzAsMiwiWCJdLFswLDMsIlkiXSxbMSwzLCJCIl0sWzEsMiwiQSJdLFs1LDIsIlxccHNpIl0sWzYsMiwiIFxcYmV0YV9cXGJ1bGxldCBcXGNpcmMgXFxwc2kiXSxbNSwzLCJcXHBzaSBcXGNpcmMgZyJdLFs2LDMsIiBcXGJldGFfXFxidWxsZXQgXFxjaXJjIFxccHNpIFxcY2lyYyBnIl0sWzQsNSwiZiIsMl0sWzYsNywiXFxhbHBoYV9cXGJ1bGxldCJdLFswLDIsIlxcXyBcXGNpcmMgXFxhbHBoYV9cXGJ1bGxldCJdLFsxLDMsIlxcXyBcXGNpcmMgXFxhbHBoYV9cXGJ1bGxldCIsMl0sWzAsMSwiZiBcXGNpcmMgXFxfIiwyXSxbMiwzLCJmIFxcY2lyYyBcXF8iXSxbOCw5LCIiLDAseyJzdHlsZSI6eyJ0YWlsIjp7Im5hbWUiOiJtYXBzIHRvIn19fV0sWzgsMTAsIiIsMCx7InN0eWxlIjp7InRhaWwiOnsibmFtZSI6Im1hcHMgdG8ifX19XSxbOSwxMSwiICIsMix7InN0eWxlIjp7InRhaWwiOnsibmFtZSI6Im1hcHMgdG8ifX19XSxbMTAsMTEsIiIsMCx7InN0eWxlIjp7InRhaWwiOnsibmFtZSI6Im1hcHMgdG8ifX19XSxbMTcsMTYsImciXSxbMTksMTgsIlxcYmV0YV9cXGJ1bGxldCIsMl0sWzEyLDEzLCIgXFxfIFxcY2lyYyBnICIsMl0sWzEyLDE0LCJcXGJldGFfXFxidWxsZXQgXFxjaXJjIFxcXyJdLFsxMywxNSwiXFxiZXRhX1xcYnVsbGV0IFxcY2lyYyBcXF8iLDJdLFsxNCwxNSwiIFxcXyBcXGNpcmMgZyAiXSxbMjAsMjIsIiIsMCx7InN0eWxlIjp7InRhaWwiOnsibmFtZSI6Im1hcHMgdG8ifX19XSxbMjAsMjEsIiIsMCx7InN0eWxlIjp7InRhaWwiOnsibmFtZSI6Im1hcHMgdG8ifX19XSxbMjIsMjMsIiIsMCx7InN0eWxlIjp7InRhaWwiOnsibmFtZSI6Im1hcHMgdG8ifX19XSxbMjEsMjMsIiIsMCx7InN0eWxlIjp7InRhaWwiOnsibmFtZSI6Im1hcHMgdG8ifX19XV0=
+\[\begin{tikzcd}
+	X & A && {A, X} & {B,X} & \varphi & {\varphi \circ \alpha_\bullet} \\
+	Y & B && {A, Y} & {B,Y} & {f \circ \varphi} & {f \circ \varphi \circ \alpha_\bullet} \\
+	X & A && {X, A} & {X, B} & \psi & { \beta_\bullet \circ \psi} \\
+	Y & B && { Y, A} & {Y,B} & {\psi \circ g} & { \beta_\bullet \circ \psi \circ g}
+	\arrow["f"', from=1-1, to=2-1]
+	\arrow["{\_ \circ \alpha_\bullet}", from=1-4, to=1-5]
+	\arrow["{f \circ \_}"', from=1-4, to=2-4]
+	\arrow["{f \circ \_}", from=1-5, to=2-5]
+	\arrow[maps to, from=1-6, to=1-7]
+	\arrow[maps to, from=1-6, to=2-6]
+	\arrow["{ }"', maps to, from=1-7, to=2-7]
+	\arrow["{\alpha_\bullet}", from=2-2, to=1-2]
+	\arrow["{\_ \circ \alpha_\bullet}"', from=2-4, to=2-5]
+	\arrow[maps to, from=2-6, to=2-7]
+	\arrow["{\beta_\bullet}"', from=3-2, to=4-2]
+	\arrow["{\beta_\bullet \circ \_}", from=3-4, to=3-5]
+	\arrow["{ \_ \circ g }"', from=3-4, to=4-4]
+	\arrow["{ \_ \circ g }", from=3-5, to=4-5]
+	\arrow[maps to, from=3-6, to=3-7]
+	\arrow[maps to, from=3-6, to=4-6]
+	\arrow[maps to, from=3-7, to=4-7]
+	\arrow["g", from=4-1, to=3-1]
+	\arrow["{\beta_\bullet \circ \_}"', from=4-4, to=4-5]
+	\arrow[maps to, from=4-6, to=4-7]
+\end{tikzcd}
+\text{.}
+\]
+    
+\end{definition}
+ 
+\end{definition}
+
+
+\end{document}
