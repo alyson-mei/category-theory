@@ -1,0 +1,271 @@
+\documentclass[12pt]{article}
+% Page setup
+\usepackage[margin=1in]{geometry}
+\usepackage{parskip}
+\usepackage{titling}
+\setlength{\droptitle}{-6em} 
+
+% Math packages
+\usepackage{amsmath, amsthm, amssymb, amsfonts}
+\usepackage{mathtools}
+\makeatletter
+\g@addto@macro\th@plain{\normalfont} % remove italics from theorems (plain style)
+\makeatother
+
+% Commutative diagrams
+\usepackage{tikz-cd}
+
+
+% Theorem environments
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{fact}[theorem]{Fact}
+\newtheorem{remark}[theorem]{Remark}
+
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+
+% Useful commands for category theory
+\newcommand{\mc}{\mathcal}
+\newcommand{\ini}{\operatorname{ini}}
+\newcommand{\ter}{\operatorname{ter}}
+\newcommand{\cod}{\operatorname{cod}}
+\newcommand{\dom}{\operatorname{dom}}
+
+\newcommand{\List}{\operatorname{List}}
+\newcommand{\lop}{\operatorname{[ \ ]}}
+\newcommand{\len}{\operatorname{len}}
+
+\newcommand{\Exc}{\operatorname{Exception}}
+
+\newcommand{\Kl}{\operatorname{Kl}}
+\newcommand{\plus}{\operatorname{+}}
+
+\newcommand{\Cat}{\mathcal{C}at}
+\newcommand{\Vect}{\mathrm{Vect}_\mathbf{k}}
+\newcommand{\Hom}{\operatorname{Hom}}
+\newcommand{\Nat}{\operatorname{Nat}}
+\newcommand{\id}{\mathrm{id}}
+\newcommand{\op}{\mathrm{op}}
+\newcommand{\obj}{\operatorname{obj}}
+\newcommand{\arr}{\operatorname{arr}}
+\newcommand{\adj}{\operatorname{adj}}
+\newcommand{\coadj}{\operatorname{coadj}}
+\newcommand{\colim}{\operatorname*{colim}}
+
+% Arrows
+\newcommand{\ra}{\rightarrow}
+\newcommand{\from}{\leftarrow}
+\newcommand{\To}{\Rightarrow}
+\newcommand{\xto}{\xrightarrow}
+\newcommand{\xfrom}{\xleftarrow}
+
+\renewcommand{\labelitemi}{--} % Level 1: Dashes
+\renewcommand{\labelitemii}{$\circ$} % Level 2: Circles
+\renewcommand{\labelitemiii}{$\bullet$} % Level 3: Bullets (default)
+
+
+\title{Natural transformations}
+\author{Alyson Mei}
+\date{\today}
+
+\begin{document}
+
+
+\maketitle
+
+
+% \section*{Intro}
+%
+% \paragraph{Conventions.}
+% \begin{itemize}
+%     \item We use $\lambda$-notation for functors and assume it implicitly tracks variance.
+%     \item All categories with set-valued Hom functors are assumed to be locally small.
+%     \item For brevity, when the context is clear, we write
+%     \[
+%         A,B := \Hom(A,B) := \mathcal{C}(A,B).
+%     \]
+% \end{itemize}
+% \paragraph{TODO.}
+% \begin{itemize}
+%     \item Hom functors in monoidal categories.
+%     \item Enriched categories.
+% \end{itemize}
+% \newpage
+
+
+\section{Basics}
+
+\begin{definition}[Natural transformations] Let $F, G: \mc{C} \to \mc{D}$. Natural transformation $\alpha$ between $F$ and $G$ is a collection of morphisms $(\alpha_c \ |\ {c: \obj{C}})$ satisfying the diagrams
+% https://q.uiver.app/#q=WzAsNixbMCwwLCJjIl0sWzAsMSwiYyciXSxbMiwwLCJGYyJdLFsyLDEsIkZjJyJdLFszLDAsIkdjIl0sWzMsMSwiR2MnIl0sWzAsMSwiZiIsMl0sWzIsMywiRmYiLDJdLFs0LDUsIkdmIl0sWzIsNCwiXFxhbHBoYV9jIl0sWzMsNSwiXFxhbHBoYV97Yyd9IiwyXV0=
+\[\begin{tikzcd}
+	c && Fc & Gc \\
+	{c'} && {Fc'} & {Gc'}
+	\arrow["f"', from=1-1, to=2-1]
+	\arrow["{\alpha_c}", from=1-3, to=1-4]
+	\arrow["Ff"', from=1-3, to=2-3]
+	\arrow["Gf", from=1-4, to=2-4]
+	\arrow["{\alpha_{c'}}"', from=2-3, to=2-4]
+\end{tikzcd}
+\text{.}
+\]
+Notation:
+% https://q.uiver.app/#q=WzAsNCxbMCwwLCJGIl0sWzEsMCwiRyJdLFszLDAsIlxcbWF0aGNhbHtDfSJdLFs0LDAsIlxcbWF0aGNhbHtEfSJdLFswLDEsIlxcYWxwaGEiXSxbMiwzLCJGIiwwLHsiY3VydmUiOi0yfV0sWzIsMywiRyIsMix7ImN1cnZlIjoyfV0sWzUsNiwiXFxhbHBoYSIsMCx7InNob3J0ZW4iOnsic291cmNlIjoyMCwidGFyZ2V0IjoyMH19XV0=
+\[\begin{tikzcd}
+	F & G && {\mathcal{C}} & {\mathcal{D}}
+	\arrow["\alpha", from=1-1, to=1-2]
+	\arrow[""{name=0, anchor=center, inner sep=0}, "F", bend left = 36pt, from=1-4, to=1-5]
+	\arrow[""{name=1, anchor=center, inner sep=0}, "G"', bend right = 36pt, from=1-4, to=1-5]
+	\arrow["\alpha", shorten <=3pt, shorten >=3pt, Rightarrow, from=0, to=1]
+\end{tikzcd}
+\text{.}
+\]
+
+\end{definition}
+
+\begin{definition}[Vertical composition of natural transformations] 
+Let $F, G, H: \mc{C} \to \mc{D}$ with natural transformations $\alpha: F \to G$ and $\beta: G \to H$. The vertical composition $\beta \circ \alpha$ of natural transformations $\beta$ and $\alpha$ is defined componentwise: 
+$$\beta \circ \alpha: F \to H \quad \qquad (\beta \circ \alpha)_c = \beta_c \circ \alpha_c,$$
+% https://q.uiver.app/#q=WzAsOCxbMCwwLCJjIl0sWzAsMSwiIGMnIl0sWzIsMCwiRmMiXSxbMiwxLCJGYyciXSxbMywwLCJHYyJdLFszLDEsIkdjJyJdLFs0LDAsIkhjIl0sWzQsMSwiSGMnIl0sWzAsMSwiZiIsMl0sWzIsNCwiXFxhbHBoYV9jIl0sWzQsNiwiXFxiZXRhX2MiXSxbMiwzLCJGZiIsMl0sWzMsNSwiXFxhbHBoYV97Yyd9IiwyXSxbNSw3LCJcXGJldGFfe2MnfSIsMl0sWzQsNSwiR2YiLDFdLFs2LDcsIkhmIl1d
+\[\begin{tikzcd}
+	c && Fc & Gc & Hc \\
+	{ c'} && {Fc'} & {Gc'} & {Hc'}
+	\arrow["f"', from=1-1, to=2-1]
+	\arrow["{\alpha_c}", from=1-3, to=1-4]
+	\arrow["Ff"', from=1-3, to=2-3]
+	\arrow["{\beta_c}", from=1-4, to=1-5]
+	\arrow["Gf"{description}, from=1-4, to=2-4]
+	\arrow["Hf", from=1-5, to=2-5]
+	\arrow["{\alpha_{c'}}"', from=2-3, to=2-4]
+	\arrow["{\beta_{c'}}"', from=2-4, to=2-5]
+\end{tikzcd}
+\text{.}
+\]
+
+Notation:
+% https://q.uiver.app/#q=WzAsNSxbMywwLCJcXG1hdGhjYWx7Q30iXSxbNCwwLCJcXG1hdGhjYWx7RH0iXSxbMCwwLCJGIl0sWzEsMCwiRyJdLFsxLDEsIkgiXSxbMCwxLCJGIiwwLHsiY3VydmUiOi0zfV0sWzAsMSwiSCIsMix7ImN1cnZlIjozfV0sWzAsMSwiRyIsMV0sWzIsMywiXFxhbHBoYSJdLFszLDQsIlxcYmV0YSJdLFsyLDQsIlxcYmV0YSBcXGNpcmMgXFxhbHBoYSIsMl0sWzcsNiwiXFxiZXRhIiwyLHsic2hvcnRlbiI6eyJzb3VyY2UiOjIwLCJ0YXJnZXQiOjIwfX1dLFs1LDcsIlxcYWxwaGEiLDIseyJzaG9ydGVuIjp7InNvdXJjZSI6MjAsInRhcmdldCI6MjB9fV1d
+\[\begin{tikzcd}
+	F & G && {\mathcal{C}} & {\mathcal{D}} \\
+	& H
+	\arrow["\alpha", from=1-1, to=1-2]
+	\arrow["{\beta \circ \alpha}"', from=1-1, to=2-2]
+	\arrow["\beta", from=1-2, to=2-2]
+	\arrow[""{name=0, anchor=center, inner sep=0}, "F", bend left = 64pt, from=1-4, to=1-5]
+	\arrow[""{name=1, anchor=center, inner sep=0}, "H"', bend right = 64pt, from=1-4, to=1-5]
+	\arrow[""{name=2, anchor=center, inner sep=0}, "G"{description}, from=1-4, to=1-5]
+	\arrow["\beta", shorten <=5pt, shorten >=3pt, Rightarrow, from=2, to=1]
+	\arrow["\alpha", shorten <=4pt, shorten >=4pt, Rightarrow, from=0, to=2]
+\end{tikzcd}
+\text{.}
+\]
+\end{definition}
+
+\begin{definition}[Horizontal composition of natural transformations] Let $F_1, F_2: \mc{C} \to \mc{D}$, $G_1, G_2: \mc{D} \to \mc{E}$ with natural transformations $\alpha: F_1 \to F_2$ and $\beta: G_1 \to G_2$. The horizontal composition $\beta \bullet \alpha$ of natural transformations $\beta$ and $\alpha$ is defined as the transformation of images of $\alpha_c$ under the action of $F_1$ and $F_2$ by $\beta$:
+$$\beta \bullet \alpha : G_1 F_1 \to G_2F_2 \qquad \qquad (\beta \bullet \alpha)_c = G_2 \alpha_c \circ \beta_{F_1c} = \beta_{F_2c} \circ G_1\alpha_c,$$
+% https://q.uiver.app/#q=WzAsMTQsWzcsMCwiR18xRl8xYyciXSxbNiwxLCJHXzFGXzFjIl0sWzksMCwiR18xRl8yYyciXSxbOCwxLCJHXzFGXzJjIl0sWzYsMywiR18yRl8xYyJdLFs4LDMsIkdfMkZfMmMiXSxbOSwyLCJHXzJGXzJjJyJdLFs3LDIsIkdfMkZfMWMnIl0sWzAsMywiYyJdLFsxLDIsImMnIl0sWzQsMywiRl8yYyJdLFsyLDMsIkZfMWMiXSxbNSwyLCJGXzJjJyJdLFszLDIsIkZfMWMnIl0sWzEsMCwiR18xRl8xZiIsMV0sWzMsMiwiR18xRl8yZiIsMV0sWzAsMiwiR18xXFxhbHBoYV97Yyd9IiwxLHsibGFiZWxfcG9zaXRpb24iOjcwfV0sWzEsMywiR18xXFxhbHBoYV9jIiwxLHsibGFiZWxfcG9zaXRpb24iOjcwfV0sWzEsNCwiXFxiZXRhX3tGXzFjfSIsMSx7ImxhYmVsX3Bvc2l0aW9uIjo3MH1dLFszLDUsIlxcYmV0YV97Rl8yY30iLDEseyJsYWJlbF9wb3NpdGlvbiI6NzB9XSxbMiw2LCJcXGJldGFfe0ZfMWMnfSIsMSx7ImxhYmVsX3Bvc2l0aW9uIjo3MH1dLFs1LDYsIkdfMkZfMmYiLDFdLFswLDcsIlxcYmV0YV97Rl8xYyd9IiwxLHsibGFiZWxfcG9zaXRpb24iOjcwLCJzdHlsZSI6eyJib2R5Ijp7Im5hbWUiOiJkb3R0ZWQifX19XSxbNCw3LCJHXzJGXzFmIiwxLHsic3R5bGUiOnsiYm9keSI6eyJuYW1lIjoiZG90dGVkIn19fV0sWzcsNiwiR18yXFxhbHBoYV97Yyd9IiwxLHsibGFiZWxfcG9zaXRpb24iOjcwLCJzdHlsZSI6eyJib2R5Ijp7Im5hbWUiOiJkb3R0ZWQifX19XSxbNCw1LCJHXzJcXGFscGhhX2MiLDEseyJsYWJlbF9wb3NpdGlvbiI6NzB9XSxbOCw5LCJmIl0sWzExLDEzLCJGXzFmIl0sWzEwLDEyLCJGXzJmIiwyXSxbMTEsMTAsIlxcYWxwaGFfYyIsMl0sWzEzLDEyLCJcXGFscGhhX3tjJ30iXV0=
+\[\begin{tikzcd}[column sep=small]
+	&&&&&&& {G_1F_1c'} && {G_1F_2c'} \\
+	&&&&&& {G_1F_1c} && {G_1F_2c} \\
+	& {c'} && {F_1c'} && {F_2c'} && {G_2F_1c'} && {G_2F_2c'} \\
+	c && {F_1c} && {F_2c} && {G_2F_1c} && {G_2F_2c}
+	\arrow["{G_1\alpha_{c'}}"{description, pos=0.7}, from=1-8, to=1-10]
+	\arrow["{\beta_{F_1c'}}"{description, pos=0.7}, dotted, from=1-8, to=3-8]
+	\arrow["{\beta_{F_1c'}}"{description, pos=0.7}, from=1-10, to=3-10]
+	\arrow["{G_1F_1f}"{description}, from=2-7, to=1-8]
+	\arrow["{G_1\alpha_c}"{description, pos=0.7}, from=2-7, to=2-9]
+	\arrow["{\beta_{F_1c}}"{description, pos=0.7}, from=2-7, to=4-7]
+	\arrow["{G_1F_2f}"{description}, from=2-9, to=1-10]
+	\arrow["{\beta_{F_2c}}"{description, pos=0.7}, from=2-9, to=4-9]
+	\arrow["{\alpha_{c'}}", from=3-4, to=3-6]
+	\arrow["{G_2\alpha_{c'}}"{description, pos=0.7}, dotted, from=3-8, to=3-10]
+	\arrow["f", from=4-1, to=3-2]
+	\arrow["{F_1f}", from=4-3, to=3-4]
+	\arrow["{\alpha_c}"', from=4-3, to=4-5]
+	\arrow["{F_2f}"', from=4-5, to=3-6]
+	\arrow["{G_2F_1f}"{description}, dotted, from=4-7, to=3-8]
+	\arrow["{G_2\alpha_c}"{description, pos=0.7}, from=4-7, to=4-9]
+	\arrow["{G_2F_2f}"{description}, from=4-9, to=3-10]
+\end{tikzcd}
+\text{.}
+\]
+
+
+Note that functors preserve commutative diagrams, so all of the faces of the cube commute.
+Notation:
+% https://q.uiver.app/#q=WzAsNSxbMCwwLCJcXG1hdGhjYWx7Q30iXSxbMSwwLCJcXG1hdGhjYWx7RH0iXSxbMiwwLCJcXG1hdGhjYWx7RX0iXSxbNCwwLCJHXzFGXzEiXSxbNiwwLCJHXzJGXzIiXSxbMCwxLCJGXzEiLDAseyJjdXJ2ZSI6LTJ9XSxbMSwyLCJHXzEiLDAseyJjdXJ2ZSI6LTJ9XSxbMCwxLCJGXzIiLDIseyJjdXJ2ZSI6Mn1dLFsxLDIsIkdfMiIsMix7ImN1cnZlIjoyfV0sWzMsNCwiXFxiZXRhIFxcYnVsbGV0IFxcYWxwaGEiXSxbNSw3LCJcXGFscGhhIiwwLHsic2hvcnRlbiI6eyJzb3VyY2UiOjIwLCJ0YXJnZXQiOjIwfX1dLFs2LDgsIlxcYmV0YSIsMCx7InNob3J0ZW4iOnsic291cmNlIjoyMCwidGFyZ2V0IjoyMH19XV0=
+\[\begin{tikzcd}
+	{\mathcal{C}} & {\mathcal{D}} & {\mathcal{E}} && {G_1F_1} && {G_2F_2}
+	\arrow[""{name=0, anchor=center, inner sep=0}, "{F_1}", bend left = 36pt, from=1-1, to=1-2]
+	\arrow[""{name=1, anchor=center, inner sep=0}, "{F_2}"', bend right = 36pt, from=1-1, to=1-2]
+	\arrow[""{name=2, anchor=center, inner sep=0}, "{G_1}", bend left = 36pt, from=1-2, to=1-3]
+	\arrow[""{name=3, anchor=center, inner sep=0}, "{G_2}"', bend right = 36pt, from=1-2, to=1-3]
+	\arrow["{\beta \bullet \alpha}", from=1-5, to=1-7]
+	\arrow["\alpha", shorten <=3pt, shorten >=3pt, Rightarrow, from=0, to=1]
+	\arrow["\beta", shorten <=3pt, shorten >=3pt, Rightarrow, from=2, to=3]
+\end{tikzcd}
+\text{.}
+\]
+\end{definition}
+
+\begin{definition}[Whiskering] Wiskering is defined as a horizontal composition with identity natural transformation:
+% https://q.uiver.app/#q=WzAsNixbMSwwLCJcXG1je0R9Il0sWzAsMCwiXFxtY3tDfSJdLFsyLDAsIlxcbWN7RX0iXSxbNCwwLCJcXG1je0N9Il0sWzUsMCwiXFxtY3tEfSJdLFs2LDAsIlxcbWN7RX0iXSxbMSwwLCJGXzEiLDAseyJjdXJ2ZSI6LTJ9XSxbMCwyLCJHIl0sWzEsMCwiRl8yIiwyLHsiY3VydmUiOjJ9XSxbMyw0LCJGIl0sWzQsNSwiR18xIiwwLHsiY3VydmUiOi0yfV0sWzQsNSwiR18yIiwyLHsiY3VydmUiOjJ9XSxbNiw4LCJcXGFscGhhIiwwLHsic2hvcnRlbiI6eyJzb3VyY2UiOjIwLCJ0YXJnZXQiOjIwfX1dLFsxMCwxMSwiXFxiZXRhIiwwLHsic2hvcnRlbiI6eyJzb3VyY2UiOjIwLCJ0YXJnZXQiOjIwfX1dXQ==
+\[\begin{tikzcd}
+	{\mc{C}} & {\mc{D}} & {\mc{E}} && {\mc{C}} & {\mc{D}} & {\mc{E}}
+	\arrow[""{name=0, anchor=center, inner sep=0}, "{F_1}", bend left = 36pt, from=1-1, to=1-2]
+	\arrow[""{name=1, anchor=center, inner sep=0}, "{F_2}"', bend right = 36pt, from=1-1, to=1-2]
+	\arrow["G", from=1-2, to=1-3]
+	\arrow["F", from=1-5, to=1-6]
+	\arrow[""{name=2, anchor=center, inner sep=0}, "{G_1}", bend left = 36pt, from=1-6, to=1-7]
+	\arrow[""{name=3, anchor=center, inner sep=0}, "{G_2}"', bend right = 36pt, from=1-6, to=1-7]
+	\arrow["\alpha", shorten <=3pt, shorten >=3pt, Rightarrow, from=0, to=1]
+	\arrow["\beta", shorten <=3pt, shorten >=3pt, Rightarrow, from=2, to=3]
+\end{tikzcd}
+\text{;}
+\]
+$$G\alpha := 1_G \bullet \alpha : G \circ F_1 \to G \circ F_2 \qquad \qquad   (G \alpha)_c = G\alpha_c, \ $$
+$$ \beta F := \beta \bullet 1_F: G_1 \circ F \to G_2 \circ F \qquad \qquad (\beta F)_c = \beta_{Fc}.$$
+
+Using this notation, we can present any horizontal transformation in the following form: 
+$$ \beta \bullet \alpha = \beta F_2 \circ G_1 \alpha = G_2 \alpha \circ \beta F_1.$$
+
+\end{definition}
+
+
+\begin{proposition} Let $F_1, F_2, F_3: \mc{C} \to \mc{D}$, $G_1, G_2, G_3: \mc{D} \to \mc{E}$ with natural transformations $\alpha: F_1 \to F_2$, $\alpha': F_2 \to F_3$ and $\beta: G_1 \to G_2$, $\beta': G_2 \to G_3$:
+% https://q.uiver.app/#q=WzAsMyxbMSwwLCJcXG1hdGhjYWx7RH0iXSxbMCwwLCJcXG1hdGhjYWx7Q30iXSxbMiwwLCJcXG1hdGhjYWx7RX0iXSxbMSwwLCJGXzEiLDAseyJjdXJ2ZSI6LTN9XSxbMCwyLCJHXzEiLDAseyJjdXJ2ZSI6LTN9XSxbMSwwLCJGXzMiLDIseyJjdXJ2ZSI6M31dLFswLDIsIkdfMyIsMix7ImN1cnZlIjozfV0sWzEsMCwiRl8yIiwxXSxbMCwyLCJHXzIiLDFdLFszLDcsIlxcYWxwaGEiLDAseyJzaG9ydGVuIjp7InNvdXJjZSI6MzAsInRhcmdldCI6MzB9fV0sWzcsNSwiXFxhbHBoYSciLDAseyJzaG9ydGVuIjp7InNvdXJjZSI6MzAsInRhcmdldCI6MzB9fV0sWzQsOCwiXFxiZXRhIiwwLHsic2hvcnRlbiI6eyJzb3VyY2UiOjMwLCJ0YXJnZXQiOjMwfX1dLFs4LDYsIlxcYmV0YSciLDAseyJzaG9ydGVuIjp7InNvdXJjZSI6MzAsInRhcmdldCI6MzB9fV1d
+\[\begin{tikzcd}
+	{\mathcal{C}} & {\mathcal{D}} & {\mathcal{E}}
+	\arrow[""{name=0, anchor=center, inner sep=0}, "{F_1}", bend left = 64pt, from=1-1, to=1-2]
+	\arrow[""{name=1, anchor=center, inner sep=0}, "{F_3}"', bend right = 64pt, from=1-1, to=1-2]
+	\arrow[""{name=2, anchor=center, inner sep=0}, "{F_2}"{description}, from=1-1, to=1-2]
+	\arrow[""{name=3, anchor=center, inner sep=0}, "{G_1}", bend left = 64pt, from=1-2, to=1-3]
+	\arrow[""{name=4, anchor=center, inner sep=0}, "{G_3}"', bend right = 64pt, from=1-2, to=1-3]
+	\arrow[""{name=5, anchor=center, inner sep=0}, "{G_2}"{description}, from=1-2, to=1-3]
+	\arrow["\alpha", shorten <=4pt, shorten >=4pt, Rightarrow, from=0, to=2]
+	\arrow["{\alpha'}", shorten <=5pt, shorten >=3pt, Rightarrow, from=2, to=1]
+	\arrow["\beta", shorten <=4pt, shorten >=4pt, Rightarrow, from=3, to=5]
+	\arrow["{\beta'}", shorten <=4pt, shorten >=3pt, Rightarrow, from=5, to=4]
+\end{tikzcd}
+\text{.}
+\]
+Then there is an interchange law between the natural transformations:
+$$(\beta' \circ \beta) \bullet (\alpha' \circ \alpha) = (\beta' \bullet \alpha')   \circ (\beta \bullet \alpha).$$
+
+\textbf{Proof.} 
+$$(\beta' \circ \beta) \bullet (\alpha' \circ \alpha) = \beta' F_3 \circ (\beta F_3 \circ G_1 \alpha') \circ G_1 \alpha = \beta' F_3 \circ G_2 \alpha' \circ \beta F_2 \circ G_1 \alpha,$$
+$$(\beta' \bullet \alpha')   \circ (\beta \bullet \alpha) = \beta' F_3 \circ G_2\alpha' \circ \beta F_2 \circ G_1 \alpha.$$
+\end{proposition}
+
+\newpage
+
+\section{Advanced whiskering}
+The naturality diagram from Def 1.1. basically means, that for given $f: \arr(\mc{C})$
+$$\alpha_{\cod (f)} \circ \dom (\alpha) f = \cod (\alpha) f \circ \alpha_{\dom(\alpha)}.$$
+The question arises: can we write it in the form of
+$$\alpha \dom(\alpha) = \cod(\alpha) \alpha$$
+using some polymorphic notation? We already have the notation for whiskering, but so far we only defined it on $\obj(\mc{C})$.
+
+\end{document}
