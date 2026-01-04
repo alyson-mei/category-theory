@@ -38,6 +38,7 @@
 \newcommand{\List}{\operatorname{List}}
 \newcommand{\lop}{\operatorname{[ \ ]}}
 \newcommand{\len}{\operatorname{len}}
+\newcommand{\type}{\operatorname{type}}
 
 \newcommand{\Exc}{\operatorname{Exception}}
 
@@ -78,28 +79,9 @@
 \maketitle
 
 
-% \section*{Intro}
-%
-% \paragraph{Conventions.}
-% \begin{itemize}
-%     \item We use $\lambda$-notation for functors and assume it implicitly tracks variance.
-%     \item All categories with set-valued Hom functors are assumed to be locally small.
-%     \item For brevity, when the context is clear, we write
-%     \[
-%         A,B := \Hom(A,B) := \mathcal{C}(A,B).
-%     \]
-% \end{itemize}
-% \paragraph{TODO.}
-% \begin{itemize}
-%     \item Hom functors in monoidal categories.
-%     \item Enriched categories.
-% \end{itemize}
-% \newpage
-
-
 \section{Basics}
 
-\begin{definition}[Natural transformations] Let $F, G: \mc{C} \to \mc{D}$. Natural transformation $\alpha$ between $F$ and $G$ is a collection of morphisms $(\alpha_c \ |\ {c: \obj{C}})$ satisfying the diagrams
+\begin{definition}[Natural transformations] Let $F, G: \mc{C} \to \mc{D}$. A natural transformation $\alpha$ between $F$ and $G$ is a collection of morphisms $(\alpha_c \mid c \in \obj(\mathcal{C}))$ satisfying the diagrams
 % https://q.uiver.app/#q=WzAsNixbMCwwLCJjIl0sWzAsMSwiYyciXSxbMiwwLCJGYyJdLFsyLDEsIkZjJyJdLFszLDAsIkdjIl0sWzMsMSwiR2MnIl0sWzAsMSwiZiIsMl0sWzIsMywiRmYiLDJdLFs0LDUsIkdmIl0sWzIsNCwiXFxhbHBoYV9jIl0sWzMsNSwiXFxhbHBoYV97Yyd9IiwyXV0=
 \[\begin{tikzcd}
 	c && Fc & Gc \\
@@ -127,7 +109,7 @@ Notation:
 \end{definition}
 
 \begin{definition}[Vertical composition of natural transformations] 
-Let $F, G, H: \mc{C} \to \mc{D}$ with natural transformations $\alpha: F \to G$ and $\beta: G \to H$. The vertical composition $\beta \circ \alpha$ of natural transformations $\beta$ and $\alpha$ is defined componentwise: 
+Let $F, G, H: \mc{C} \to \mc{D}$ with natural transformations $\alpha: F \to G$ and $\beta: G \to H$. The vertical composition $\beta \circ \alpha$ is defined componentwise: 
 $$\beta \circ \alpha: F \to H \quad \qquad (\beta \circ \alpha)_c = \beta_c \circ \alpha_c,$$
 % https://q.uiver.app/#q=WzAsOCxbMCwwLCJjIl0sWzAsMSwiIGMnIl0sWzIsMCwiRmMiXSxbMiwxLCJGYyciXSxbMywwLCJHYyJdLFszLDEsIkdjJyJdLFs0LDAsIkhjIl0sWzQsMSwiSGMnIl0sWzAsMSwiZiIsMl0sWzIsNCwiXFxhbHBoYV9jIl0sWzQsNiwiXFxiZXRhX2MiXSxbMiwzLCJGZiIsMl0sWzMsNSwiXFxhbHBoYV97Yyd9IiwyXSxbNSw3LCJcXGJldGFfe2MnfSIsMl0sWzQsNSwiR2YiLDFdLFs2LDcsIkhmIl1d
 \[\begin{tikzcd}
@@ -163,8 +145,9 @@ Notation:
 \]
 \end{definition}
 
-\begin{definition}[Horizontal composition of natural transformations] Let $F_1, F_2: \mc{C} \to \mc{D}$, $G_1, G_2: \mc{D} \to \mc{E}$ with natural transformations $\alpha: F_1 \to F_2$ and $\beta: G_1 \to G_2$. The horizontal composition $\beta \bullet \alpha$ of natural transformations $\beta$ and $\alpha$ is defined as the transformation of images of $\alpha_c$ under the action of $F_1$ and $F_2$ by $\beta$:
-$$\beta \bullet \alpha : G_1 F_1 \to G_2F_2 \qquad \qquad (\beta \bullet \alpha)_c = G_2 \alpha_c \circ \beta_{F_1c} = \beta_{F_2c} \circ G_1\alpha_c,$$
+\begin{definition}[Horizontal composition of natural transformations] Let $F_1, F_2: \mc{C} \to \mc{D}$, $G_1, G_2: \mc{D} \to \mc{E}$ with natural transformations $\alpha: F_1 \to F_2$ and $\beta: G_1 \to G_2$. The horizontal composition $\beta \bullet \alpha$ is defined as the transformation obtained by applying $\beta$ to the images of $\alpha_c$ under $F_1$ and $F_2$:
+$$\beta \bullet \alpha : G_1 F_1 \to G_2F_2 \qquad \qquad (\beta \bullet \alpha)_c = G_2 \alpha_c \circ \beta_{F_1c} = \beta_{F_2c} \circ G_1 \alpha_c,
+$$
 % https://q.uiver.app/#q=WzAsMTQsWzcsMCwiR18xRl8xYyciXSxbNiwxLCJHXzFGXzFjIl0sWzksMCwiR18xRl8yYyciXSxbOCwxLCJHXzFGXzJjIl0sWzYsMywiR18yRl8xYyJdLFs4LDMsIkdfMkZfMmMiXSxbOSwyLCJHXzJGXzJjJyJdLFs3LDIsIkdfMkZfMWMnIl0sWzAsMywiYyJdLFsxLDIsImMnIl0sWzQsMywiRl8yYyJdLFsyLDMsIkZfMWMiXSxbNSwyLCJGXzJjJyJdLFszLDIsIkZfMWMnIl0sWzEsMCwiR18xRl8xZiIsMV0sWzMsMiwiR18xRl8yZiIsMV0sWzAsMiwiR18xXFxhbHBoYV97Yyd9IiwxLHsibGFiZWxfcG9zaXRpb24iOjcwfV0sWzEsMywiR18xXFxhbHBoYV9jIiwxLHsibGFiZWxfcG9zaXRpb24iOjcwfV0sWzEsNCwiXFxiZXRhX3tGXzFjfSIsMSx7ImxhYmVsX3Bvc2l0aW9uIjo3MH1dLFszLDUsIlxcYmV0YV97Rl8yY30iLDEseyJsYWJlbF9wb3NpdGlvbiI6NzB9XSxbMiw2LCJcXGJldGFfe0ZfMWMnfSIsMSx7ImxhYmVsX3Bvc2l0aW9uIjo3MH1dLFs1LDYsIkdfMkZfMmYiLDFdLFswLDcsIlxcYmV0YV97Rl8xYyd9IiwxLHsibGFiZWxfcG9zaXRpb24iOjcwLCJzdHlsZSI6eyJib2R5Ijp7Im5hbWUiOiJkb3R0ZWQifX19XSxbNCw3LCJHXzJGXzFmIiwxLHsic3R5bGUiOnsiYm9keSI6eyJuYW1lIjoiZG90dGVkIn19fV0sWzcsNiwiR18yXFxhbHBoYV97Yyd9IiwxLHsibGFiZWxfcG9zaXRpb24iOjcwLCJzdHlsZSI6eyJib2R5Ijp7Im5hbWUiOiJkb3R0ZWQifX19XSxbNCw1LCJHXzJcXGFscGhhX2MiLDEseyJsYWJlbF9wb3NpdGlvbiI6NzB9XSxbOCw5LCJmIl0sWzExLDEzLCJGXzFmIl0sWzEwLDEyLCJGXzJmIiwyXSxbMTEsMTAsIlxcYWxwaGFfYyIsMl0sWzEzLDEyLCJcXGFscGhhX3tjJ30iXV0=
 \[\begin{tikzcd}[column sep=small]
 	&&&&&&& {G_1F_1c'} && {G_1F_2c'} \\
@@ -210,7 +193,7 @@ Notation:
 \]
 \end{definition}
 
-\begin{definition}[Whiskering] Wiskering is defined as a horizontal composition with identity natural transformation:
+\begin{definition}[Whiskering] Whiskering is defined as a horizontal composition with an identity natural transformation:
 % https://q.uiver.app/#q=WzAsNixbMSwwLCJcXG1je0R9Il0sWzAsMCwiXFxtY3tDfSJdLFsyLDAsIlxcbWN7RX0iXSxbNCwwLCJcXG1je0N9Il0sWzUsMCwiXFxtY3tEfSJdLFs2LDAsIlxcbWN7RX0iXSxbMSwwLCJGXzEiLDAseyJjdXJ2ZSI6LTJ9XSxbMCwyLCJHIl0sWzEsMCwiRl8yIiwyLHsiY3VydmUiOjJ9XSxbMyw0LCJGIl0sWzQsNSwiR18xIiwwLHsiY3VydmUiOi0yfV0sWzQsNSwiR18yIiwyLHsiY3VydmUiOjJ9XSxbNiw4LCJcXGFscGhhIiwwLHsic2hvcnRlbiI6eyJzb3VyY2UiOjIwLCJ0YXJnZXQiOjIwfX1dLFsxMCwxMSwiXFxiZXRhIiwwLHsic2hvcnRlbiI6eyJzb3VyY2UiOjIwLCJ0YXJnZXQiOjIwfX1dXQ==
 \[\begin{tikzcd}
 	{\mc{C}} & {\mc{D}} & {\mc{E}} && {\mc{C}} & {\mc{D}} & {\mc{E}}
@@ -225,7 +208,7 @@ Notation:
 \end{tikzcd}
 \text{;}
 \]
-$$G\alpha := 1_G \bullet \alpha : G \circ F_1 \to G \circ F_2 \qquad \qquad   (G \alpha)_c = G\alpha_c, \ $$
+$$G\alpha := 1_G \bullet \alpha : G \circ F_1 \to G \circ F_2 \qquad \qquad   (G \alpha)_c = G\alpha_c,$$
 $$ \beta F := \beta \bullet 1_F: G_1 \circ F \to G_2 \circ F \qquad \qquad (\beta F)_c = \beta_{Fc}.$$
 
 Using this notation, we can present any horizontal transformation in the following form: 
@@ -251,7 +234,7 @@ $$ \beta \bullet \alpha = \beta F_2 \circ G_1 \alpha = G_2 \alpha \circ \beta F_
 \end{tikzcd}
 \text{.}
 \]
-Then there is an interchange law between the natural transformations:
+Then the following interchange law holds:
 $$(\beta' \circ \beta) \bullet (\alpha' \circ \alpha) = (\beta' \bullet \alpha')   \circ (\beta \bullet \alpha).$$
 
 \textbf{Proof.} 
@@ -259,13 +242,39 @@ $$(\beta' \circ \beta) \bullet (\alpha' \circ \alpha) = \beta' F_3 \circ (\beta 
 $$(\beta' \bullet \alpha')   \circ (\beta \bullet \alpha) = \beta' F_3 \circ G_2\alpha' \circ \beta F_2 \circ G_1 \alpha.$$
 \end{proposition}
 
-\newpage
+% \newpage
 
-\section{Advanced whiskering}
-The naturality diagram from Def 1.1. basically means, that for given $f: \arr(\mc{C})$
-$$\alpha_{\cod (f)} \circ \dom (\alpha) f = \cod (\alpha) f \circ \alpha_{\dom(\alpha)}.$$
-The question arises: can we write it in the form of
-$$\alpha \dom(\alpha) = \cod(\alpha) \alpha$$
-using some polymorphic notation? We already have the notation for whiskering, but so far we only defined it on $\obj(\mc{C})$.
+% \section{Extended whiskering (Experimental!)}
+% The naturality diagram from Def 1.1. says us, that for given $f: \arr(\mc{C})$
+% $$ \alpha_{c'} \circ Ff = Gf \circ \alpha_c,$$
+% that essentially means
+% $$\alpha_{\cod (f)} \circ \dom (\alpha) f = \cod (\alpha) f \circ \alpha_{\dom(\alpha)}.$$
+% The question arises: can we write it in the form of
+% $$\alpha \dom(\alpha) = \cod(\alpha) \alpha$$
+% using some polymorphic notation? We already have the notation for whiskering, but so far we only defined it on $\obj(\mc{C})$. Let's try to define the upcasting and downcasting for our particular case -- when we have the following types with their instances:
+% \begin{itemize}
+%     \item $\mc{C}: \mc{C}at,$
+%     \item $c: \mc{C} \ | \ \mc{C}: \mc{C}at,$
+%     \item $f: c \to d \ |\  c, d: \mc{C} \ | \ \mc{C}: \mc{C}at,$
+%     \item $F: \mc{C} \to \mc{D} \ | \ \mc{C}, \mc{D}: \mc{C}at,$
+%     \item $\alpha: F \to G \ | \ F, G: \mc{C} \to \mc{D} \ | \ \mc{C}, \mc{D}: \mc{C}at. $
+% \end{itemize}
+
+% \begin{definition}[Upcasting] 
+%     Upcasting is defined as representing an object of a given type as an identity morphism of a higher type. The higher type of a given type $X$ is either $\type(X)$, $X \to X$ or the same for its fixed higher type.   
+% \end{definition}
+
+% Let's take an object $c$ of category $\mc{C}$ and try to upcast it:
+% \begin{itemize}
+%     \item $c: \mc{C}$;
+%     \item $\id_c : c \to c$;
+%     \item $\mc{C}_c: \mc{C}at$, where $\mc{C}_c$ is a category with a single element $c$;
+%     \item $F_c:= \id_{\mc{C}_c}: \mc{C}_c \to \mc{C}_c$;
+%     \item $\alpha_c: = \id_{F_c}.$
+% \end{itemize}
+
+% \begin{definition}[Downcasting]
+    
+% \end{definition}
 
 \end{document}
