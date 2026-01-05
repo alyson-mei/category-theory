@@ -1,0 +1,313 @@
+\documentclass[12pt]{article}
+% Page setup
+\usepackage[margin=1in]{geometry}
+\usepackage{parskip}
+\usepackage{titling}
+\setlength{\droptitle}{-6em} 
+
+% Math packages
+\usepackage{amsmath, amsthm, amssymb, amsfonts}
+\usepackage{mathtools}
+\makeatletter
+\g@addto@macro\th@plain{\normalfont} % remove italics from theorems (plain style)
+\makeatother
+
+% Commutative diagrams and proofs
+\usepackage{tikz-cd}
+\usepackage{proof}
+
+
+% Theorem environments
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{fact}[theorem]{Fact}
+\newtheorem{remark}[theorem]{Remark}
+
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+
+% Useful commands for category theory
+\newcommand{\mc}{\mathcal}
+\newcommand{\ini}{\operatorname{ini}}
+\newcommand{\ter}{\operatorname{ter}}
+\newcommand{\cod}{\operatorname{cod}}
+\newcommand{\dom}{\operatorname{dom}}
+
+\newcommand{\List}{\operatorname{List}}
+\newcommand{\lop}{\operatorname{[ \ ]}}
+\newcommand{\len}{\operatorname{len}}
+\newcommand{\type}{\operatorname{type}}
+
+\newcommand{\Exc}{\operatorname{Exception}}
+
+\newcommand{\Kl}{\operatorname{Kl}}
+\newcommand{\plus}{\operatorname{+}}
+
+\newcommand{\Cat}{\mathcal{C}at}
+\newcommand{\Vect}{\mathrm{Vect}_\mathbf{k}}
+\newcommand{\Hom}{\operatorname{Hom}}
+\newcommand{\Nat}{\operatorname{Nat}}
+\newcommand{\id}{\mathrm{id}}
+\newcommand{\op}{\mathrm{op}}
+\newcommand{\obj}{\operatorname{obj}}
+\newcommand{\arr}{\operatorname{arr}}
+\newcommand{\adj}{\operatorname{adj}}
+\newcommand{\coadj}{\operatorname{coadj}}
+\newcommand{\colim}{\operatorname*{colim}}
+
+% Arrows
+\newcommand{\ra}{\rightarrow}
+\newcommand{\from}{\leftarrow}
+\newcommand{\To}{\Rightarrow}
+\newcommand{\xto}{\xrightarrow}
+\newcommand{\xfrom}{\xleftarrow}
+
+\renewcommand{\labelitemi}{--} % Level 1: Dashes
+\renewcommand{\labelitemii}{$\circ$} % Level 2: Circles
+\renewcommand{\labelitemiii}{$\bullet$} % Level 3: Bullets (default)
+
+
+\title{Category theory basics}
+\author{Alyson Mei}
+\date{\today}
+
+
+\begin{document}
+
+\maketitle
+
+\section{Category}
+
+\subsection{Basic definitions}
+
+Category theory extensively uses the language of commutative diagrams.
+
+\begin{definition}[Diagram]
+A diagram consists of a directed graph whose vertices are objects and whose edges are maps
+between these objects.
+\end{definition}
+
+\begin{definition}[Commutative diagram]
+   A diagram is called commutative if for any two directed paths with the same starting object
+   and the same ending object, the corresponding compositions of maps are equal.
+
+\end{definition}
+\paragraph{Conventions:}
+\begin{itemize}
+    \item All diagrams shown are assumed to be commutative by default;
+    \item By ``satisfying the diagrams'' we mean ``such that the diagrams commute''.
+\end{itemize}
+\begin{example} Commutativity of the diagram below means that $g \circ f = h \circ p$:
+    % https://q.uiver.app/#q=WzAsNCxbMCwwLCJBIl0sWzEsMCwiQiJdLFsxLDEsIkQiXSxbMCwxLCJDIl0sWzAsMSwiZiJdLFswLDMsInAiLDJdLFsxLDIsImciXSxbMywyLCJoIiwyXV0=
+    \[\begin{tikzcd}
+    	A & B \\
+    	C & D
+    	\arrow["f", from=1-1, to=1-2]
+    	\arrow["p"', from=1-1, to=2-1]
+    	\arrow["g", from=1-2, to=2-2]
+    	\arrow["h"', from=2-1, to=2-2]
+    \end{tikzcd}
+    \text{.}
+    \]
+\end{example}
+
+
+\begin{definition}[Category]
+    A category $\mc{C}$ consists of:
+    \begin{itemize}
+        \item a collection $\obj(\mc{C})$ of objects,
+        \item a collection $\arr(\mc{C})$ of morphisms (arrows) of the form $f: C \to D$, where $C, D: \obj(\mc{C})$, 
+    \end{itemize}
+    satisfying the following diagrams for any morphisms $f, g, h$ of compatible types:
+    \begin{itemize}
+        \item[$\bullet$] Composition: 
+             % https://q.uiver.app/#q=WzAsMyxbMCwwLCJBIl0sWzEsMCwiQiJdLFsxLDEsIkMiXSxbMCwxLCJmIl0sWzEsMiwiZyJdLFswLDIsImcgXFxjaXJjIGYiLDJdXQ==
+            \[\begin{tikzcd}
+            	A & B \\
+            	& C
+            	\arrow["f", from=1-1, to=1-2]
+            	\arrow["{g \circ f}"', from=1-1, to=2-2]
+            	\arrow["g", from=1-2, to=2-2]
+            \end{tikzcd}
+            \text{,}
+        \]
+        \item[$\bullet$] Identity:
+            % https://q.uiver.app/#q=WzAsNixbMCwwLCJBIl0sWzEsMCwiQSJdLFsxLDEsIkIiXSxbMywxLCJBIl0sWzIsMCwiQyJdLFsyLDEsIkEiXSxbMSwyLCJmIl0sWzAsMiwiZiBcXGNpcmMgXFxpZF9BIiwyXSxbNSwzLCJcXGlkX0EiLDJdLFs0LDUsImciLDJdLFs0LDMsIlxcaWRfQSBcXGNpcmMgZyJdLFswLDEsIlxcaWRfQSJdXQ==
+            \[\begin{tikzcd}
+            	A & A & C \\
+            	& B & A & A
+            	\arrow["{\id_A}", from=1-1, to=1-2]
+            	\arrow["{f \circ \id_A = f}"', from=1-1, to=2-2]
+            	\arrow["f", from=1-2, to=2-2]
+            	\arrow["g"', from=1-3, to=2-3]
+            	\arrow["{\id_A \circ g = g}", from=1-3, to=2-4]
+            	\arrow["{\id_A}"', from=2-3, to=2-4]
+            \end{tikzcd}
+            \text{,}
+            \]
+        \item[$\bullet$] Associativity:
+            % https://q.uiver.app/#q=WzAsNCxbMCwwLCJBIl0sWzEsMCwiQiJdLFsxLDEsIkMiXSxbMiwxLCJEIl0sWzAsMSwiZiJdLFsxLDIsImciXSxbMiwzLCJoIiwyXSxbMCwyLCJnIFxcY2lyYyBmIiwyXSxbMSwzLCJoIFxcY2lyYyBnIl1d
+            \[\begin{tikzcd}
+            	A & B \\
+            	& C & D
+            	\arrow["f", from=1-1, to=1-2]
+            	\arrow["{g \circ f}"', from=1-1, to=2-2]
+            	\arrow["g", from=1-2, to=2-2]
+            	\arrow["{h \circ g}", from=1-2, to=2-3]
+            	\arrow["h"', from=2-2, to=2-3]
+            \end{tikzcd}
+            \text{.}
+            \]
+            \end{itemize}
+\end{definition}
+
+\subsection{Additional definitions}
+
+\begin{definition}[Mono, epi, iso]
+    Consider the category $\mc{C}$.
+    \begin{itemize}
+        \item A morphism $m: \arr(\mc{C})$ is called a monomorphism (mono) if it is left-cancellative:% https://q.uiver.app/#q=WzAsNCxbMCwwLCJBIl0sWzEsMCwiQiJdLFsyLDAsIkMsIl0sWzQsMCwibVxcY2lyYyAgZl8xID0gbSBcXGNpcmMgZl8yICBcXFJpZ2h0YXJyb3cgZl8xID0gZl8yIl0sWzAsMSwiZl8yIiwyLHsib2Zmc2V0IjoyfV0sWzAsMSwiZl8xIiwwLHsib2Zmc2V0IjotMn1dLFsxLDIsIm0iXV0=
+        \[\begin{tikzcd}
+        	A & B & {C,} && {m\circ  f_1 = m \circ f_2  \Rightarrow f_1 = f_2}
+        	\arrow["{f_2}"', shift right=2, from=1-1, to=1-2]
+        	\arrow["{f_1}", shift left=2, from=1-1, to=1-2]
+        	\arrow["m", from=1-2, to=1-3]
+        \end{tikzcd}
+        \text{;}\]
+        \item A morphism $e: \arr(\mc{C})$ is called an epimorphism (epi) if it is right-cancellative:
+        % https://q.uiver.app/#q=WzAsNCxbNCwwLCJnXzEgXFxjaXJjIGUgPSBnXzIgXFxjaXJjIGUgXFxSaWdodGFycm93IGdfMSA9IGdfMiJdLFswLDAsIkEiXSxbMSwwLCJCIl0sWzIsMCwiQywiXSxbMSwyLCJlIl0sWzIsMywiZ18xIiwwLHsib2Zmc2V0IjotMn1dLFsyLDMsImdfMiIsMix7Im9mZnNldCI6Mn1dXQ==
+        \[\begin{tikzcd}
+        	A & B & {C,} && {g_1 \circ e = g_2 \circ e \Rightarrow g_1 = g_2}
+        	\arrow["e", from=1-1, to=1-2]
+        	\arrow["{g_1}", shift left=2, from=1-2, to=1-3]
+        	\arrow["{g_2}"', shift right=2, from=1-2, to=1-3]
+        \end{tikzcd}\text{;}\]
+        \item A morphism $i: \arr(\mc{C})$ is called  an isomorphism (iso) if has an inverse $i^{-1}: \arr(\mc{C})$:
+        % https://q.uiver.app/#q=WzAsNixbMSwwLCJCIl0sWzAsMCwiQSJdLFsxLDEsIkEiXSxbMywwLCJCIl0sWzMsMSwiQSJdLFs0LDEsIkIiXSxbMSwwLCJpIl0sWzAsMiwiaV57LTF9Il0sWzEsMiwiXFxpZF9BIiwyXSxbMyw1LCJcXGlkX0IiXSxbMyw0LCJpXnstMX0iLDJdLFs0LDUsImkiLDJdXQ==
+        \[\begin{tikzcd}
+        	A & B && B \\
+        	& A && A & B
+        	\arrow["i", from=1-1, to=1-2]
+        	\arrow["{\id_A}"', from=1-1, to=2-2]
+        	\arrow["{i^{-1}}", from=1-2, to=2-2]
+        	\arrow["{i^{-1}}"', from=1-4, to=2-4]
+        	\arrow["{\id_B}", from=1-4, to=2-5]
+        	\arrow["i"', from=2-4, to=2-5]
+        \end{tikzcd}\text{.}\]
+    \end{itemize}
+\end{definition}
+
+\begin{remark}
+\hfill
+    \begin{itemize}
+        \item Mono, epi and iso are the generalizations of injection, surjection and bijection respectively;
+        \item Every isomorphism is both mono and epi, but the converse is not generally true.
+    \end{itemize}
+\end{remark}
+
+\begin{definition}[Initial, terminal and zero objects] Consider the category $\mc{C}$. 
+
+    \begin{itemize}
+        \item $I: \obj(\mc{C})$ is called initial object if for every $C: \obj(\mc{C})$ there exists a unique morphism $I \to C$;
+        \item $T: \obj(\mc{C})$ is called terminal object if for every $C: \obj(\mc{C})$ there exists a unique morphism $C \to T$;
+        \item $0: \obj({\mc{C}})$ is called zero object if it is both initial and terminal.
+    \end{itemize}
+    An object is called universal if it is initial or terminal.
+\end{definition}
+
+\begin{remark}
+\hfill  
+    \begin{itemize}
+        \item Every two initial objects / every two terminal objects are isomorphic to each other;
+        \item The concept of universal object combined with comma categories allows to gracefully define the variety of categorical structures.
+    \end{itemize}
+\end{remark}
+
+\begin{definition}[Small and locally small categories]
+    The category is called
+    \begin{itemize}
+        \item Small, if both objects and morphisms form a set;
+        \item Locally small, if morphisms between any two objects form a set.
+    \end{itemize}
+\end{definition}
+
+
+\subsection{List of examples}
+
+\begin{example}
+\hfill
+\begin{itemize}
+    \item Trivial and finite categories:
+    \begin{itemize}
+        \item The empty category $0$;
+        \item The terminal category $1$:
+        $\obj(1) = \{*\}$, $\arr(1) = \{\id_*\}$;
+        \item A monoid: a category with a single object;
+        \item The category $2$ with two objects and a single non-identity arrow;
+        \item The discrete category $\mc{C}_X$ on a set $X$:
+        $\obj(\mc{C}_X) = X$, $\arr(\mc{C}_X) = \{\id_x \mid x \in X\}$;
+        \item The diagram category $\mc{C}_G$ associated to a directed graph $G$:
+        $\obj(\mc{C}_G) = \mathrm{vertices}(G)$, $\arr(\mc{C}_G) = \mathrm{edges}(G)$,
+        with all compatible paths commuting;
+    \end{itemize}
+    \item Order-theoretic categories:
+    \begin{itemize}
+        \item Preorders as categories: objects are elements of preorder $P$, and there is a unique arrow $x \to y$ whenever $x \leq y$;
+        \item Preorders / Lattices / Boolean algebras: same as above, only the arrows satisfy additional axioms;
+    \end{itemize}
+    \item Basic concrete categories:
+    \begin{itemize}
+        \item $\mathcal{S}et$: objects are sets, morphisms are functions;
+        \item $\mathcal{F}in\mathcal{S}et$: objects are finite sets, morphisms are functions;
+        \item $\mathcal{R}el$: objects are sets, morphisms are binary relations;
+        \item $\mathcal{P}art$: objects are sets, morphisms are partial functions;
+        \item $\mathcal{P}oint$: objects are pointed sets (sets with a distinguished element), morphisms are functions preserving the base point;
+    \end{itemize}
+    \item Logical / type-theoretic categories:
+    \begin{itemize}
+        \item Boolean algebras / Heyting algebras: objects are Boolean or Heyting algebras, morphisms are structure-preserving functions;
+        \item Cartesian closed categories: categories with finite products and exponentials;
+        \item Syntactic categories: constructed from logical theories or type theories; objects are formulas or types, morphisms are proofs or terms;
+        \item Toposes: categories with certain logical and categorical structure supporting an internal logic;
+    \end{itemize}
+    \item Algebraic categories:
+    \begin{itemize}
+        \item $\mc{M}on$: monoids and monoid homomorphisms;
+        \item $\mc{G}rp$: groups and group homomorphisms;
+        \item $\mc{A}b$: abelian groups;
+        \item $(\mc{C})\mc{R}ing$: (commutative) rings and ring homomorphisms;
+        \item $\mc{V}ect_\mathbf{k}$: vector spaces over a field 
+k and linear maps;
+        \item $\mc{A}lg_\mathbf{k}$: algebras over a field or ring $\mathbf{k}$;
+        \item $\mc{M}od_R$: modules over a ring $R$;
+        \item $\mc{L}ie\mc{A}lg$ and $\mc{H}opf\mc{A}lg$: Lie and Hopf algebras and structure preserving maps;
+    \end{itemize}
+    \item Topological / geometric categories:
+    \begin{itemize}
+        \item $\mc{T}op$: topological spaces with continuous maps;
+        \item $\mc{T}op_*$: pointed spaces with basepoint-preserving maps;
+        \item $h\mc{T}op$: homotopy category; morphisms are homotopy classes of continuous maps;
+        \item $\mc{M}an$: smooth manifolds with smooth maps;
+        \item $\mc{D}iff$: diffeological spaces with smooth maps;
+        \item $\mc{S}ch$: schemes and morphisms of schemes;
+        \item $\mc{V}ar_\mathbf{k}$: algebraic varieties over a field $\mathbf{k}$;
+        \item $\mc{C}ob$: cobordisms; objects are manifolds, morphisms are cobordism classes;
+    \end{itemize}
+    \item Higher level constructions:
+        \begin{itemize}
+            \item $\mc{C}at$: small categories and functors between them;
+            \item $\mc{CAT}$: (large) categories and functors — “set of all categories” is only valid if we allow a universe distinction to avoid size issues;
+            \item $\mc{G}rpd$: groupoids — categories in which all morphisms are invertible;
+            \item $\mc{M}on\mc{C}at$: monoidal categories and monoidal functors;
+            \item $\mc{A}b\mc{C}at$: abelian categories and additive functors;
+            \item $[\mc{C}, \mc{D}]$: functor category; objects are functors $\mc{C} \to \mc{D}$, morphisms are natural transformations;
+            \item Comma categories $(F \downarrow G)$: objects are triples $(C, D, f : F(C) \to G(D))$, morphisms are pairs making the corresponding squares commute.
+        \end{itemize}
+    \end{itemize}
+    
+\end{example}
+
+\end{document}
