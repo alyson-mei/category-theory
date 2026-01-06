@@ -1,8 +1,12 @@
 # Category Theory
 
-Notes and examples on category theory.
+<p align="left">
+  <img src="img/CC.jpg" alt="CC with pizza" width="600">
+</p>
 
-## Category Theory Basics
+Unpolished notes with my personal pov on category theory — a high-level approach (mostly), lots of diagrams, and polymorphic notation. Mostly focused on the topics I need for my research and the ones I want to have a nice understanding of. I hope to include all standard concepts sooner or later and refactor everything for smoother navigation (though lack of resources will probably interfere)
+
+## 00 Category Theory Basics
 
 1. Categories 
    1. Definitions of a (commutative) diagram and a category
@@ -15,19 +19,33 @@ Notes and examples on category theory.
    - Faithful, full and fully faithful functors
 3. Natural transformations (definition only)
    
-## Natural Transformations
+## 01 Natural Transformations
 
 1. Definition of a natural transformation
 2. Vertical and horizontal composition of natural transformations
 3. Whiskering
 4. Interchange law
 
-## Hom Functor
+## 02 Hom Functor
 
 1. Definition of the set-valued Hom functor (covariant and contravariant)
 2. Natural transformations between covariant and contravariant Hom functors
 
-## (Co)Monads
+## 03 (Co)Limits
+
+1. Definitions
+   - Comma category
+   - (Co)Limit
+   - (Co)Limit functor
+2. Examples
+   - Terminal and initial objects
+   - (Co)Products
+   - (Co)Equalizers
+   - (Co)Kernels
+   - Pullbacks and pushouts
+3. (Co)Continuous functors
+
+## 04 (Co)Monads
 
 ### Monads
 

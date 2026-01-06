@@ -1,0 +1,289 @@
+\documentclass[12pt]{article}
+% Page setup
+\usepackage[margin=1in]{geometry}
+\usepackage{parskip}
+\usepackage{titling}
+\setlength{\droptitle}{-6em} 
+
+% Math packages
+\usepackage{amsmath, amsthm, amssymb, amsfonts}
+\usepackage{mathtools}
+\makeatletter
+\g@addto@macro\th@plain{\normalfont} % remove italics from theorems (plain style)
+\makeatother
+
+% Commutative diagrams and proofs
+\usepackage{tikz-cd}
+\usepackage{proof}
+
+
+% Theorem environments
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{fact}[theorem]{Fact}
+\newtheorem{remark}[theorem]{Remark}
+
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+
+% Useful commands for category theory
+\newcommand{\mc}{\mathcal}
+\newcommand{\ini}{\operatorname{ini}}
+\newcommand{\ter}{\operatorname{ter}}
+\newcommand{\cod}{\operatorname{cod}}
+\newcommand{\dom}{\operatorname{dom}}
+
+\newcommand{\List}{\operatorname{List}}
+\newcommand{\lop}{\operatorname{[ \ ]}}
+\newcommand{\len}{\operatorname{len}}
+\newcommand{\type}{\operatorname{type}}
+
+\newcommand{\Exc}{\operatorname{Exception}}
+
+\newcommand{\Kl}{\operatorname{Kl}}
+\newcommand{\plus}{\operatorname{+}}
+
+\newcommand{\Cat}{\mathcal{C}at}
+\newcommand{\Vect}{\mathrm{Vect}_\mathbf{k}}
+\newcommand{\Hom}{\operatorname{Hom}}
+\newcommand{\Nat}{\operatorname{Nat}}
+\newcommand{\id}{\mathrm{id}}
+\newcommand{\op}{\mathrm{op}}
+\newcommand{\obj}{\operatorname{obj}}
+\newcommand{\arr}{\operatorname{arr}}
+\newcommand{\adj}{\operatorname{adj}}
+\newcommand{\coadj}{\operatorname{coadj}}
+\newcommand{\colim}{\operatorname*{colim}}
+\newcommand{\lcoim}{\operatorname*{(co)lim}}
+
+% Arrows
+\newcommand{\ra}{\rightarrow}
+\newcommand{\from}{\leftarrow}
+\newcommand{\To}{\Rightarrow}
+\newcommand{\xto}{\xrightarrow}
+\newcommand{\xfrom}{\xleftarrow}
+
+\renewcommand{\labelitemi}{--} % Level 1: Dashes
+\renewcommand{\labelitemii}{$\circ$} % Level 2: Circles
+\renewcommand{\labelitemiii}{$\bullet$} % Level 3: Bullets (default)
+
+
+\title{(Co)Limits}
+\author{Alyson Mei}
+\date{\today}
+
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\newpage
+
+\section{(Co)Limits}
+
+\subsection{Main definitions}
+
+\begin{definition}[Comma category]
+Given functors
+
+$$\mc{A} \xto{S} \mc{C} \xfrom{T} \mc{B},$$
+
+the category $(S \downarrow T)$ is defined as follows:
+
+\begin{itemize}
+\item Objects of are the triples $(a: \obj(\mc{A}), h:\arr(\mc{C}), b: \obj(\mc{B})),$
+
+\item Morphisms are pairs $(f: \arr(\mc{A}), g:\arr(\mc{B}))$ satisfying the condition:
+% https://q.uiver.app/#q=WzAsNixbMCwwLCIoYSwgaCwgYikiXSxbMCwxLCIoYScsIGgnLCBiJykiXSxbMSwwLCJTYSJdLFsxLDEsIlNhJyJdLFsyLDAsIlRiIl0sWzIsMSwiVGInIl0sWzAsMSwiKGYsIGcpIl0sWzIsNCwiaCJdLFszLDUsImgnIiwyXSxbMiwzLCJTZiIsMl0sWzQsNSwiVGYiXV0=
+\[\begin{tikzcd}
+	{(a, h, b)} & Sa & Tb \\
+	{(a', h', b')} & {Sa'} & {Tb'}
+	\arrow["{(f, g)}", from=1-1, to=2-1]
+	\arrow["h", from=1-2, to=1-3]
+	\arrow["Sf"', from=1-2, to=2-2]
+	\arrow["Tf", from=1-3, to=2-3]
+	\arrow["{h'}"', from=2-2, to=2-3]
+\end{tikzcd}
+\text{.}
+\]
+\end{itemize}
+\end{definition}
+
+The concept of a comma category allows us to define (co)limits in a uniform way.
+\begin{definition}[(Co)limit]
+The limit of a diagram $D$ is defined as a terminal object of the category $(\Delta \downarrow D)$. Dually, the colimit of a diagram $E$ is defined as an initial object of the category $(E \downarrow \Delta)$.
+\[
+\mc{D} \xrightarrow{\Delta} \mc{D}^{\mc{J}} \xleftarrow{D} 1;
+\qquad
+1 \xrightarrow{E} \mc{C}^{\mc{J}} \xleftarrow{\Delta} \mc{C}.
+\]
+Notation:
+\[
+\lim_{\mc{J}} D := \ter(\Delta \downarrow D);
+\qquad
+\colim_{\mc{J}} E := \ini(E \downarrow \Delta).
+\]
+Visual intuition:
+% https://q.uiver.app/#q=WzAsOCxbNCwyLCJEal8xIl0sWzcsMiwiRGpfMiJdLFs1LDMsIkRqX24iXSxbNywwLCJcXGxpbSBEIl0sWzQsMCwiZCJdLFswLDAsIlxcRGVsdGEgX2QiXSxbMiwyLCJEIl0sWzIsMCwiXFxEZWx0YV97XFxsaW0gRCB9Il0sWzAsMSwiRGciLDEseyJsYWJlbF9wb3NpdGlvbiI6MzAsInN0eWxlIjp7ImJvZHkiOnsibmFtZSI6ImRvdHRlZCJ9fX1dLFsxLDIsIkRmIiwxXSxbMCwyLCJEZlxcY2lyYyBEZyIsMl0sWzMsMCwiaF8xIiwxLHsibGFiZWxfcG9zaXRpb24iOjcwLCJzdHlsZSI6eyJib2R5Ijp7Im5hbWUiOiJkb3R0ZWQifX19XSxbMywxLCJoXzIiLDEseyJsYWJlbF9wb3NpdGlvbiI6NzB9XSxbMywyLCJoX24iLDEseyJsYWJlbF9wb3NpdGlvbiI6ODB9XSxbNCwzLCIiLDAseyJzdHlsZSI6eyJib2R5Ijp7Im5hbWUiOiJkYXNoZWQifX19XSxbNCwwXSxbNCwyXSxbNCwxLCIiLDAseyJzdHlsZSI6eyJib2R5Ijp7Im5hbWUiOiJkb3R0ZWQifX19XSxbNSw3LCIiLDAseyJzdHlsZSI6eyJib2R5Ijp7Im5hbWUiOiJkYXNoZWQifX19XSxbNyw2LCJoIl0sWzUsNiwiaCciLDJdXQ==
+\[\begin{tikzcd}
+	{\Delta _d} && {\Delta_{\lim D }} && d &&& {\lim D} \\
+	\\
+	&& D && {Dj_1} &&& {Dj_2} \\
+	&&&&& {Dj_n}
+	\arrow[dashed, from=1-1, to=1-3]
+	\arrow["{h'}"', from=1-1, to=3-3]
+	\arrow["h", from=1-3, to=3-3]
+	\arrow[dashed, from=1-5, to=1-8]
+	\arrow[from=1-5, to=3-5]
+	\arrow[dotted, from=1-5, to=3-8]
+	\arrow[from=1-5, to=4-6]
+	\arrow["{h_1}"{description, pos=0.7}, dotted, from=1-8, to=3-5]
+	\arrow["{h_2}"{description, pos=0.7}, from=1-8, to=3-8]
+	\arrow["{h_n}"{description, pos=0.8}, from=1-8, to=4-6]
+	\arrow["Dg"{description, pos=0.3}, dotted, from=3-5, to=3-8]
+	\arrow["{Df\circ Dg}"', from=3-5, to=4-6]
+	\arrow["Df"{description}, from=3-8, to=4-6]
+\end{tikzcd}
+\text{.}\]
+
+\end{definition}
+
+\begin{remark}
+    From here on we use $\lcoim D$ also to denote colimit object. 
+\end{remark}
+
+\begin{definition}[(Co)limit funtor]
+    
+If $\mc{C}$ has all (co)limits of shape $\mc{J}$, then there exists a (co)limit functor
+$$\lcoim_{\mc{J}} \colon \mc{C}^{\mc{J}} \to \mc{C}.$$
+The action on morphisms is defined via the universal property:
+% https://q.uiver.app/#q=WzAsNixbMiwwLCJEIl0sWzIsMiwiRCciXSxbMCwwLCJcXERlbHRhIFxcbGltIEQgIl0sWzAsMiwiXFxEZWx0YSBcXGxpbSBEJyAiXSxbNCwwLCJcXGxpbSBEIl0sWzQsMiwiXFxsaW0gRCcgIl0sWzIsMywiXFxEZWx0YShcXHBoaShcXGFscGhhIFxcY2lyYyBoKSkiLDIseyJzdHlsZSI6eyJib2R5Ijp7Im5hbWUiOiJkYXNoZWQifX19XSxbMiwwLCJoIl0sWzMsMSwiaCciLDJdLFswLDEsIlxcYWxwaGEiXSxbMiwxLCJcXGFscGhhIFxcY2lyYyBoIl0sWzQsNSwiXFxwaGkoXFxhbHBoYSBcXGNpcmMgaCkiLDAseyJzdHlsZSI6eyJib2R5Ijp7Im5hbWUiOiJkYXNoZWQifX19XV0=
+\[\begin{tikzcd}
+	{\Delta \lim D } && D && {\lim D} \\
+	\\
+	{\Delta \lim D' } && {D'} && {\lim D' }
+	\arrow["h", from=1-1, to=1-3]
+	\arrow["{\Delta(\phi(\alpha \circ h))}"', dashed, from=1-1, to=3-1]
+	\arrow["{\alpha \circ h}", from=1-1, to=3-3]
+	\arrow["\alpha", from=1-3, to=3-3]
+	\arrow["{\phi(\alpha \circ h)}", dashed, from=1-5, to=3-5]
+	\arrow["{h'}"', from=3-1, to=3-3]
+\end{tikzcd}
+\text{.}
+\]
+
+\end{definition}
+
+\begin{remark}
+    Thus, limit functor is a right adjoint to diagonal functor, colimit functor is a left adjoint to diagonal functor.
+\end{remark}
+
+\subsection{Examples}
+
+\begin{remark}[Terminal and initial objects]
+    Terminal and initial objects in a category are special cases of limits and colimits, respectively.
+\end{remark}
+
+\begin{definition}[(Co)products]
+(Co)Product is defined as the (co)limit of a discrete diagram:
+$$\prod_\mc{J} D := \lim_\mc{J} D; \qquad \coprod_\mc{J} E:= \colim_\mc{J} E.$$
+
+Setting $J := \obj(\mc{J})$, one can write the standard low-level universal property diagrams for (co)product:
+% https://q.uiver.app/#q=WzAsNixbMSwwLCJcXHN1bV97aiBcXGluIEp9IGNfaiJdLFswLDAsImNfayJdLFsxLDEsImMiXSxbMywxLCJcXHByb2Rfe2ogXFxpbiBKfSBkX2oiXSxbMywwLCJkIl0sWzQsMSwiZF9pIl0sWzEsMCwiaV9rIl0sWzEsMiwiZl9rIiwyXSxbMiwwLCJcXHN1bV97aiBcXGluIEp9IGZfayIsMix7InN0eWxlIjp7ImJvZHkiOnsibmFtZSI6ImRhc2hlZCJ9fX1dLFs0LDUsImdfayJdLFs0LDMsIlxccHJvZF97aiBcXGluIEp9IGdfayIsMix7InN0eWxlIjp7ImJvZHkiOnsibmFtZSI6ImRhc2hlZCJ9fX1dLFszLDUsIlxccGlfaiIsMl1d
+\[\begin{tikzcd}
+	{c_k} & {\coprod_{j \in J} c_j} && d \\
+	& c && {\prod_{j \in J} d_j} & {d_i}
+	\arrow["{i_k}", from=1-1, to=1-2]
+	\arrow["{f_k}"', from=1-1, to=2-2]
+	\arrow["{\prod_{j \in J} g_k}"', dashed, from=1-4, to=2-4]
+	\arrow["{g_k}", from=1-4, to=2-5]
+	\arrow["{\coprod_{j \in J} f_k}"', dashed, from=2-2, to=1-2]
+	\arrow["{\pi_j}"', from=2-4, to=2-5]
+\end{tikzcd}
+\text{.}
+\]
+\end{definition}
+
+\begin{definition}[(Co)Equalizers]
+A (co)equalizer is defined as the (co)limit of a two-arrow diagram:
+% https://q.uiver.app/#q=WzAsMyxbMSwwLCJqXzEiXSxbMiwwLCJqXzIiXSxbMCwwLCJcXG1je0p9OiJdLFswLDEsImZfMSIsMCx7Im9mZnNldCI6LTJ9XSxbMCwxLCJmXzIiLDIseyJvZmZzZXQiOjJ9XV0=
+\[\begin{tikzcd}
+	{\mc{J}:} & {j_1} & {j_2}
+	\arrow["{f_1}", shift left=2, from=1-2, to=1-3]
+	\arrow["{f_2}"', shift right=2, from=1-2, to=1-3]
+\end{tikzcd}
+\text{,}
+\]
+% https://q.uiver.app/#q=WzAsOCxbMCwwLCJFIl0sWzEsMCwiWCJdLFsyLDAsIlkiXSxbMCwxLCJPIl0sWzUsMCwiQyJdLFs0LDAsIlkiXSxbMywwLCJYIl0sWzUsMSwiUCJdLFsxLDIsImYiLDAseyJvZmZzZXQiOi0yfV0sWzEsMiwiZyIsMix7Im9mZnNldCI6Mn1dLFswLDEsIlxcdGV4dHJte2VxfSJdLFszLDAsIiIsMCx7InN0eWxlIjp7ImJvZHkiOnsibmFtZSI6ImRhc2hlZCJ9fX1dLFszLDEsImgnIiwyXSxbNiw1LCJmIiwwLHsib2Zmc2V0IjotMn1dLFs2LDUsImciLDIseyJvZmZzZXQiOjJ9XSxbNSw0LCJcXHRleHRybXtjb2VxfSJdLFs1LDcsImgnIiwyXSxbNCw3LCIiLDEseyJzdHlsZSI6eyJib2R5Ijp7Im5hbWUiOiJkYXNoZWQifX19XV0=
+\[\begin{tikzcd}
+	E & X & Y & X & Y & C \\
+	O &&&&& P
+	\arrow["{\textrm{eq}}", from=1-1, to=1-2]
+	\arrow["f", shift left=2, from=1-2, to=1-3]
+	\arrow["g"', shift right=2, from=1-2, to=1-3]
+	\arrow["f", shift left=2, from=1-4, to=1-5]
+	\arrow["g"', shift right=2, from=1-4, to=1-5]
+	\arrow["{\textrm{coeq}}", from=1-5, to=1-6]
+	\arrow["{h'}"', from=1-5, to=2-6]
+	\arrow[dashed, from=1-6, to=2-6]
+	\arrow[dashed, from=2-1, to=1-1]
+	\arrow["{h'}"', from=2-1, to=1-2]
+\end{tikzcd}
+\text{.}\]
+\end{definition}
+\begin{remark}[(Co)Kernels]
+    A (co)kernel is a special case of a (co)equalizer where one of the morphisms is a zero morphism.
+\end{remark}
+
+\begin{definition}[Pullbacks and pushouts]
+    Pullback and pushout are defined as limit and colimit of the following diagrams:
+    % https://q.uiver.app/#q=WzAsNixbMSwwLCJqXzMiXSxbMSwxLCJqXzEiXSxbMCwxLCJqXzIiXSxbMywwLCJqXzEiXSxbNCwwLCJqXzMiXSxbMywxLCJqXzIiXSxbMCwxLCJmXzIiXSxbMiwxLCJmXzEiLDJdLFszLDQsImZfMiJdLFszLDUsImZfMSIsMl1d
+    \[\begin{tikzcd}
+    	& {j_3} && {j_1} & {j_3} \\
+    	{j_2} & {j_1} && {j_2}
+    	\arrow["{f_2}", from=1-2, to=2-2]
+    	\arrow["{f_2}", from=1-4, to=1-5]
+    	\arrow["{f_1}"', from=1-4, to=2-4]
+    	\arrow["{f_1}"', from=2-1, to=2-2]
+    \end{tikzcd}\text{,}\]
+    % https://q.uiver.app/#q=WzAsMTAsWzEsMSwiQSBcXHRpbWVzX0MgQiJdLFsxLDIsIkIiXSxbMiwyLCJDIl0sWzIsMSwiQSJdLFswLDAsIkQiXSxbNCwwLCJDIl0sWzUsMCwiQiJdLFs1LDEsIkEgK19DIEIiXSxbNCwxLCJBIl0sWzYsMiwiRCJdLFsxLDJdLFszLDJdLFswLDFdLFswLDNdLFs0LDAsIiIsMix7InN0eWxlIjp7ImJvZHkiOnsibmFtZSI6ImRhc2hlZCJ9fX1dLFs0LDFdLFs0LDNdLFs1LDhdLFs1LDZdLFs4LDddLFs2LDddLFs3LDksIiIsMCx7InN0eWxlIjp7ImJvZHkiOnsibmFtZSI6ImRhc2hlZCJ9fX1dLFs4LDldLFs2LDldXQ==
+    \[\begin{tikzcd}
+    	D &&&& C & B \\
+    	& {A \times_C B} & A && A & {A +_C B} \\
+    	& B & C &&&& D
+    	\arrow[dashed, from=1-1, to=2-2]
+    	\arrow[from=1-1, to=2-3]
+    	\arrow[from=1-1, to=3-2]
+    	\arrow[from=1-5, to=1-6]
+    	\arrow[from=1-5, to=2-5]
+    	\arrow[from=1-6, to=2-6]
+    	\arrow[from=1-6, to=3-7]
+    	\arrow[from=2-2, to=2-3]
+    	\arrow[from=2-2, to=3-2]
+    	\arrow[from=2-3, to=3-3]
+    	\arrow[from=2-5, to=2-6]
+    	\arrow[from=2-5, to=3-7]
+    	\arrow[dashed, from=2-6, to=3-7]
+    	\arrow[from=3-2, to=3-3]
+    \end{tikzcd}
+    \text{.}
+    \]
+\end{definition}
+
+
+
+\subsection{(Co)Continuous functors}
+
+
+
+\begin{definition}[(Co)Continuous functors]
+A functor $F: \mc{C} \to \mc{D}$ is called (co)continuous if it preserves (co)limits:
+$$F \textrm{(co)lim}\ D \cong \textrm{(co)lim} \ F \circ D.$$
+\end{definition}
+
+\end{document}
