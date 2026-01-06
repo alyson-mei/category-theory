@@ -4,12 +4,16 @@ Notes and examples on category theory.
 
 ## Category Theory Basics
 
-1. Definitions of a (commutative) diagram and a category
-2. Additional definitions:
-   1. Mono, epi, iso  
-   2. Universal objects  
-   3. Small and locally small categories  
-3. List of examples
+1. Categories 
+   1. Definitions of a (commutative) diagram and a category
+   2. Additional definitions:
+      - Mono, epi, iso  
+      - Universal objects  
+      - Small and locally small categories  
+   3. List of examples
+2. Functors (definition only)
+   - Faithful, full and fully faithful functors
+3. Natural transformations (definition only)
    
 ## Natural Transformations
 
