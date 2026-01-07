@@ -115,7 +115,7 @@ the category $(S \downarrow T)$ is defined as follows:
 \end{definition}
 
 The concept of a comma category allows us to define (co)limits in a uniform way.
-\begin{definition}[(Co)limit]
+\begin{definition}[(Co)Limit]
 The limit of a diagram $D$ is defined as a terminal object of the category $(\Delta \downarrow D)$. Dually, the colimit of a diagram $E$ is defined as an initial object of the category $(E \downarrow \Delta)$.
 \[
 \mc{D} \xrightarrow{\Delta} \mc{D}^{\mc{J}} \xleftarrow{D} 1;
@@ -128,10 +128,10 @@ Notation:
 \qquad
 \colim_{\mc{J}} E := \ini(E \downarrow \Delta).
 \]
-Visual intuition:
+Visual intuition (limits):
 % https://q.uiver.app/#q=WzAsOCxbNCwyLCJEal8xIl0sWzcsMiwiRGpfMiJdLFs1LDMsIkRqX24iXSxbNywwLCJcXGxpbSBEIl0sWzQsMCwiZCJdLFswLDAsIlxcRGVsdGEgX2QiXSxbMiwyLCJEIl0sWzIsMCwiXFxEZWx0YV97XFxsaW0gRCB9Il0sWzAsMSwiRGciLDEseyJsYWJlbF9wb3NpdGlvbiI6MzAsInN0eWxlIjp7ImJvZHkiOnsibmFtZSI6ImRvdHRlZCJ9fX1dLFsxLDIsIkRmIiwxXSxbMCwyLCJEZlxcY2lyYyBEZyIsMl0sWzMsMCwiaF8xIiwxLHsibGFiZWxfcG9zaXRpb24iOjcwLCJzdHlsZSI6eyJib2R5Ijp7Im5hbWUiOiJkb3R0ZWQifX19XSxbMywxLCJoXzIiLDEseyJsYWJlbF9wb3NpdGlvbiI6NzB9XSxbMywyLCJoX24iLDEseyJsYWJlbF9wb3NpdGlvbiI6ODB9XSxbNCwzLCIiLDAseyJzdHlsZSI6eyJib2R5Ijp7Im5hbWUiOiJkYXNoZWQifX19XSxbNCwwXSxbNCwyXSxbNCwxLCIiLDAseyJzdHlsZSI6eyJib2R5Ijp7Im5hbWUiOiJkb3R0ZWQifX19XSxbNSw3LCIiLDAseyJzdHlsZSI6eyJib2R5Ijp7Im5hbWUiOiJkYXNoZWQifX19XSxbNyw2LCJoIl0sWzUsNiwiaCciLDJdXQ==
 \[\begin{tikzcd}
-	{\Delta _d} && {\Delta_{\lim D }} && d &&& {\lim D} \\
+	{\Delta d} && {\Delta \lim D} && d &&& {\lim D} \\
 	\\
 	&& D && {Dj_1} &&& {Dj_2} \\
 	&&&&& {Dj_n}
@@ -154,7 +154,12 @@ Visual intuition:
 \end{definition}
 
 \begin{remark}
-    From here on we use $\lcoim D$ also to denote colimit object. 
+\hfill
+    \begin{itemize}
+        \item From here on we use $\lcoim D$ also to denote colimit object;
+        \item (Co)Limits are defined up to isomorphism.
+    \end{itemize}
+    
 \end{remark}
 
 \begin{definition}[(Co)limit funtor]
@@ -219,10 +224,10 @@ A (co)equalizer is defined as the (co)limit of a two-arrow diagram:
 \end{tikzcd}
 \text{,}
 \]
-% https://q.uiver.app/#q=WzAsOCxbMCwwLCJFIl0sWzEsMCwiWCJdLFsyLDAsIlkiXSxbMCwxLCJPIl0sWzUsMCwiQyJdLFs0LDAsIlkiXSxbMywwLCJYIl0sWzUsMSwiUCJdLFsxLDIsImYiLDAseyJvZmZzZXQiOi0yfV0sWzEsMiwiZyIsMix7Im9mZnNldCI6Mn1dLFswLDEsIlxcdGV4dHJte2VxfSJdLFszLDAsIiIsMCx7InN0eWxlIjp7ImJvZHkiOnsibmFtZSI6ImRhc2hlZCJ9fX1dLFszLDEsImgnIiwyXSxbNiw1LCJmIiwwLHsib2Zmc2V0IjotMn1dLFs2LDUsImciLDIseyJvZmZzZXQiOjJ9XSxbNSw0LCJcXHRleHRybXtjb2VxfSJdLFs1LDcsImgnIiwyXSxbNCw3LCIiLDEseyJzdHlsZSI6eyJib2R5Ijp7Im5hbWUiOiJkYXNoZWQifX19XV0=
+% https://q.uiver.app/#q=WzAsOCxbMCwwLCJlIl0sWzEsMCwieCJdLFsyLDAsInkiXSxbMCwxLCJvIl0sWzUsMCwiYyJdLFs0LDAsInkiXSxbMywwLCJ4Il0sWzUsMSwicCJdLFsxLDIsImYiLDAseyJvZmZzZXQiOi0yfV0sWzEsMiwiZyIsMix7Im9mZnNldCI6Mn1dLFswLDEsIlxcdGV4dHJte2VxfSJdLFszLDAsIiIsMCx7InN0eWxlIjp7ImJvZHkiOnsibmFtZSI6ImRhc2hlZCJ9fX1dLFszLDEsImgnIiwyXSxbNiw1LCJmIiwwLHsib2Zmc2V0IjotMn1dLFs2LDUsImciLDIseyJvZmZzZXQiOjJ9XSxbNSw0LCJcXHRleHRybXtjb2VxfSJdLFs1LDcsImgnIiwyXSxbNCw3LCIiLDEseyJzdHlsZSI6eyJib2R5Ijp7Im5hbWUiOiJkYXNoZWQifX19XV0=
 \[\begin{tikzcd}
-	E & X & Y & X & Y & C \\
-	O &&&&& P
+	e & x & y & x & y & c \\
+	o &&&&& p
 	\arrow["{\textrm{eq}}", from=1-1, to=1-2]
 	\arrow["f", shift left=2, from=1-2, to=1-3]
 	\arrow["g"', shift right=2, from=1-2, to=1-3]
@@ -251,11 +256,11 @@ A (co)equalizer is defined as the (co)limit of a two-arrow diagram:
     	\arrow["{f_1}"', from=1-4, to=2-4]
     	\arrow["{f_1}"', from=2-1, to=2-2]
     \end{tikzcd}\text{,}\]
-    % https://q.uiver.app/#q=WzAsMTAsWzEsMSwiQSBcXHRpbWVzX0MgQiJdLFsxLDIsIkIiXSxbMiwyLCJDIl0sWzIsMSwiQSJdLFswLDAsIkQiXSxbNCwwLCJDIl0sWzUsMCwiQiJdLFs1LDEsIkEgK19DIEIiXSxbNCwxLCJBIl0sWzYsMiwiRCJdLFsxLDJdLFszLDJdLFswLDFdLFswLDNdLFs0LDAsIiIsMix7InN0eWxlIjp7ImJvZHkiOnsibmFtZSI6ImRhc2hlZCJ9fX1dLFs0LDFdLFs0LDNdLFs1LDhdLFs1LDZdLFs4LDddLFs2LDddLFs3LDksIiIsMCx7InN0eWxlIjp7ImJvZHkiOnsibmFtZSI6ImRhc2hlZCJ9fX1dLFs4LDldLFs2LDldXQ==
+    % https://q.uiver.app/#q=WzAsMTAsWzEsMSwiYSBcXHRpbWVzX2MgYiJdLFsxLDIsImIiXSxbMiwyLCJjIl0sWzIsMSwiYSJdLFswLDAsImQiXSxbNCwwLCJjIl0sWzUsMCwiYiJdLFs1LDEsImEgK19jIGIiXSxbNCwxLCJhIl0sWzYsMiwiZCJdLFsxLDJdLFszLDJdLFswLDFdLFswLDNdLFs0LDFdLFs0LDNdLFs1LDhdLFs1LDZdLFs4LDddLFs2LDddLFs3LDksIiIsMCx7InN0eWxlIjp7ImJvZHkiOnsibmFtZSI6ImRhc2hlZCJ9fX1dLFs4LDldLFs2LDldLFs0LDAsIiIsMix7InN0eWxlIjp7ImJvZHkiOnsibmFtZSI6ImRhc2hlZCJ9fX1dXQ==
     \[\begin{tikzcd}
-    	D &&&& C & B \\
-    	& {A \times_C B} & A && A & {A +_C B} \\
-    	& B & C &&&& D
+    	d &&&& c & b \\
+    	& {a \times_c b} & a && a & {a +_c b} \\
+    	& b & c &&&& d
     	\arrow[dashed, from=1-1, to=2-2]
     	\arrow[from=1-1, to=2-3]
     	\arrow[from=1-1, to=3-2]
@@ -283,7 +288,90 @@ A (co)equalizer is defined as the (co)limit of a two-arrow diagram:
 
 \begin{definition}[(Co)Continuous functors]
 A functor $F: \mc{C} \to \mc{D}$ is called (co)continuous if it preserves (co)limits:
-$$F \textrm{(co)lim}\ D \cong \textrm{(co)lim} \ F \circ D.$$
+% https://q.uiver.app/#q=WzAsMTIsWzAsMCwiXFxtY3tEfSJdLFsxLDAsIlxcbWN7RH1ee1xcbWN7Sn19Il0sWzIsMCwiMSJdLFswLDEsIlxcbWN7Q30iXSxbMSwxLCJcXG1je0N9XntcXG1je0p9fSJdLFsyLDEsIjEiXSxbNCwwLCIxIl0sWzUsMCwiXFxtY3tDfV57XFxtY3tKfX0iXSxbNiwwLCJcXG1je0N9Il0sWzQsMSwiMSJdLFs1LDEsIlxcbWN7RH1ee1xcbWN7Sn19Il0sWzYsMSwiXFxtY3tEfSJdLFswLDEsIlxcRGVsdGEiXSxbMyw0LCJcXERlbHRhIiwyXSxbMCwzLCJHIiwyXSxbMSw0LCJHXntcXG1je0p9fSIsMl0sWzIsNSwiXFxpZCIsMl0sWzIsMSwiRCIsMl0sWzUsNCwiRyBcXGNpcmMgRCJdLFs2LDcsIkMiXSxbNiw5LCJcXGlkIiwyXSxbNywxMCwiRl57XFxtY3tKfX0iLDJdLFs4LDExLCJGIiwyXSxbOCw3LCJcXERlbHRhIiwyXSxbMTEsMTAsIlxcRGVsdGEiXSxbOSwxMCwiRiBcXGNpcmMgQyIsMl1d
+\[\begin{tikzcd}
+	{\mc{D}} & {\mc{D}^{\mc{J}}} & 1 && 1 & {\mc{C}^{\mc{J}}} & {\mc{C}} \\
+	{\mc{C}} & {\mc{C}^{\mc{J}}} & 1 && 1 & {\mc{D}^{\mc{J}}} & {\mc{D}}
+	\arrow["\Delta", from=1-1, to=1-2]
+	\arrow["G"', from=1-1, to=2-1]
+	\arrow["{G^{\mc{J}}}"', from=1-2, to=2-2]
+	\arrow["D"', from=1-3, to=1-2]
+	\arrow["\id"', from=1-3, to=2-3]
+	\arrow["E", from=1-5, to=1-6]
+	\arrow["\id"', from=1-5, to=2-5]
+	\arrow["{F^{\mc{J}}}"', from=1-6, to=2-6]
+	\arrow["\Delta"', from=1-7, to=1-6]
+	\arrow["F"', from=1-7, to=2-7]
+	\arrow["\Delta"', from=2-1, to=2-2]
+	\arrow["{G \circ D}", from=2-3, to=2-2]
+	\arrow["{F \circ E}"', from=2-5, to=2-6]
+	\arrow["\Delta", from=2-7, to=2-6]
+\end{tikzcd}
+\text{;}
+\]
+$$ G \ter (\Delta \downarrow D) \simeq \ter (\Delta \downarrow  G \circ D) \Leftrightarrow G \lim D \cong \lim G \circ D,$$
+$$
+F \ini (E \downarrow \Delta) \simeq \ini (\Delta \downarrow F \circ E) \Leftrightarrow F \colim E \cong \colim F \circ E. 
+$$
+Visual intuition (limits):
+% https://q.uiver.app/#q=WzAsMTAsWzIsMCwiXFxsaW0gRCJdLFswLDIsIkRqXzEiXSxbMSwzLCJEal9uIl0sWzIsMiwiRGpfMiJdLFswLDAsImQiXSxbNCwwLCJjIl0sWzYsMCwiRyBcXGxpbSBEIl0sWzQsMiwiR0RqXzEiXSxbNiwyLCJHRGpfMiJdLFs1LDMsIkdEal9uIl0sWzEsMywiIiwwLHsic3R5bGUiOnsiYm9keSI6eyJuYW1lIjoiZG90dGVkIn19fV0sWzEsMl0sWzMsMl0sWzAsMSwiIiwwLHsic3R5bGUiOnsiYm9keSI6eyJuYW1lIjoiZG90dGVkIn19fV0sWzAsMl0sWzAsM10sWzQsMCwiIiwwLHsic3R5bGUiOnsiYm9keSI6eyJuYW1lIjoiZGFzaGVkIn19fV0sWzQsMV0sWzQsMl0sWzQsMywiIiwwLHsic3R5bGUiOnsiYm9keSI6eyJuYW1lIjoiZG90dGVkIn19fV0sWzUsNiwiIiwwLHsic3R5bGUiOnsiYm9keSI6eyJuYW1lIjoiZGFzaGVkIn19fV0sWzcsOCwiIiwwLHsic3R5bGUiOnsiYm9keSI6eyJuYW1lIjoiZG90dGVkIn19fV0sWzgsOV0sWzUsN10sWzUsOCwiIiwwLHsic3R5bGUiOnsiYm9keSI6eyJuYW1lIjoiZG90dGVkIn19fV0sWzYsNywiIiwwLHsic3R5bGUiOnsiYm9keSI6eyJuYW1lIjoiZG90dGVkIn19fV0sWzUsOV0sWzYsOV0sWzYsOF0sWzcsOV1d
+\[\begin{tikzcd}
+	d && {\lim D} && c && {G \lim D} \\
+	\\
+	{Dj_1} && {Dj_2} && {GDj_1} && {GDj_2} \\
+	& {Dj_n} &&&& {GDj_n}
+	\arrow[dashed, from=1-1, to=1-3]
+	\arrow[from=1-1, to=3-1]
+	\arrow[dotted, from=1-1, to=3-3]
+	\arrow[from=1-1, to=4-2]
+	\arrow[dotted, from=1-3, to=3-1]
+	\arrow[from=1-3, to=3-3]
+	\arrow[from=1-3, to=4-2]
+	\arrow[dashed, from=1-5, to=1-7]
+	\arrow[from=1-5, to=3-5]
+	\arrow[dotted, from=1-5, to=3-7]
+	\arrow[from=1-5, to=4-6]
+	\arrow[dotted, from=1-7, to=3-5]
+	\arrow[from=1-7, to=3-7]
+	\arrow[from=1-7, to=4-6]
+	\arrow[dotted, from=3-1, to=3-3]
+	\arrow[from=3-1, to=4-2]
+	\arrow[from=3-3, to=4-2]
+	\arrow[dotted, from=3-5, to=3-7]
+	\arrow[from=3-5, to=4-6]
+	\arrow[from=3-7, to=4-6]
+\end{tikzcd}
+\text{.}
+\]
+
+
 \end{definition}
+
+\begin{remark}
+    \hfill
+    \begin{itemize}
+        \item $\simeq$ for iso of objects in category, $\cong$ is to show that the iso is potentially can be extended to some natural isomorphism (depends on the context);
+        \item Limit preserving property implies that there exists a unique iso $f$ and $g$ satisfying the diagrams:
+            % https://q.uiver.app/#q=WzAsNixbMCwwLCJcXERlbHRhIEcgXFxsaW0gRCJdLFsyLDAsIlxcRGVsdGEgXFxsaW0gRyBcXGNpcmMgRCJdLFsyLDIsIkcgXFxjaXJjIEQiXSxbNCwwLCJGIFxcY2lyYyBFIl0sWzQsMiwiXFxEZWx0YSBcXGNvbGltIEYgXFxjaXJjIEUiXSxbNiwyLCJcXERlbHRhIEYgXFxjb2xpbSBFIl0sWzEsMiwiaCJdLFswLDEsImYiLDAseyJvZmZzZXQiOi0yLCJzdHlsZSI6eyJib2R5Ijp7Im5hbWUiOiJkYXNoZWQifX19XSxbMCwyLCJoJyIsMl0sWzEsMCwiZl57LTF9IiwwLHsib2Zmc2V0IjotMiwic3R5bGUiOnsiYm9keSI6eyJuYW1lIjoiZGFzaGVkIn19fV0sWzUsNCwiZyIsMix7Im9mZnNldCI6Miwic3R5bGUiOnsiYm9keSI6eyJuYW1lIjoiZGFzaGVkIn19fV0sWzMsNCwicCIsMl0sWzMsNSwicCciXSxbNCw1LCJnXnstMX0iLDIseyJvZmZzZXQiOjIsInN0eWxlIjp7ImJvZHkiOnsibmFtZSI6ImRhc2hlZCJ9fX1dXQ==
+    \[\begin{tikzcd}[column sep=scriptsize]
+    	{\Delta G \lim D} && {\Delta \lim G \circ D} && {F \circ E} \\
+    	\\
+    	&& {G \circ D} && {\Delta \colim F \circ E} && {\Delta F \colim E}
+    	\arrow["f", shift left=2, dashed, from=1-1, to=1-3]
+    	\arrow["{h'}"', from=1-1, to=3-3]
+    	\arrow["{f^{-1}}", shift left=2, dashed, from=1-3, to=1-1]
+    	\arrow["h", from=1-3, to=3-3]
+    	\arrow["p"', from=1-5, to=3-5]
+    	\arrow["{p'}", from=1-5, to=3-7]
+    	\arrow["{g^{-1}}"', shift right=2, dashed, from=3-5, to=3-7]
+    	\arrow["g"', shift right=2, dashed, from=3-7, to=3-5]
+    \end{tikzcd}
+    \text{;}
+    \]
+    Actually, there are always arrows $$f: G \lim D \to \lim GD  \textrm{ and } g: F \colim E \to \colim FE,$$
+    and they become isomorphisms if $G$ is continuous (resp. $F$ is cocontinuous);
+        \item Functor names align with RAPL (right adjoint preserve limits) and LAPC (left adjoint preserve colimits).
+    \end{itemize}
+\end{remark}
 
 \end{document}
