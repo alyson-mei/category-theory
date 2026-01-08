@@ -1,7 +1,7 @@
 # Category Theory
 
 <p align="left">
-  <img src="img/code-geass-pizza-02.jpg" alt="CC with pizza">
+  <img src="img/CC.png" alt="CC with pizza">
 </p>
 
 Unpolished notes with my personal pov on category theory — a high-level approach (mostly), lots of diagrams, and polymorphic notation. Mostly focused on the topics I need for my research and the ones I want to have a nice understanding of. I hope to include all standard concepts sooner or later and refactor everything for smoother navigation (though lack of resources will probably interfere)
