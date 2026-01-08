@@ -31,7 +31,12 @@ Unpolished notes with my personal pov on category theory — a high-level approa
 1. Definition of the set-valued Hom functor (covariant and contravariant)
 2. Natural transformations between covariant and contravariant Hom functors
 
-## 03 (Co)Limits
+## 03 Diagonal Functor & Comma Category
+
+1. Constant functor -> diagonal functor
+2. Comma category -> (co)slice and arrow categories
+
+## 04 (Co)Limits
 
 1. Definitions
    - Comma category
@@ -45,7 +50,7 @@ Unpolished notes with my personal pov on category theory — a high-level approa
    - Pullbacks and pushouts
 3. (Co)Continuous functors
 
-## 04 (Co)Monads
+## 05 (Co)Monads
 
 ### Monads
 

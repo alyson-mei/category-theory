@@ -1,0 +1,256 @@
+\documentclass[12pt]{article}
+% Page setup
+\usepackage[margin=1in]{geometry}
+\usepackage{parskip}
+\usepackage{titling}
+\setlength{\droptitle}{-6em} 
+
+% Math packages
+\usepackage{amsmath, amsthm, amssymb, amsfonts}
+\usepackage{mathtools}
+\makeatletter
+\g@addto@macro\th@plain{\normalfont} % remove italics from theorems (plain style)
+\makeatother
+
+% Commutative diagrams and proofs
+\usepackage{tikz-cd}
+\usepackage{proof}
+
+
+% Theorem environments
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{fact}[theorem]{Fact}
+\newtheorem{remark}[theorem]{Remark}
+
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+
+% Useful commands for category theory
+\newcommand{\mc}{\mathcal}
+\newcommand{\ini}{\operatorname{ini}}
+\newcommand{\ter}{\operatorname{ter}}
+\newcommand{\cod}{\operatorname{cod}}
+\newcommand{\dom}{\operatorname{dom}}
+
+\newcommand{\List}{\operatorname{List}}
+\newcommand{\lop}{\operatorname{[ \ ]}}
+\newcommand{\len}{\operatorname{len}}
+\newcommand{\type}{\operatorname{type}}
+
+\newcommand{\Exc}{\operatorname{Exception}}
+
+\newcommand{\Kl}{\operatorname{Kl}}
+\newcommand{\plus}{\operatorname{+}}
+
+\newcommand{\Cat}{\mathcal{C}at}
+\newcommand{\Vect}{\mathrm{Vect}_\mathbf{k}}
+\newcommand{\Hom}{\operatorname{Hom}}
+\newcommand{\Nat}{\operatorname{Nat}}
+\newcommand{\id}{\mathrm{id}}
+\newcommand{\op}{\mathrm{op}}
+\newcommand{\obj}{\operatorname{obj}}
+\newcommand{\arr}{\operatorname{arr}}
+\newcommand{\adj}{\operatorname{adj}}
+\newcommand{\coadj}{\operatorname{coadj}}
+\newcommand{\colim}{\operatorname*{colim}}
+\newcommand{\lcoim}{\operatorname*{(co)lim}}
+
+% Arrows
+\newcommand{\ra}{\rightarrow}
+\newcommand{\from}{\leftarrow}
+\newcommand{\To}{\Rightarrow}
+\newcommand{\xto}{\xrightarrow}
+\newcommand{\xfrom}{\xleftarrow}
+
+\renewcommand{\labelitemi}{--} % Level 1: Dashes
+\renewcommand{\labelitemii}{$\circ$} % Level 2: Circles
+\renewcommand{\labelitemiii}{$\bullet$} % Level 3: Bullets (default)
+
+
+\title{Comma category}
+\author{Alyson Mei}
+\date{\today}
+
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\newpage
+
+\section{Diagonal functor}
+
+\begin{definition}[Constant functor]
+    Consider a category $\mc{C}$. A constant functor $$\Delta_c: \mc{D} \to \mc{C}$$ for a given $c:\obj({\mc{C}})$ is defined as $\lambda f. \id_c$:
+    % https://q.uiver.app/#q=WzAsNCxbMCwwLCJkIl0sWzAsMSwiZCciXSxbMiwwLCJcXERlbHRhX2MoZCkgOj0gYyJdLFsyLDEsIlxcRGVsdGFfYyhkJykgOj0gYyJdLFswLDEsImYiLDJdLFsyLDMsIlxcRGVsdGFfYyAoZikgOj1cXGlkX2MiXV0=
+    \[\begin{tikzcd}
+    	d && {\Delta_c(d) := c} \\
+    	{d'} && {\Delta_c(d') := c}
+    	\arrow["f"', from=1-1, to=2-1]
+    	\arrow["{\Delta_c (f) :=\id_c}", from=1-3, to=2-3]
+    \end{tikzcd}
+    \text{.}
+    \]
+\end{definition}
+
+\begin{remark}[Natural transformations between constant functors]
+    Natural transformation $\alpha^{(f)}: \Delta_c \to \Delta_{c'}$ between constant functors corresponds to morphisms
+    between their values:
+% https://q.uiver.app/#q=WzAsNixbMiwwLCJcXERlbHRhX2MoZCkgPSBjIl0sWzAsMCwiZCJdLFswLDEsImQnIl0sWzIsMSwiXFxEZWx0YV9jKGQnKSA9IGMiXSxbMywwLCJcXERlbHRhX3tjJ30oZCkgPSBjJyJdLFszLDEsIlxcRGVsdGFfe2MnfShkJykgPSBjJyJdLFsxLDIsImciLDJdLFswLDMsIlxcaWRfYyIsMl0sWzQsNSwiXFxpZF97Yyd9Il0sWzAsNCwiXFxhbHBoYV57KGYpfV9jID0gZiJdLFszLDUsIlxcYWxwaGFeeyhmKX1fe2MnfSA9IGYiLDJdXQ==
+\[\begin{tikzcd}
+	d && {\Delta_c(d) = c} & {\Delta_{c'}(d) = c'} \\
+	{d'} && {\Delta_c(d') = c} & {\Delta_{c'}(d') = c'}
+	\arrow["g"', from=1-1, to=2-1]
+	\arrow["{\alpha^{(f)}_c = f}", from=1-3, to=1-4]
+	\arrow["{\id_c}"', from=1-3, to=2-3]
+	\arrow["{\id_{c'}}", from=1-4, to=2-4]
+	\arrow["{\alpha^{(f)}_{c'} = f}"', from=2-3, to=2-4]
+\end{tikzcd}\text{.}
+\]
+%In our notation will identify such natural transformations $\alpha^{(f)}$ with morphisms $f$. 
+\end{remark}
+
+\begin{definition}[Diagonal functor]
+    Consider categories $\mc{C}, \mc{D}$. Diagonal functor $$\Delta: \mc{C} \to [\mc{D}, \mc{C}]$$ is defined as $\lambda f.\alpha^{(f)}$:
+    % https://q.uiver.app/#q=WzAsNCxbMCwwLCJjIl0sWzAsMSwiYyciXSxbMSwwLCJcXERlbHRhKGMpIDo9IFxcRGVsdGFfYyJdLFsxLDEsIlxcRGVsdGEoYycpOj1cXERlbHRhX3tjJ30iXSxbMCwxLCJmIiwyXSxbMiwzLCJcXERlbHRhKGYpIDo9IFxcYWxwaGFeeyhmKX0iXV0=
+    \[\begin{tikzcd}
+    	c & {\Delta(c) := \Delta_c} \\
+    	{c'} & {\Delta(c'):=\Delta_{c'}}
+    	\arrow["f"', from=1-1, to=2-1]
+    	\arrow["{\Delta(f) := \alpha^{(f)}}", from=1-2, to=2-2]
+    \end{tikzcd}
+    \text{.}
+    \]
+\end{definition}
+
+\begin{remark}[Special case]
+    Let $\mc{D}$ be small and discrete. Then $$[\mc{C}, \mc{D}] \simeq \prod_{d \in \obj(\mc{D})} \mc{C}$$
+    via $F \mapsto (Fd)_{d \in \obj(\mc{D})}$. Thus, diagonal functor takes the following form:
+    % https://q.uiver.app/#q=WzAsNCxbMCwwLCJjIl0sWzAsMSwiYyciXSxbMiwwLCJcXERlbHRhIChjKSA6PSBcXHByb2Rfe2QgXFxpbiBcXG9iaihcXG1je0R9KX0gYyJdLFsyLDEsIlxcRGVsdGEgKGMnKSA6PSBcXHByb2Rfe2QgXFxpbiBcXG9iaihcXG1je0R9KX0gYyciXSxbMCwxLCJmIiwyXSxbMiwzLCJcXERlbHRhIChmKSA6PSBcXHByb2Rfe2QgXFxpbiBcXG9iaihcXG1je0R9KX0gZiJdXQ==
+    \[\begin{tikzcd}
+    	c && {\Delta (c) := \prod_{d \in \obj(\mc{D})} c} \\
+    	{c'} && {\Delta (c') := \prod_{d \in \obj(\mc{D})} c'}
+    	\arrow["f"', from=1-1, to=2-1]
+    	\arrow["{\Delta (f) := \prod_{d \in \obj(\mc{D})} f}", from=1-3, to=2-3]
+    \end{tikzcd}
+    \text{.}
+    \]
+\end{remark}
+
+\begin{remark}[Usage]
+    The diagonal functor is often used in precomposition with other functors to obtain constant sequences (e.g. in tensor algebra). 
+\end{remark}
+
+\section{Comma category}
+
+\begin{definition}[Comma category]
+Given functors
+
+$$\mc{A} \xto{S} \mc{C} \xfrom{T} \mc{B},$$
+
+the category $(S \downarrow T)$ is defined as follows:
+
+\begin{itemize}
+\item[$\bullet$] Objects of are the triples $(a: \obj(\mc{A}), h:\arr(\mc{C}), b: \obj(\mc{B})),$
+
+\item[$\bullet$] Morphisms are pairs $(f: \arr(\mc{A}), g:\arr(\mc{B}))$ satisfying the diagram:
+% https://q.uiver.app/#q=WzAsNixbMCwwLCIoYSwgaCwgYikiXSxbMCwxLCIoYScsIGgnLCBiJykiXSxbMSwwLCJTYSJdLFsxLDEsIlNhJyJdLFsyLDAsIlRiIl0sWzIsMSwiVGInIl0sWzAsMSwiKGYsIGcpIl0sWzIsNCwiaCJdLFszLDUsImgnIiwyXSxbMiwzLCJTZiIsMl0sWzQsNSwiVGYiXV0=
+\[\begin{tikzcd}
+	{(a, h, b)} & Sa & Tb \\
+	{(a', h', b')} & {Sa'} & {Tb'}
+	\arrow["{(f, g)}", from=1-1, to=2-1]
+	\arrow["h", from=1-2, to=1-3]
+	\arrow["Sf"', from=1-2, to=2-2]
+	\arrow["Tg", from=1-3, to=2-3]
+	\arrow["{h'}"', from=2-2, to=2-3]
+\end{tikzcd}
+\text{,}
+\]
+
+\item[$\bullet$] The composition is defined componentwise: 
+% https://q.uiver.app/#q=WzAsOSxbMCwwLCIoYSwgaCwgYikiXSxbMSwwLCIoYScsIGgnLCBiJykiXSxbMSwxLCIoYScnLCBoJycsIGInJykiXSxbMywwLCJTYSJdLFs1LDEsIlRiJyciXSxbMywxLCJUYiJdLFs0LDEsIlRiJyJdLFs1LDAsIlNhJyciXSxbNCwwLCJTYSciXSxbMCwxLCIoZiwgZykiXSxbMSwyLCIoZicsIGcnKSJdLFswLDIsIihnIFxcY2lyYyBmLCBnJyBcXGNpcmMgZicpIiwyLHsibGFiZWxfcG9zaXRpb24iOjQwfV0sWzMsOCwiU2YiXSxbOCw3LCJTZiciXSxbNSw2LCJUZyIsMl0sWzYsNCwiVGcnIiwyXSxbMyw1LCJoIiwyXSxbOCw2LCJoJyIsMl0sWzcsNCwiaCcnIiwyXV0=
+\[\begin{tikzcd}
+	{(a, h, b)} & {(a', h', b')} && Sa & {Sa'} & {Sa''} \\
+	& {(a'', h'', b'')} && Tb & {Tb'} & {Tb''}
+	\arrow["{(f, g)}", from=1-1, to=1-2]
+	\arrow["{(g \circ f, g' \circ f')}"'{pos=0.4}, from=1-1, to=2-2]
+	\arrow["{(f', g')}", from=1-2, to=2-2]
+	\arrow["Sf", from=1-4, to=1-5]
+	\arrow["h"', from=1-4, to=2-4]
+	\arrow["{Sf'}", from=1-5, to=1-6]
+	\arrow["{h'}"', from=1-5, to=2-5]
+	\arrow["{h''}"', from=1-6, to=2-6]
+	\arrow["Tg"', from=2-4, to=2-5]
+	\arrow["{Tg'}"', from=2-5, to=2-6]
+\end{tikzcd}
+\text{.}
+\]
+\end{itemize}
+
+\end{definition}
+
+\begin{remark}
+    \hfill
+    \begin{itemize}
+        \item $(f, g) = (f', g')$ iff $f = f'$ and $g = g'$ -- there's no quotienting by $S$ or $T$;
+        \item Thus, $(a, h, b) \simeq (a', h', b')$ iff $f$ and $g$ are isos.
+    \end{itemize}
+\end{remark}
+
+\begin{definition}[(Co)Slice category]
+\hfill
+    \begin{itemize}
+        \item Slice category. Let $S = \id_\mc{A}$, $\mc{B} = 1$:
+    $$\mc{A} \xto{\id_\mc{A}} \mc{A} \xfrom{b} 1.$$
+    % https://q.uiver.app/#q=WzAsNSxbMCwwLCIoYSxoICkgOj0oYSwgaCwgKikiXSxbMCwxLCIoYScsIGgpIDo9KGEnLCBoJywgKikiXSxbMiwwLCJhIl0sWzMsMCwiYiJdLFsyLDEsImEnIl0sWzAsMSwiZiA6PSAoZiwgXFxpZF8qKSJdLFsyLDQsImYiLDJdLFs0LDMsImgnIiwyXSxbMiwzLCJoIl1d
+    \[\begin{tikzcd}
+    	{(a,h ) :=(a, h, *)} && a & b \\
+    	{(a', h) :=(a', h', *)} && {a'}
+    	\arrow["{f := (f, \id_*)}", from=1-1, to=2-1]
+    	\arrow["h", from=1-3, to=1-4]
+    	\arrow["f"', from=1-3, to=2-3]
+    	\arrow["{h'}"', from=2-3, to=1-4]
+    \end{tikzcd}  
+    \text{;}
+    \]
+    \item Coslice category. Let $T = \id_\mc{B}$, $\mc{A} = 1$:
+    $$1 \xto{a} \mc{B} \xfrom{\id_\mc{B}} \mc{B},$$
+    % https://q.uiver.app/#q=WzAsNSxbMCwwLCIoYixoICkgOj0oKiwgaCxiKSJdLFswLDEsIihiJywgaCkgOj0oKiwgaCcsIGInKSJdLFszLDAsImIiXSxbMywxLCJiJyJdLFsyLDAsImEiXSxbMCwxLCJnIDo9IChnLCBcXGlkXyopIl0sWzQsMiwiaCJdLFs0LDMsImgnIiwyXSxbMiwzLCJnIl1d
+    \[\begin{tikzcd}
+    	{(b,h ) :=(*, h,b)} && a & b \\
+    	{(b', h) :=(*, h', b')} &&& {b'}
+    	\arrow["{g := (g, \id_*)}", from=1-1, to=2-1]
+    	\arrow["h", from=1-3, to=1-4]
+    	\arrow["{h'}"', from=1-3, to=2-4]
+    	\arrow["g", from=1-4, to=2-4]
+    \end{tikzcd}
+    \text{.}
+    \]
+        \end{itemize}
+\end{definition}
+
+\begin{definition}[Arrow category]
+    Let $S = T = \id_\mc{C}$:
+    $$\mc{C} \xto{\id_\mc{C}} \mc{C} \xfrom{\id_\mc{C}} \mc{C},$$
+% https://q.uiver.app/#q=WzAsNixbMCwwLCIoYSwgaCwgYikiXSxbMCwxLCIoYScsIGgnLCBiJykiXSxbMiwwLCJhIl0sWzIsMSwiYSciXSxbMywwLCJiIl0sWzMsMSwiYiciXSxbMCwxLCIoZiwgZykiXSxbMiwzLCJmIiwyXSxbNCw1LCJnIl0sWzIsNCwiaCJdLFszLDUsImgnIiwyXV0=
+\[\begin{tikzcd}
+	{(a, h, b)} && a & b \\
+	{(a', h', b')} && {a'} & {b'}
+	\arrow["{(f, g)}", from=1-1, to=2-1]
+	\arrow["h", from=1-3, to=1-4]
+	\arrow["f"', from=1-3, to=2-3]
+	\arrow["g", from=1-4, to=2-4]
+	\arrow["{h'}"', from=2-3, to=2-4]
+\end{tikzcd}
+\text{.}
+\]
+    
+\end{definition}
+
+\end{document}
