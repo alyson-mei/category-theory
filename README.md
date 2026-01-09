@@ -36,7 +36,13 @@ Unpolished notes with my personal pov on category theory — a high-level approa
 1. Constant functor -> diagonal functor
 2. Comma category -> (co)slice and arrow categories
 
-## 04 (Co)Limits
+## 04 Yoneda Lemma
+1. High-level statement and proof
+2. Corollaries
+  - Yoneda embedding and its full faithfulness
+  - Small rephrasings
+
+## 05 (Co)Limits
 
 1. Definitions
    - Comma category
@@ -50,7 +56,7 @@ Unpolished notes with my personal pov on category theory — a high-level approa
    - Pullbacks and pushouts
 3. (Co)Continuous functors
 
-## 05 (Co)Monads
+## 06 (Co)Monads
 
 ### Monads
 

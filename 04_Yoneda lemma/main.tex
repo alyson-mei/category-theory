@@ -1,0 +1,227 @@
+\documentclass[12pt]{article}
+% Page setup
+\usepackage[margin=1in]{geometry}
+\usepackage{parskip}
+\usepackage{titling}
+\setlength{\droptitle}{-6em} 
+
+% Math packages
+\usepackage{amsmath, amsthm, amssymb, amsfonts}
+\usepackage{mathtools}
+\makeatletter
+\g@addto@macro\th@plain{\normalfont}
+\makeatother
+
+\makeatletter
+\renewenvironment{proof}[1][\proofname]{%
+  \par\pushQED{\qed}%
+  \normalfont\bfseries
+  \trivlist
+  \item[\hskip\labelsep\bfseries #1\@addpunct{.}]%
+}{%
+  \popQED\endtrivlist\@endpefalse
+}
+\makeatother
+
+% Commutative diagrams and proofs
+\usepackage{tikz-cd}
+\usepackage{proof}
+
+
+% Theorem environments
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{fact}[theorem]{Fact}
+\newtheorem{remark}[theorem]{Remark}
+
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+
+% Useful commands for category theory
+\newcommand{\mc}{\mathcal}
+\newcommand{\ini}{\operatorname{ini}}
+\newcommand{\ter}{\operatorname{ter}}
+\newcommand{\cod}{\operatorname{cod}}
+\newcommand{\dom}{\operatorname{dom}}
+
+\newcommand{\List}{\operatorname{List}}
+\newcommand{\lop}{\operatorname{[ \ ]}}
+\newcommand{\len}{\operatorname{len}}
+\newcommand{\type}{\operatorname{type}}
+
+\newcommand{\Exc}{\operatorname{Exception}}
+
+\newcommand{\Kl}{\operatorname{Kl}}
+\newcommand{\plus}{\operatorname{+}}
+
+\newcommand{\Cat}{\mathcal{C}at}
+\newcommand{\Vect}{\mathrm{Vect}_\mathbf{k}}
+\newcommand{\Hom}{\operatorname{Hom}}
+\newcommand{\Nat}{\operatorname{Nat}}
+\newcommand{\id}{\mathrm{id}}
+\newcommand{\op}{\mathrm{op}}
+\newcommand{\obj}{\operatorname{obj}}
+\newcommand{\arr}{\operatorname{arr}}
+\newcommand{\adj}{\operatorname{adj}}
+\newcommand{\coadj}{\operatorname{coadj}}
+\newcommand{\colim}{\operatorname*{colim}}
+\newcommand{\lcoim}{\operatorname*{(co)lim}}
+
+% Arrows
+\newcommand{\ra}{\rightarrow}
+\newcommand{\from}{\leftarrow}
+\newcommand{\To}{\Rightarrow}
+\newcommand{\xto}{\xrightarrow}
+\newcommand{\xfrom}{\xleftarrow}
+
+\renewcommand{\labelitemi}{--} % Level 1: Dashes
+\renewcommand{\labelitemii}{$\circ$} % Level 2: Circles
+\renewcommand{\labelitemiii}{$\bullet$} % Level 3: Bullets (default)
+
+
+\title{Yoneda lemma}
+\author{Alyson Mei}
+\date{\today}
+
+
+\begin{document}
+
+\maketitle
+\paragraph{Conventions}
+\hfill
+\begin{itemize}
+\item $\mc{C}$ -- locally small category;
+\item $\lambda AB.\mc{C}(A,B): \mc{C}^\op \times \mathcal{C} \to \mc{C}$ -- Hom functor;
+\begin{itemize}
+\item[$\circ$] For brevity, if the context is clear, $A,B := \mathcal{C}(A,B)$;
+\item[$\circ$] $A, \_ := \mathcal{C}(A, \_) := \lambda B. \mathcal{C}(A, B) :\mathcal{C} \to \mathcal{S}et$; similarly for $\_, B: \mathcal{C}^\op \to \mathcal{S}et$;
+\end{itemize}
+\item $F, G := [F,G]$ -- class of natural transformations between $F$ and $G$;
+\item $\simeq$ denotes isomorphisms of objects, $\cong$ emphasizes that isomorphism between objects extends to isomorphism between functors.
+\end{itemize}
+
+\newpage
+
+\section{Yoneda lemma}
+
+\begin{theorem}[Yoneda lemma] For a given $F: \mc{C} \to \mc{S}et$ (resp. $F: \mc{C}^\op \to \mc{S}et$) $$\lambda AF. \mc{C}(A, -), F \simeq \lambda AF.FA \ (\textrm{resp.} \ \lambda AF.\mc{C}(-, A), F \simeq \lambda AF.FA):$$
+\[
+\begin{tikzcd}
+	{} &&& {} & {} \\
+	{\mathcal{C} \times \mathcal{S}et^\mathcal{C}} && {\mathcal{S}et} && {\mathcal{C}^\op \times \mathcal{S}et^{\mathcal{C}^\op}} && {\mathcal{S}et} \\
+	&&& {}
+	\arrow[no head, from=1-4, to=3-4]
+	\arrow[""{name=0, anchor=center, inner sep=0}, "{\lambda AF. \mathcal{C}(A, \_), F}", bend left = 36pt, from=2-1, to=2-3]
+	\arrow[""{name=1, anchor=center, inner sep=0}, "{\lambda AF. FA}"', bend right = 36pt, from=2-1, to=2-3]
+	\arrow[""{name=2, anchor=center, inner sep=0}, "{\lambda AF. \mathcal{C}(\_, A), F}", bend left = 36pt, from=2-5, to=2-7]
+	\arrow[""{name=3, anchor=center, inner sep=0}, "{\lambda AF. FA}"', bend right = 36pt, from=2-5, to=2-7]
+	\arrow["\simeq", shorten <=4pt, shorten >=4pt, Rightarrow, from=0, to=1]
+	\arrow["\simeq", shorten <=4pt, shorten >=4pt, Rightarrow, from=2, to=3]
+\end{tikzcd}
+\text{.}
+\]
+\end{theorem}
+
+\textbf{Proof} (Covariant option)\textbf{.}
+
+\textbf{1.} $\eta: \mathcal{C}(A, -) \to F$ is uniquely determined by the choice of $\eta_A(\id_A) \in FA:$
+
+% https://q.uiver.app/#q=WzAsMTAsWzEsMCwiQSwgQSJdLFsxLDEsIkEsIEIiXSxbMCwwLCJBIl0sWzAsMSwiQiJdLFsyLDAsIkZBIl0sWzIsMSwiRkIiXSxbMywwLCJcXGlkX0EiXSxbMywxLCJmIl0sWzQsMCwiXFxldGFfQShcXGlkX0EpIl0sWzQsMSwiXFxldGFfQihmKSA9IEZmKFxcZXRhX0EoXFxpZF9BKSkiXSxbMiwzLCJmIiwyXSxbMCw0LCJcXGV0YV9BIl0sWzQsNSwiRmYiXSxbMCwxLCJmIFxcY2lyYyBcXF8iLDJdLFsxLDUsIlxcZXRhX0IiLDJdLFs2LDcsIiIsMCx7InN0eWxlIjp7InRhaWwiOnsibmFtZSI6Im1hcHMgdG8ifX19XSxbNiw4LCIiLDAseyJzdHlsZSI6eyJ0YWlsIjp7Im5hbWUiOiJtYXBzIHRvIn19fV0sWzcsOSwiIiwwLHsic3R5bGUiOnsidGFpbCI6eyJuYW1lIjoibWFwcyB0byJ9fX1dLFs4LDksIiIsMCx7InN0eWxlIjp7InRhaWwiOnsibmFtZSI6Im1hcHMgdG8ifX19XV0=
+\[\begin{tikzcd}
+	A & {A, A} & FA & {\id_A} & {\eta_A(\id_A)} \\
+	B & {A, B} & FB & f & {\eta_B(f) = Ff(\eta_A(\id_A))}
+	\arrow["f"', from=1-1, to=2-1]
+	\arrow["{\eta_A}", from=1-2, to=1-3]
+	\arrow["{f \circ -}"', from=1-2, to=2-2]
+	\arrow["Ff", from=1-3, to=2-3]
+	\arrow[maps to, from=1-4, to=1-5]
+	\arrow[maps to, from=1-4, to=2-4]
+	\arrow[maps to, from=1-5, to=2-5]
+	\arrow["{\eta_B}"', from=2-2, to=2-3]
+	\arrow[maps to, from=2-4, to=2-5]
+\end{tikzcd}
+\text{.}
+\]
+Note, that this is possible, because for all $B : \obj(\mathcal{C}) \ \bigcup_{f \in A,B }\textrm{im}(f \circ -) = A, B.$ So, we established a family of  isomorphisms: $$\Phi_{A, F} : \mathcal{C}(A, -), F \xrightarrow{\simeq} FA; \ \Phi^{-1}: x \mapsto \eta^{x}, \ \textrm{where}  \ \eta^x_A(\id_A) = x.$$ 
+
+\textbf{2.} $\Phi$ extends to a natural transformation between $\lambda AF. \mathcal{C}(A, -), F$ and $\lambda AF. FA:$
+% https://q.uiver.app/#q=WzAsOCxbMCwwLCJBIl0sWzAsMSwiQSciXSxbMSwwLCJGIl0sWzEsMSwiRiciXSxbMywwLCJcXG1hdGhjYWx7Q30oQSxcXF8pLCBGIl0sWzMsMSwiXFxtYXRoY2Fse0N9KEEnLFxcXyksIEYnIl0sWzQsMCwiRihBKSJdLFs0LDEsIkYnKEEnKSJdLFswLDEsIlxcYWxwaGFfXFxidWxsZXQiXSxbMiwzLCJcXGJldGEiXSxbNCw1LCJcXGJldGEgXFxjaXJjICBcXF8gXFxjaXJjIChcXGxhbWJkYSBcXHZhcnBoaS5cXHZhcnBoaSBcXGNpcmMgXFxhbHBoYV9cXGJ1bGxldCkiLDJdLFs0LDYsIlxcUGhpX3tBLEZ9Il0sWzYsNywiRidcXGFscGhhX1xcYnVsbGV0IFxcY2lyYyBcXGJldGFfQSJdLFs1LDcsIlxcUGhpX3tBJyxGJ30iLDJdXQ==
+\[\begin{tikzcd}
+	A & F && {\mathcal{C}(A,-), F} & {F(A)} \\
+	{A'} & {F'} && {\mathcal{C}(A',-), F'} & {F'(A')}
+	\arrow["{\alpha_\bullet}", from=1-1, to=2-1]
+	\arrow["\beta", from=1-2, to=2-2]
+	\arrow["{\Phi_{A,F}}", from=1-4, to=1-5]
+	\arrow["{\beta \circ  - \circ (\lambda \varphi.\varphi \circ \alpha_\bullet)}"', from=1-4, to=2-4]
+	\arrow["{F'\alpha_\bullet \circ \beta_A}", from=1-5, to=2-5]
+	\arrow["{\Phi_{A',F'}}"', from=2-4, to=2-5]
+\end{tikzcd}
+\text{;}
+\]
+% https://q.uiver.app/#q=WzAsNCxbMCwxLCJcXGV0YV57eCd9IDo9IFxcYmV0YSBcXGNpcmMgIFxcZXRhXnggXFxjaXJjIChcXGxhbWJkYSBcXHZhcnBoaS4gXFxhbHBoYV9cXGJ1bGxldCBcXGNpcmMgXFx2YXJwaGkpIl0sWzAsMCwiXFxldGFeeCJdLFsxLDAsIngiXSxbMSwxLCJcXFBoaShcXGV0YV57eCd9ICkgID0gRidcXGFscGhhX1xcYnVsbGV0IFxcY2lyYyBcXGJldGFfQSh4KSJdLFsxLDAsIiIsMCx7InN0eWxlIjp7InRhaWwiOnsibmFtZSI6Im1hcHMgdG8ifX19XSxbMiwzLCIiLDAseyJzdHlsZSI6eyJ0YWlsIjp7Im5hbWUiOiJtYXBzIHRvIn19fV0sWzEsMiwiIiwwLHsic3R5bGUiOnsidGFpbCI6eyJuYW1lIjoibWFwcyB0byJ9fX1dLFswLDMsIiIsMCx7InN0eWxlIjp7InRhaWwiOnsibmFtZSI6Im1hcHMgdG8ifX19XV0=
+\[\begin{tikzcd}
+	{\eta^x} & x \\
+	{\eta^{x'} := \beta \circ  \eta^x \circ (\lambda \varphi. \alpha_\bullet \circ \varphi)} & {\Phi(\eta^{x'} )  = F'\alpha_\bullet \circ \beta_A(x)}
+	\arrow[maps to, from=1-1, to=1-2]
+	\arrow[maps to, from=1-1, to=2-1]
+	\arrow[maps to, from=1-2, to=2-2]
+	\arrow[maps to, from=2-1, to=2-2]
+\end{tikzcd}
+\text{.}
+\]
+
+To prove the equality, we need to compare the $x' = \eta^{x'}(\id_{A'})$ and $F'\alpha_\bullet \circ \beta_A(x)$. It follows from the naturality conditions for $\beta$ and $\eta^x$:
+% https://q.uiver.app/#q=WzAsMTAsWzEsMCwiRkEiXSxbMSwyLCJGQSciXSxbMywwLCJGJ0EiXSxbMywyLCJGJ0EnIl0sWzAsMCwiQSJdLFswLDIsIkEnIl0sWzQsMCwiXFxpZF97QX06IEEsIEEiXSxbNCwyLCJcXGFscGhhX1xcYnVsbGV0OiBBLCBBJyJdLFs2LDAsIlxcZXRhX3tBJ31eeChcXGlkX3tBJ30pID0geCA6IEZBIl0sWzYsMiwiXFxldGFeeF97QSd9KFxcYWxwaGFfXFxidWxsZXQpID0gRlxcYWxwaGFfXFxidWxsZXQoeCkgOiBGQSciXSxbNCw1LCJcXGFscGhhX1xcYnVsbGV0IiwyXSxbMCwxLCJGIFxcYWxwaGFfXFxidWxsZXQiLDJdLFsyLDMsIkYnXFxhbHBoYV9cXGJ1bGxldCJdLFswLDIsIlxcYmV0YV9BIl0sWzEsMywiXFxiZXRhX3tBJ30iLDJdLFs2LDcsIlxcYWxwaGFfXFxidWxsZXQgXFxjaXJjIFxcXyIsMix7InN0eWxlIjp7InRhaWwiOnsibmFtZSI6Im1hcHMgdG8ifX19XSxbNyw5LCJcXGV0YV97QSd9XngiLDIseyJzdHlsZSI6eyJ0YWlsIjp7Im5hbWUiOiJtYXBzIHRvIn19fV0sWzYsOCwiXFxldGFfe0F9XngiLDAseyJzdHlsZSI6eyJ0YWlsIjp7Im5hbWUiOiJtYXBzIHRvIn19fV0sWzgsOSwiRlxcYWxwaGFfXFxidWxsZXQiLDAseyJzdHlsZSI6eyJ0YWlsIjp7Im5hbWUiOiJtYXBzIHRvIn19fV1d
+\[\begin{tikzcd}
+	A & FA && {F'A} & {\id_{A}: A, A} && {\eta_{A'}^x(\id_{A'}) = x : FA} \\
+	\\
+	{A'} & {FA'} && {F'A'} & {\alpha_\bullet: A, A'} && {\eta^x_{A'}(\alpha_\bullet) = F\alpha_\bullet(x) : FA'}
+	\arrow["{\alpha_\bullet}"', from=1-1, to=3-1]
+	\arrow["{\beta_A}", from=1-2, to=1-4]
+	\arrow["{F \alpha_\bullet}"', from=1-2, to=3-2]
+	\arrow["{F'\alpha_\bullet}", from=1-4, to=3-4]
+	\arrow["{\eta_{A}^x}", maps to, from=1-5, to=1-7]
+	\arrow["{\alpha_\bullet \circ -}"', maps to, from=1-5, to=3-5]
+	\arrow["{F\alpha_\bullet}", maps to, from=1-7, to=3-7]
+	\arrow["{\beta_{A'}}"', from=3-2, to=3-4]
+	\arrow["{\eta_{A'}^x}"', maps to, from=3-5, to=3-7]
+\end{tikzcd}\]
+$$ \beta_{A'} \circ \eta^x_{A'} \circ (\lambda \varphi.\varphi \circ \alpha_\bullet) (\id_{A'}) = \beta_{A'} \circ \eta_{A'}^x(\alpha_\bullet) = \beta_{A'} \circ F\alpha_\bullet (x) = F'\alpha_\bullet \circ \beta_A(x).$$ 
+
+\section{Corollaries}
+
+\begin{definition}[Yoneda embedding]
+% https://q.uiver.app/#q=WzAsNSxbMiwwLCJBIl0sWzIsMiwiQiJdLFs0LDAsIkIsIFxcXyJdLFs0LDIsIkEsXFxfIl0sWzAsMSwiXFxsYW1iZGEgQS4gXFxtYXRoY2Fse0N9KEEsIFxcXyk6IFxcbWF0aGNhbHtDfV5cXG9wIFxcdG8gXFxtYXRoY2Fse1N9ZXReXFxtYXRoY2Fse0N9Il0sWzAsMSwiZiIsMl0sWzIsMywiXFxfXFxjaXJjIGYiLDJdXQ==
+\[\begin{tikzcd}[sep=small]
+	&& A && {B, -} \\
+	{Y := \lambda A. \mathcal{C}(A, -): \mathcal{C}^\op \to \mathcal{S}et^\mathcal{C}} \\
+	&& B && {A,-}
+	\arrow["f"', from=1-3, to=3-3]
+	\arrow["{-\circ f}"', from=1-5, to=3-5]
+\end{tikzcd}
+\text{.}
+\]
+\end{definition}
+
+\begin{proposition}[Fully faithfulness]
+Yoneda embedding is a fully faithful functor.
+
+\textbf{Proof.} For an arbitrary $B : \obj(\mc{C})$, in the covariant Yoneda lemma set $F := \mc{C}(B, -)$. This gives us a natural isomorphism:
+$$ \mc{C}(A, -) , \mc{C}(B, -) \cong \mc{C}(B, A)$$
+So, the mapping of morphisms under $Y$ is bijective.
+\end{proposition}
+
+\begin{corollary}[Small rephrasings] \hfill 
+\begin{enumerate}
+\item Every natural transformation between Hom functors from $\mc{S}et^\mc{C}$ is given by a unique corresponding arrow between objects in $\mc{C}$; 
+\item $A \simeq B \Leftrightarrow \mc{C}(A, -) \simeq \mc{C}(B,-)$ (note that functors preserve isomorpisms).
+\end{enumerate}
+\end{corollary}
+
+
+
+
+\end{document}
