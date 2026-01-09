@@ -39,8 +39,8 @@ Unpolished notes with my personal pov on category theory — a high-level approa
 ## 04 Yoneda Lemma
 1. High-level statement and proof
 2. Corollaries
-  - Yoneda embedding and its full faithfulness
-  - Small rephrasings
+   - Yoneda embedding and its full faithfulness
+   - Small rephrasings
 
 ## 05 (Co)Limits
 
