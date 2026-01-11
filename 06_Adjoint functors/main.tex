@@ -1,0 +1,357 @@
+\documentclass[12pt]{article}
+% Page setup
+\usepackage[margin=1in]{geometry}
+\usepackage{parskip}
+\usepackage{titling}
+\setlength{\droptitle}{-6em} 
+
+% Math packages
+\usepackage{amsmath, amsthm, amssymb, amsfonts}
+\usepackage{mathtools}
+\makeatletter
+\g@addto@macro\th@plain{\normalfont}
+\makeatother
+
+\makeatletter
+\renewenvironment{proof}[1][\proofname]{%
+  \par\pushQED{\qed}%
+  \normalfont
+  \trivlist
+  \item[\hskip\labelsep\bfseries #1\@addpunct{.}]\normalfont%
+}{%
+  \popQED\endtrivlist\@endpefalse
+}
+\makeatother
+
+% Commutative diagrams and proofs
+\usepackage{tikz-cd}
+\usepackage{proof}
+
+\usepackage{hyperref}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    urlcolor=cyan,
+    citecolor=green,
+    allcolors=black
+}
+
+% Theorem environments
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{fact}[theorem]{Fact}
+\newtheorem{remark}[theorem]{Remark}
+
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{analysis}[theorem]{Analysis}
+
+\newtheorem{example}[theorem]{Example}
+
+% Useful commands for category theory
+\newcommand{\mc}{\mathcal}
+\newcommand{\ini}{\operatorname{ini}}
+\newcommand{\ter}{\operatorname{ter}}
+\newcommand{\cod}{\operatorname{cod}}
+\newcommand{\dom}{\operatorname{dom}}
+
+\newcommand{\List}{\operatorname{List}}
+\newcommand{\lop}{\operatorname{[ \ ]}}
+\newcommand{\len}{\operatorname{len}}
+\newcommand{\type}{\operatorname{type}}
+
+\newcommand{\Exc}{\operatorname{Exception}}
+
+\newcommand{\Kl}{\operatorname{Kl}}
+\newcommand{\plus}{\operatorname{+}}
+
+\newcommand{\Cat}{\mathcal{C}at}
+\newcommand{\Vect}{\mathrm{Vect}_\mathbf{k}}
+\newcommand{\Hom}{\operatorname{Hom}}
+\newcommand{\Nat}{\operatorname{Nat}}
+\newcommand{\id}{\mathrm{id}}
+\newcommand{\op}{\mathrm{op}}
+\newcommand{\obj}{\operatorname{obj}}
+\newcommand{\arr}{\operatorname{arr}}
+\newcommand{\adj}{\operatorname{adj}}
+\newcommand{\coadj}{\operatorname{coadj}}
+\newcommand{\colim}{\operatorname*{colim}}
+\newcommand{\lcoim}{\operatorname*{(co)lim}}
+
+% Arrows
+\newcommand{\ra}{\rightarrow}
+\newcommand{\from}{\leftarrow}
+\newcommand{\To}{\Rightarrow}
+\newcommand{\xto}{\xrightarrow}
+\newcommand{\xfrom}{\xleftarrow}
+
+\renewcommand{\labelitemi}{--} % Level 1: Dashes
+\renewcommand{\labelitemii}{$\circ$} % Level 2: Circles
+\renewcommand{\labelitemiii}{$\bullet$} % Level 3: Bullets (default)
+
+
+\title{Adjoint functors}
+\author{Alyson Mei}
+\date{\today}
+
+
+\begin{document}
+
+\maketitle
+
+\paragraph{References} \hfill
+
+\begin{itemize}
+    \item GitHub:
+    \begin{itemize}
+        \item \href{https://github.com/alyson-mei/category-theory/blob/main/01_Natural%20transformations/Natural%20transformations.pdf}{Natural transformations};
+        \item \href{https://github.com/alyson-mei/category-theory/blob/main/02_Hom%20functor/Hom%20functor.pdf}{Hom functor};
+        \item \href{https://github.com/alyson-mei/category-theory/blob/main/03_Diagonal%20functor%20%26%20Comma%20category/Diagonal%20functor%20%26%20Comma_category.pdf}{Comma category and Diagonal functor};
+    \end{itemize}
+    \item Local: //not implemented yet
+\end{itemize}
+
+
+
+
+\section{Adjoint functors}
+
+\begin{definition}[Adjoint functors via set-valued Hom functors]
+    Let $F: \mc{C} \to \mc{D}$, $G: \mc{D} \to \mc{C}$, where $\mc{C}$ and $\mc{D}$ are locally small. $F$ is said to be left adjoint to $G$ (resp. $G$ is said to be right adjoint to $F$) if 
+    $$ \Hom_\mc{D} (F c, d) \cong \Hom_\mc{C}(c, Gd). $$
+    Notation: % https://q.uiver.app/#q=WzAsMyxbMiwwLCJcXG1je0N9Il0sWzQsMCwiXFxtY3tEfSJdLFswLDAsIkYgXFxkYXNodiBHLCJdLFswLDEsIkYiLDAseyJjdXJ2ZSI6LTN9XSxbMSwwLCJHIiwwLHsiY3VydmUiOi0zfV0sWzMsNCwiXFxkYXNodiIsMyx7InNob3J0ZW4iOnsic291cmNlIjoyMCwidGFyZ2V0IjoyMH0sInN0eWxlIjp7ImJvZHkiOnsibmFtZSI6Im5vbmUifSwiaGVhZCI6eyJuYW1lIjoibm9uZSJ9fX1dXQ==
+    \[\begin{tikzcd}
+    	{F \dashv G,} && {\mc{C}} && {\mc{D}}
+    	\arrow[""{name=0, anchor=center, inner sep=0}, "F", bend left = 36pt, from=1-3, to=1-5]
+    	\arrow[""{name=1, anchor=center, inner sep=0}, "G", bend left = 36pt, from=1-5, to=1-3]
+    	\arrow["\dashv"{marking, allow upside down}, draw=none, from=0, to=1]
+    \end{tikzcd}
+    \text{.}\]
+    In functorial notation this condition takes the following form:
+    % https://q.uiver.app/#q=WzAsMixbMCwwLCJcXG1je0N9Xlxcb3AgXFx0aW1lcyBcXG1je0N9Il0sWzIsMCwiXFxtY3tTfWV0Il0sWzAsMSwiXFxsYW1iZGEgY2QuIEZjLCBkIiwwLHsiY3VydmUiOi0zfV0sWzAsMSwiXFxsYW1iZGEgY2QuIGMsIEdkIiwyLHsiY3VydmUiOjN9XSxbMiwzLCJcXHNpbWVxIiwwLHsic2hvcnRlbiI6eyJzb3VyY2UiOjIwLCJ0YXJnZXQiOjIwfX1dXQ==
+    \[\begin{tikzcd}
+    	{\mc{C}^\op \times \mc{D}} && {\mc{S}et}
+    	\arrow[""{name=0, anchor=center, inner sep=0}, "{\lambda cd. Fc, d}", bend left = 36pt, from=1-1, to=1-3]
+    	\arrow[""{name=1, anchor=center, inner sep=0}, "{\lambda cd. c, Gd}"', bend right = 36pt, from=1-1, to=1-3]
+    	\arrow["\simeq", shorten <=6pt, shorten >=6pt, Rightarrow, from=0, to=1]
+    \end{tikzcd}.\]
+\end{definition}
+
+\begin{definition}[$\Phi$; $\sharp$ and $\flat$; $\eta_c$ and $\varepsilon_d$]
+    We denote the isomorphism between Hom functors as $\Phi$:
+    % https://q.uiver.app/#q=WzAsOCxbMCwwLCJjIl0sWzAsMSwiYyciXSxbMSwwLCJkIl0sWzEsMSwiZCciXSxbMywwLCJGYywgZCJdLFs0LDAsImMsIEdkIl0sWzMsMSwiRmMnLCBkJyJdLFs0LDEsImMnLCBHZCciXSxbMSwwLCJmIl0sWzIsMywiZyIsMl0sWzQsNSwiXFxQaGlfe2MsIGR9Il0sWzQsNiwiZyBcXGNpcmMgLSBcXGNpcmMgRmYiLDJdLFs2LDcsIlxcUGhpX3tjJywgZCd9IiwyXSxbNSw3LCJHZyBcXGNpcmMgLSBcXGNpcmMgZiJdXQ==
+\[\begin{tikzcd}
+	c & d && {Fc, d} & {c, Gd} \\
+	{c'} & {d'} && {Fc', d'} & {c', Gd'}
+	\arrow["g"', from=1-2, to=2-2]
+	\arrow["{\Phi_{c, d}}", from=1-4, to=1-5]
+	\arrow["{g \circ - \circ Ff}"', from=1-4, to=2-4]
+	\arrow["{Gg \circ - \circ f}", from=1-5, to=2-5]
+	\arrow["f", from=2-1, to=1-1]
+	\arrow["{\Phi_{c', d'}}"', from=2-4, to=2-5]
+\end{tikzcd}
+\text{.}
+\]
+
+The standard notation for action of $\Phi$ and its inverse on arrows is $\sharp$ and $\flat$ annotations respectively:
+
+% https://q.uiver.app/#q=WzAsOCxbMCwwLCJcXHZhcnBoaTogRmMsIGQiXSxbMCwxLCJnIFxcY2lyYyBcXHZhcnBoaSBcXGNpcmMgRmYiXSxbMSwxLCIoZyBcXGNpcmMgXFx2YXJwaGkgXFxjaXJjIEZmKV5cXHNoYXJwID0gR2cgXFxjaXJjIFxcdmFycGhpXlxcc2hhcnAgXFxjaXJjIGYiXSxbMSwwLCJcXFBoaV97YywgZH0oXFx2YXJwaGkpOj0gXFx2YXJwaGleXFxzaGFycCJdLFszLDAsIlxccHNpOiBjLCBSZCJdLFsyLDAsIlxcUGhpXnstMX1fe2MsIGR9KFxccHNpKTo9IFxccHNpXlxcZmxhdCJdLFszLDEsIkdnIFxcY2lyYyBcXHBzaSBcXGNpcmMgZiJdLFsyLDEsImcgXFxjaXJjIFxccHNpXlxcZmxhdCBcXGNpcmMgRmYgPSAoR2cgXFxjaXJjIFxccHNpIFxcY2lyYyBmKV5cXGZsYXQiXSxbMCwzLCIiLDIseyJzdHlsZSI6eyJ0YWlsIjp7Im5hbWUiOiJtYXBzIHRvIn19fV0sWzAsMSwiIiwwLHsic3R5bGUiOnsidGFpbCI6eyJuYW1lIjoibWFwcyB0byJ9fX1dLFsxLDIsIiIsMCx7InN0eWxlIjp7InRhaWwiOnsibmFtZSI6Im1hcHMgdG8ifX19XSxbNCw1LCIiLDAseyJzdHlsZSI6eyJ0YWlsIjp7Im5hbWUiOiJtYXBzIHRvIn19fV0sWzUsNywiIiwwLHsic3R5bGUiOnsidGFpbCI6eyJuYW1lIjoibWFwcyB0byJ9fX1dLFs0LDYsIiIsMix7InN0eWxlIjp7InRhaWwiOnsibmFtZSI6Im1hcHMgdG8ifX19XSxbMywyLCIiLDIseyJzdHlsZSI6eyJ0YWlsIjp7Im5hbWUiOiJtYXBzIHRvIn19fV0sWzYsNywiIiwyLHsic3R5bGUiOnsidGFpbCI6eyJuYW1lIjoibWFwcyB0byJ9fX1dXQ==
+\[\begin{tikzcd}
+	{\varphi: Fc, d} & {\Phi_{c, d}(\varphi):= \varphi^\sharp} & {\Phi^{-1}_{c, d}(\psi):= \psi^\flat} & {\psi: c, Rd} \\
+	{g \circ \varphi \circ Ff} & {(g \circ \varphi \circ Ff)^\sharp = Gg \circ \varphi^\sharp \circ f} & {g \circ \psi^\flat \circ Ff = (Gg \circ \psi \circ f)^\flat} & {Gg \circ \psi \circ f}
+	\arrow[maps to, from=1-1, to=1-2]
+	\arrow[maps to, from=1-1, to=2-1]
+	\arrow[maps to, from=1-2, to=2-2]
+	\arrow[maps to, from=1-3, to=2-3]
+	\arrow[maps to, from=1-4, to=1-3]
+	\arrow[maps to, from=1-4, to=2-4]
+	\arrow[maps to, from=2-1, to=2-2]
+	\arrow[maps to, from=2-4, to=2-3]
+\end{tikzcd}
+\text{.}
+\]
+
+The action of $\Phi$ on $\id_{Fc}$ and $\id_{Gd}$ is denoted as follows:
+$$\eta_c := \id_{Fc}^\sharp, \qquad \varepsilon_d:= \id_{Gd}^\flat.$$
+Special cases:
+\begin{itemize}
+    \item $f = \id_c$: $$(g \circ \varphi)^\sharp = Gg \circ \varphi^\sharp, \qquad g \circ \psi^\flat = (Gg \circ \psi)^\flat;$$
+    \item $g = \id_d$: $$(\varphi \circ Ff)^\sharp = \varphi^\sharp \circ f, \qquad \psi^\flat \circ Ff = (\psi \circ f)^\flat;$$
+    \item $d = Fc, \ \varphi = \id_c$ :  
+    $$(g \circ Ff)^\sharp = Gg \circ \eta_c \circ f;$$
+    \item $c = Gd, \ \psi = \id_d$:  
+    $$g \circ \varepsilon_d  \circ Ff = (Gg \circ f)^\flat.$$
+\end{itemize}
+\end{definition}
+
+\begin{definition}[Adjoint functors via Universal property]
+    We can define adjunctions via the universal property using the data from the Hom-functor definition.
+    \begin{itemize}
+        \item $F \dashv G :\Leftrightarrow$ for all $\psi: c \to Gd$ there exists unique morphism $\psi^\flat: Fc \to d$ satisfying the  diagram
+        % https://q.uiver.app/#q=WzAsNSxbMSwwLCJHRmMiXSxbMSwxLCJHZCJdLFswLDAsImMiXSxbMiwwLCJGYyJdLFsyLDEsImQiXSxbMiwwLCJcXGV0YV9jIl0sWzAsMSwiR1xccHNpXlxcZmxhdCIsMCx7InN0eWxlIjp7ImJvZHkiOnsibmFtZSI6ImRhc2hlZCJ9fX1dLFsyLDEsIlxccHNpIiwyXSxbMyw0LCJcXHBzaV5cXGZsYXQiLDAseyJzdHlsZSI6eyJib2R5Ijp7Im5hbWUiOiJkYXNoZWQifX19XV0=
+    \[\begin{tikzcd}
+    	c & GFc & Fc \\
+    	& Gd & d
+    	\arrow["{\eta_c}", from=1-1, to=1-2]
+    	\arrow["\psi"', from=1-1, to=2-2]
+    	\arrow["{G\psi^\flat}", dashed, from=1-2, to=2-2]
+    	\arrow["{\psi^\flat}", dashed, from=1-3, to=2-3]
+    \end{tikzcd}\text{;}\]
+        \item $F \dashv G :\Leftrightarrow$ for all $\varphi: Fc \to d$ there exists unique morphism $\varphi^\sharp: c \to Gd$ satisfying the diagram
+    \end{itemize}
+    % https://q.uiver.app/#q=WzAsNSxbMSwwLCJGYyJdLFsyLDEsImQiXSxbMSwxLCJGR2QiXSxbMCwxLCJHZCJdLFswLDAsImMiXSxbMCwxLCJcXHZhcnBoaSJdLFsyLDEsIlxcdmFyZXBzaWxvbl9kIiwyXSxbMCwyLCJGXFx2YXJwaGkiLDIseyJzdHlsZSI6eyJib2R5Ijp7Im5hbWUiOiJkYXNoZWQifX19XSxbNCwzLCJcXHZhcnBoaV5cXHNoYXJwIiwyLHsic3R5bGUiOnsiYm9keSI6eyJuYW1lIjoiZGFzaGVkIn19fV1d
+    % https://q.uiver.app/#q=WzAsNSxbMSwwLCJGYyJdLFsyLDEsImQiXSxbMSwxLCJGR2QiXSxbMCwxLCJHZCJdLFswLDAsImMiXSxbMCwxLCJcXHZhcnBoaSJdLFsyLDEsIlxcdmFyZXBzaWxvbl9kIiwyXSxbMCwyLCJGXFx2YXJwaGleXFxzaGFycCIsMix7InN0eWxlIjp7ImJvZHkiOnsibmFtZSI6ImRhc2hlZCJ9fX1dLFs0LDMsIlxcdmFycGhpXlxcc2hhcnAiLDIseyJzdHlsZSI6eyJib2R5Ijp7Im5hbWUiOiJkYXNoZWQifX19XV0=
+    \[\begin{tikzcd}
+    	c & Fc \\
+    	Gd & FGd & d
+    	\arrow["{\varphi^\sharp}"', dashed, from=1-1, to=2-1]
+    	\arrow["{F\varphi^\sharp}"', dashed, from=1-2, to=2-2]
+    	\arrow["\varphi", from=1-2, to=2-3]
+    	\arrow["{\varepsilon_d}"', from=2-2, to=2-3]
+    \end{tikzcd}
+    \text{.}\]
+\end{definition}
+
+\begin{proposition}[Equivalence of definitions via Hom functors and via Universal property]
+    The Hom-functor and universal property definitions of adjoint functors (Defs 1.1 and 1.3) are equivalent.
+    \begin{proof}
+        \begin{itemize}
+            \item[($\Rightarrow$)]:
+            \hfill
+            \begin{enumerate} 
+                \item \emph{Existence}. The morphisms $\psi^\flat$ and $\varphi^\sharp$ are obtained directly from the natural transformation $\Phi$ in Def 1.2. Commutativity of the diagrams follows from the corresponding special cases in Def 1.2:
+                \begin{itemize}
+                    \item Set $f := \id_c$, $g := \psi^\flat$ in special case (3) to obtain the first diagram.
+                    \item Set $g := \id_d$, $f := \varphi^\sharp$ in special case (4) to obtain the second diagram.
+                \end{itemize}
+                \item \emph{Uniqueness}. Suppose $\tilde{\varphi}$ and $\tilde{\psi}$ are alternative arrows satisfying the diagrams:
+                \[
+                \psi = G \tilde{\psi} \circ \eta_c, \qquad \varphi = \varepsilon_d \circ F\tilde{\varphi}.
+                \]
+                Applying special cases (3) and (4) and using the invertibility of $\sharp$ and $\flat$, we get
+                \[
+                \psi = \tilde{\psi}^\sharp \Leftrightarrow \psi^\flat = \tilde{\psi}, 
+                \qquad 
+                \varphi = \tilde{\varphi}^\flat \Leftrightarrow \varphi^\sharp = \tilde{\varphi}.
+                \]
+            \end{enumerate}
+            \item[($\Leftarrow$)] // not implemented yet
+        \end{itemize}
+    \end{proof}
+\end{proposition}
+
+
+% Old notes
+
+% \section{Adjoint functors}
+% \subsection{Via natural isomorphism} 
+% %https://q.uiver.app/#q=WzAsNCxbMCwwLCJcXG1hdGhjYWx7Q30iXSxbMiwwLCJcXG1hdGhjYWx7RH0iXSxbMywwLCJcXG1hdGhjYWx7Q31ee29wfSBcXHRpbWVzIFxcbWF0aGNhbHtEfSAiXSxbNSwwLCJcXG1hdGhjYWx7U31ldCJdLFswLDEsIkwiLDAseyJjdXJ2ZSI6LTJ9XSxbMSwwLCJSIiwwLHsiY3VydmUiOi0yfV0sWzIsMywiXFxtYXRoY2Fse0R9KExcXF8sIFxcXykiLDAseyJjdXJ2ZSI6LTJ9XSxbMiwzLCJcXG1hdGhjYWx7Q30oXFxfLCBSXFxfKSIsMix7ImN1cnZlIjoyfV0sWzYsNywiXFxzaW1lcSIsMCx7InNob3J0ZW4iOnsic291cmNlIjoyMCwidGFyZ2V0IjoyMH19XV0=
+% \[\begin{tikzcd}
+% 	{\mathcal{C}} && {\mathcal{D}} & {\mathcal{C}^{op} \times \mathcal{D} } && {\mathcal{S}et} & {Lc,d \cong c, Rd}
+% 	\arrow["L", bend left=24pt, from=1-1, to=1-3]
+% 	\arrow["R", bend left=24pt, from=1-3, to=1-1]
+% 	\arrow[""{name=0, anchor=center, inner sep=0}, "{\mathcal{D}(L\_, \_)}"{pos=0.43}, bend left=24pt, from=1-4, to=1-6]
+% 	\arrow[""{name=1, anchor=center, inner sep=0}, "{\mathcal{C}(\_, R\_)}"', bend right=24pt, from=1-4, to=1-6]
+% 	\arrow["\simeq", shorten <=3pt, shorten >=3pt, Rightarrow, from=0, to=1]
+% \end{tikzcd}\]
+% % https://q.uiver.app/#q=WzAsMTAsWzEsMCwiTGMsZCJdLFsxLDEsIkxjJyxkJyJdLFsyLDAsImMsUmQiXSxbMiwxLCJjJyxSZCciXSxbMCwwLCIoYyxkKSJdLFswLDEsIihjJyxkJykiXSxbMywwLCJcXHZhcnBoaSJdLFszLDEsImdcXGNpcmMgXFx2YXJwaGkgXFxjaXJjIExmIl0sWzQsMCwiXFxwaGlfe2MsZH0oXFx2YXJwaGkpIl0sWzQsMSwiUmcgXFxjaXJjIFxccGhpX3tjLGR9KFxcdmFycGhpKSBcXGNpcmMgZiA9IFxcXFwgXFxwaGlfe2MnLGQnfShnXFxjaXJjIFxcdmFycGhpIFxcY2lyYyBMZikiXSxbNCw1LCIoZl57b3B9LGcpIl0sWzAsMiwiXFxwaGlfe2MsZH0iXSxbMCwxLCJnXFxjaXJjXFxfXFxjaXJjIExmIiwyXSxbMSwzLCJcXHBoaV97YycsZCd9IiwyXSxbMiwzLCJSZ1xcY2lyY1xcX1xcY2lyYyBmIl0sWzYsOF0sWzYsN10sWzcsOV0sWzgsOV1d
+% \[\begin{tikzcd}
+% 	{(c,d)} & {Lc,d} & {c,Rd} & \varphi & {\phi_{c,d}(\varphi)} \\
+% 	{(c',d')} & {Lc',d'} & {c',Rd'} & {g\circ \varphi \circ Lf} & \begin{array}{c} Rg \circ \phi_{c,d}(\varphi) \circ f = \\ = \phi_{c',d'}(g\circ \varphi \circ Lf) \end{array}
+% 	\arrow["{(f^{op},g)}", from=1-1, to=2-1]
+% 	\arrow["{\phi_{c,d}}", from=1-2, to=1-3]
+% 	\arrow["{g\circ\_\circ Lf}"', from=1-2, to=2-2]
+% 	\arrow["{Rg\circ\_\circ f}", from=1-3, to=2-3]
+% 	\arrow[from=1-4, to=1-5]
+% 	\arrow[from=1-4, to=2-4]
+% 	\arrow[from=1-5, to=2-5]
+% 	\arrow["{\phi_{c',d'}}"', from=2-2, to=2-3]
+% 	\arrow[from=2-4, to=2-5]
+% \end{tikzcd}\]
+% $$Rg \circ \phi_{c,d}(\varphi) \circ f = \phi_{c',d'}(g\circ \varphi \circ Lf)$$
+
+% $$ \varphi^{\sharp} := \phi(\varphi), \ \psi^{\flat} := \phi^{-1} (\psi)$$
+% $$ 1) \ g = \textrm{id} \Rightarrow \varphi^{\sharp} \circ f = (\varphi \circ Lf)^{\sharp} \Leftrightarrow \psi \circ f = (\psi^{\flat} \circ Lf)^{\sharp} \ \  (2.1) $$
+% $$ 2) \ f = \textrm{id} \Rightarrow (Rg \circ \psi)^\flat = g \circ \psi^\flat \Leftrightarrow (Rg \circ \varphi^{\sharp})^\flat = g \circ \varphi 
+% \ \  (2.2) $$
+
+% \subsection{Via universal property}
+% $$ d = Lc \Rightarrow Lc, Lc \cong c, RLc. \ \  \eta_c := \textrm{id}_{Lc}^{\sharp}: c \rightarrow RLc. \ \ Rg \circ \eta_c = g^{\sharp} $$
+% $$ c = Rd \Rightarrow LRd, d \cong Rd, Rd. \ \  \varepsilon_d := \textrm{id}_{Rd}^{\flat}: LRd \rightarrow d. \ \ f^{\flat} = \varepsilon_d \circ Lf $$
+% % https://q.uiver.app/#q=WzAsMTAsWzQsMCwiYyciXSxbNCwxLCJSZCJdLFs1LDAsIkxjJyJdLFs1LDEsIkxSZCJdLFs2LDEsImQiXSxbMCwwLCJjIl0sWzEsMSwiUmQiXSxbMSwwLCJSTGMiXSxbMiwwLCJMYyJdLFsyLDEsImQiXSxbMCwxLCJmIiwyLHsic3R5bGUiOnsiYm9keSI6eyJuYW1lIjoiZGFzaGVkIn19fV0sWzIsMywiTGYiLDIseyJzdHlsZSI6eyJib2R5Ijp7Im5hbWUiOiJkYXNoZWQifX19XSxbMyw0LCJcXHZhcmVwc2lsb25fZCIsMl0sWzIsNCwiZl57XFxmbGF0fSJdLFs1LDYsImdee1xcc2hhcnB9IiwyXSxbNyw2LCJSZyIsMCx7InN0eWxlIjp7ImJvZHkiOnsibmFtZSI6ImRhc2hlZCJ9fX1dLFs1LDcsIlxcZXRhX2MiXSxbOCw5LCJnIiwwLHsic3R5bGUiOnsiYm9keSI6eyJuYW1lIjoiZGFzaGVkIn19fV1d
+% \[\begin{tikzcd}
+% 	c & RLc & Lc && {c'} & {Lc'} \\
+% 	& Rd' & d' && Rd & LRd & d
+% 	\arrow["{\eta_c}", from=1-1, to=1-2]
+% 	\arrow["{g^{\sharp}}"', from=1-1, to=2-2]
+% 	\arrow["Rg", dashed, from=1-2, to=2-2]
+% 	\arrow["g", dashed, from=1-3, to=2-3]
+% 	\arrow["f"', dashed, from=1-5, to=2-5]
+% 	\arrow["Lf"', dashed, from=1-6, to=2-6]
+% 	\arrow["{f^{\flat}}", from=1-6, to=2-7]
+% 	\arrow["{\varepsilon_d}"', from=2-6, to=2-7]
+% \end{tikzcd}\]
+
+% * Left diagram: $\forall x \in c, Rd' \ ((x = \eta_c \circ R x^\flat) \wedge \exists ! y \in Lc, d' \ (x = \eta_c \circ Ry))$
+
+% \textbf{Proof (uniqueness).} $x = \eta_c \circ Rx^\flat = \eta_c \circ Ry = y^\sharp \Rightarrow y = x^\flat$.
+
+% Similarly for the right diagram.
+
+% \subsection{Via functor category}
+% % https://q.uiver.app/#q=WzAsMTAsWzMsMCwiTFJMIl0sWzMsMSwiTCJdLFsyLDAsIkwiXSxbMCwwLCIxX3tcXG1hdGhjYWx7Q319Il0sWzEsMCwiUkwiXSxbMCwxLCJMUiJdLFsxLDEsIjFfe1xcbWF0aGNhbHtEfX0iXSxbNSwxLCJSIl0sWzQsMCwiUiJdLFs0LDEsIlJMUiJdLFsyLDAsIkxcXGV0YSJdLFswLDEsIlxcdmFyZXBzaWxvbiBMIl0sWzIsMSwiMV9MIiwyXSxbMyw0LCJcXGV0YSJdLFs3LDksIlxcZXRhIFIiXSxbOSw4LCJSXFx2YXJlcHNpbG9uIl0sWzcsOCwiMV9SIiwyXSxbNSw2LCJcXHZhcmVwc2lsb24iXV0=
+% \[\begin{tikzcd}
+% 	{1_{\mathcal{C}}} & RL & L & LRL & R \\
+% 	LR & {1_{\mathcal{D}}} && L & RLR & R
+% 	\arrow["\eta", from=1-1, to=1-2]
+% 	\arrow["{L\eta}", from=1-3, to=1-4]
+% 	\arrow["{1_L}"', from=1-3, to=2-4]
+% 	\arrow["{\varepsilon L}", from=1-4, to=2-4]
+% 	\arrow["\varepsilon", from=2-1, to=2-2]
+% 	\arrow["{R\varepsilon}", from=2-5, to=1-5]
+% 	\arrow["{1_R}"', from=2-6, to=1-5]
+% 	\arrow["{\eta R}", from=2-6, to=2-5]
+% \end{tikzcd}\]
+
+% \textbf{Proof.} 1) Naturality:
+% % https://q.uiver.app/#q=WzAsOCxbMCwwLCJjIl0sWzAsMSwiYyciXSxbMSwwLCJSTGMiXSxbMSwxLCJSTGMnIl0sWzMsMCwiTFJkIl0sWzMsMSwiTFJkJyJdLFs0LDEsImQnIl0sWzQsMCwiZCJdLFswLDIsIlxcZXRhX2MiXSxbMCwxLCJmIiwyXSxbMSwzLCJcXGV0YV97Yyd9IiwyXSxbMiwzLCJSTGYiXSxbNCw3LCJcXHZhcmVwc2lsb25fe2R9Il0sWzQsNSwiTFJnIiwyXSxbNSw2LCJcXHZhcmVwc2lsb25fe2QnfSIsMl0sWzcsNiwiZyJdXQ==
+% \[\begin{tikzcd}
+% 	c & RLc && LRd & d \\
+% 	{c'} & {RLc'} && {LRd'} & {d'}
+% 	\arrow["{\eta_c}", from=1-1, to=1-2]
+% 	\arrow["f"', from=1-1, to=2-1]
+% 	\arrow["RLf", from=1-2, to=2-2]
+% 	\arrow["{\varepsilon_{d}}", from=1-4, to=1-5]
+% 	\arrow["LRg"', from=1-4, to=2-4]
+% 	\arrow["g", from=1-5, to=2-5]
+% 	\arrow["{\eta_{c'}}"', from=2-1, to=2-2]
+% 	\arrow["{\varepsilon_{d'}}"', from=2-4, to=2-5]
+% \end{tikzcd}\]
+% $$ RLf \circ \eta_c = \eta_{c'} \circ f \Leftrightarrow  (Lf)^{\sharp} = \eta_{c'} \circ f \ \textrm{(see 2.1)} $$
+% $$ g \circ \varepsilon_d = \varepsilon_{d'} \circ LRg \Leftrightarrow  g \circ \varepsilon_d = (Rg)^\flat \ \textrm{(see 2.2)} $$
+
+% 2) Commutativity:
+% % https://q.uiver.app/#q=WzAsNixbMCwwLCJMYyJdLFsxLDAsIkxSTGMiXSxbMSwxLCJMYyJdLFszLDAsIlJkIl0sWzMsMSwiUkxSZCJdLFs0LDEsIlJkIl0sWzAsMSwiTFxcZXRhX2MiXSxbMSwyLCJcXHZhcmVwc2lsb25fe0xjfSJdLFswLDIsIjFfe0xjfSIsMl0sWzQsMywiUlxcdmFyZXBzaWxvbl9kIl0sWzUsNCwiXFxldGFfe1JkfSJdLFs1LDMsIjFfe1JkfSIsMl1d
+% \[\begin{tikzcd}
+% 	Lc & LRLc && Rd \\
+% 	& Lc && RLRd & Rd
+% 	\arrow["{L\eta_c}", from=1-1, to=1-2]
+% 	\arrow["{\textrm{id}_{Lc}}"', from=1-1, to=2-2]
+% 	\arrow["{\varepsilon_{Lc}}", from=1-2, to=2-2]
+% 	\arrow["{R\varepsilon_d}", from=2-4, to=1-4]
+% 	\arrow["{\textrm{id}_{Rd}}"', from=2-5, to=1-4]
+% 	\arrow["{\eta_{Rd}}", from=2-5, to=2-4]
+% \end{tikzcd}\]
+% $$
+% \varepsilon_{Lc} \circ L\eta_c = \eta_c^\flat = \textrm{id}_{Lc}
+% $$
+% $$
+% R \varepsilon_d \circ \eta_{Rd} = \varepsilon_d^\sharp = \textrm{id}_{Rd}
+% $$
+
+% * \textbf{3.} $\Rightarrow$ \textbf{1.}
+
+\end{document}

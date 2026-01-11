@@ -9,14 +9,14 @@ Unpolished notes with my personal pov on category theory — a high-level approa
 ## 00 Category Theory Basics
 
 1. Categories 
-   1. Definitions of a (commutative) diagram and a category
-   2. Additional definitions:
-      - Mono, epi, iso  
-      - Universal objects  
-      - Small and locally small categories  
-   3. List of examples
+    1. Definitions of a (commutative) diagram and a category
+    2. Additional definitions:
+        - Mono, epi, iso  
+        - Universal objects  
+        - Small and locally small categories  
+    3. List of examples
 2. Functors (definition only)
-   - Faithful, full and fully faithful functors
+    - Faithful, full and fully faithful functors
 3. Natural transformations (definition only)
    
 ## 01 Natural Transformations
@@ -37,26 +37,38 @@ Unpolished notes with my personal pov on category theory — a high-level approa
 2. Comma category -> (co)slice and arrow categories
 
 ## 04 Yoneda Lemma
+
 1. High-level statement and proof
 2. Corollaries
-   - Yoneda embedding and its full faithfulness
-   - Small rephrasings
+    - Yoneda embedding and its full faithfulness
+    - Small rephrasings
 
 ## 05 (Co)Limits
 
 1. Definitions
-   - Comma category
-   - (Co)Limit
-   - (Co)Limit functor
+    - Comma category
+    - (Co)Limit
+    - (Co)Limit functor
 2. Examples
-   - Terminal and initial objects
-   - (Co)Products
-   - (Co)Equalizers
-   - (Co)Kernels
-   - Pullbacks and pushouts
+    - Terminal and initial objects
+    - (Co)Products
+    - (Co)Equalizers
+    - (Co)Kernels
+    - Pullbacks and pushouts
 3. (Co)Continuous functors
 
-## 06 (Co)Monads
+## 06 Adjoint functors
+
+1. Definition via Hom functors
+    - Natural transformation $\Phi$, $\sharp$ and $\flat$ annotations, unit and counit arrows $\eta_c$ and $\varepsilon_d$
+    - Special cases
+2. Definition via Universal property
+    - Equivalence of definitions via Hom functors and via Universal property //($\leftarrow$) is not implemented 
+3. Definition via Triangle diagrams //not implemented
+
+//experimental: GitHub references
+
+## 07 (Co)Monads
 
 ### Monads
 
@@ -64,9 +76,9 @@ Unpolished notes with my personal pov on category theory — a high-level approa
 2. Kleisli category  
 3. Monads and adjunctions *(unfinished)*  
 4. Examples  
-   1. List monad  
-   2. Exception monad  
+    - List monad  
+    - Exception monad  
 
 ### Comonads
 
-*Not started*
+//not implemented
