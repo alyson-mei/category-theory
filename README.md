@@ -63,7 +63,7 @@ Unpolished notes with my personal pov on category theory — a high-level approa
     - Natural transformation $\Phi$, $\sharp$ and $\flat$ annotations, unit and counit arrows $\eta_c$ and $\varepsilon_d$
     - Special cases
 2. Definition via Universal property
-    - Equivalence of definitions via Hom functors and via Universal property //($\leftarrow$) is not implemented 
+    - Equivalence of definitions via Hom functors and via Universal property //$(\Leftarrow)$ is not implemented 
 3. Definition via Triangle diagrams //not implemented
 
 //experimental: GitHub references
@@ -74,7 +74,7 @@ Unpolished notes with my personal pov on category theory — a high-level approa
 
 1. Monoid objects and monads  
 2. Kleisli category  
-3. Monads and adjunctions *(unfinished)*  
+3. Monads and adjunctions //unfinished  
 4. Examples  
     - List monad  
     - Exception monad  
