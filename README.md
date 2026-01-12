@@ -57,14 +57,16 @@ Unpolished notes with my personal pov on category theory — a high-level approa
     - Pullbacks and pushouts
 3. (Co)Continuous functors
 
-## 06 Adjoint functors
+## 06 Adjoint functors (work in progress) 
 
-1. Definition via Hom functors
-    - Natural transformation $\Phi$, $\sharp$ and $\flat$ annotations, unit and counit arrows $\eta_c$ and $\varepsilon_d$
-    - Special cases
-2. Definition via Universal property
-    - Equivalence of definitions via Hom functors and via Universal property //$(\Leftarrow)$ is not implemented 
-3. Definition via Triangle diagrams //not implemented
+1. Introduction
+2. Machinery and proofs
+    1. Definition via Hom functors
+        - Natural transformation $\Phi$, $\sharp$ and $\flat$ annotations, unit and counit arrows $\eta_c$ and $\varepsilon_d$
+        - Special cases
+    2. Definition via Universal property
+        - Equivalence of definitions via Hom functors and via Universal property //$(\Leftarrow)$ is not implemented 
+    3. Definition via Triangle diagrams //not implemented
 
 //experimental: GitHub references
 

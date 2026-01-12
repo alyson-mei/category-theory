@@ -1,7 +1,7 @@
 \documentclass[12pt]{article}
 % Page setup
 \usepackage[margin=1in]{geometry}
-\usepackage{parskip}
+\usepackage{indentfirst}
 \usepackage{titling}
 \setlength{\droptitle}{-6em} 
 
@@ -115,9 +115,126 @@
 \end{itemize}
 
 
+\section{Introduction}
+
+Adjoint functors are a rather subtle topic, involving a specific categorical machinery. Many sources present them with an unclear flow, often leaving proofs to the reader and emphasizing intuition through examples rather than systematically exploring different conceptual perspectives.
+
+Our primary goal is to provide both the necessary technical details and the underlying intuition. In this section, we present the high-level overview and the general flow of ideas without going into full proofs. The following section will be devoted to developing the full machinery and giving the detailed proofs.
+
+The most revealing high-level intuition for adjoint functors is probably the idea of the \emph{“best thing after equivalence.”} That is, we successively relax the notion of similarity between categories along the sequence: \emph{isomorphism → equivalence → adjunction}. Let’s see how this looks in practice.
+
+Two categories $\mc{C}$ and $\mc{D}$ are said to be:
+\begin{itemize}
+    \item Isomorphic, if there exist $F: \mc{C} \to \mc{D}$ and $G: \mc{D} \to \mc{C}$ such that $\id_\mc{C} = GF$, $FG = \id_\mc{D}$:
+    % https://q.uiver.app/#q=WzAsNixbMCwwLCJcXG1je0N9Il0sWzEsMSwiXFxtY3tDfSJdLFsxLDAsIlxcbWN7RH0iXSxbNCwxLCJcXG1je0R9Il0sWzMsMCwiXFxtY3tEfSJdLFszLDEsIlxcbWN7Q30iXSxbMCwxLCJcXGlkX3tcXG1je0N9fSA9RyBcXGNpcmMgRiAiLDJdLFswLDIsIkYiXSxbMiwxLCJHIiwxXSxbNCw1LCJHIiwyXSxbNSwzLCJGIiwyXSxbNCwzLCJGIFxcY2lyYyBHID0gXFxpZF97XFxtY3tEfX0iXV0=
+    \[\begin{tikzcd}
+    	{\mc{C}} & {\mc{D}} && {\mc{D}} \\
+    	& {\mc{C}} && {\mc{C}} & {\mc{D}}
+    	\arrow["F", from=1-1, to=1-2]
+    	\arrow["{\id_{\mc{C}} =G \circ F }"', from=1-1, to=2-2]
+    	\arrow["G"{description}, from=1-2, to=2-2]
+    	\arrow["G"', from=1-4, to=2-4]
+    	\arrow["{F \circ G = \id_{\mc{D}}}", from=1-4, to=2-5]
+    	\arrow["F"', from=2-4, to=2-5]
+    \end{tikzcd}
+    \text{,}\]
+% https://q.uiver.app/#q=WzAsMTIsWzAsMCwiYyJdLFswLDEsImMnIl0sWzIsMCwiRmMiXSxbMiwxLCJGYyciXSxbMSwwLCJHRmMiXSxbMSwxLCJHRmMnIl0sWzQsMCwiR2QiXSxbNCwxLCJHZCciXSxbNiwwLCJkIl0sWzYsMSwiZCciXSxbNSwwLCJGR2QiXSxbNSwxLCJGR2QnIl0sWzAsNCwiIiwwLHsibGV2ZWwiOjIsInN0eWxlIjp7ImhlYWQiOnsibmFtZSI6Im5vbmUifX19XSxbMSw1LCIiLDAseyJsZXZlbCI6Miwic3R5bGUiOnsiaGVhZCI6eyJuYW1lIjoibm9uZSJ9fX1dLFswLDEsImYiLDJdLFsyLDMsIkZmIl0sWzQsNSwiR0ZmID1mICJdLFs4LDksImciXSxbMTEsOSwiIiwyLHsibGV2ZWwiOjIsInN0eWxlIjp7ImhlYWQiOnsibmFtZSI6Im5vbmUifX19XSxbMTAsOCwiIiwwLHsibGV2ZWwiOjIsInN0eWxlIjp7ImhlYWQiOnsibmFtZSI6Im5vbmUifX19XSxbNiw3LCJHZCIsMl0sWzEwLDExLCJGR2cgPSBnIiwyXV0=
+\[\begin{tikzcd}
+	c & GFc & Fc && Gd & FGd & d \\
+	{c'} & {GFc'} & {Fc'} && {Gd'} & {FGd'} & {d'}
+	\arrow[equals, from=1-1, to=1-2]
+	\arrow["f"', from=1-1, to=2-1]
+	\arrow["{GFf =f }", from=1-2, to=2-2]
+	\arrow["Ff", from=1-3, to=2-3]
+	\arrow["Gd"', from=1-5, to=2-5]
+	\arrow[equals, from=1-6, to=1-7]
+	\arrow["{FGg = g}"', from=1-6, to=2-6]
+	\arrow["g", from=1-7, to=2-7]
+	\arrow[equals, from=2-1, to=2-2]
+	\arrow[equals, from=2-6, to=2-7]
+\end{tikzcd}
+\text{;}
+\]
+\item Equivalent, if there exist $F: \mc{C} \to \mc{D}$ and $G: \mc{D} \to \mc{C}$ such that $\id_\mc{C} \simeq GF$, $FG \simeq \id_\mc{D}$:
+% https://q.uiver.app/#q=WzAsNixbMCwwLCJcXG1je0N9Il0sWzEsMSwiXFxtY3tDfSJdLFsxLDAsIlxcbWN7RH0iXSxbMywxLCJcXG1je0N9Il0sWzMsMCwiXFxtY3tEfSJdLFs0LDEsIlxcbWN7RH0iXSxbMCwxLCJcXGlkX3tcXG1je0N9fSIsMl0sWzAsMiwiRiJdLFsyLDEsIkciXSxbNCwzLCJHIiwyXSxbMyw1LCJGIiwyXSxbNCw1LCJcXGlkX3tcXG1je0R9fSJdLFsyLDYsIlxcc2ltZXEiLDIseyJzaG9ydGVuIjp7InRhcmdldCI6MjB9fV0sWzMsMTEsIlxcc2ltZXEiLDIseyJzaG9ydGVuIjp7InRhcmdldCI6MjB9fV1d
+\[\begin{tikzcd}
+	{\mc{C}} & {\mc{D}} && {\mc{D}} \\
+	& {\mc{C}} && {\mc{C}} & {\mc{D}}
+	\arrow["F", from=1-1, to=1-2]
+	\arrow[""{name=0, anchor=center, inner sep=0}, "{\id_{\mc{C}}}"', from=1-1, to=2-2]
+	\arrow["G", from=1-2, to=2-2]
+	\arrow["G"', from=1-4, to=2-4]
+	\arrow[""{name=1, anchor=center, inner sep=0}, "{\id_{\mc{D}}}", from=1-4, to=2-5]
+	\arrow["F"', from=2-4, to=2-5]
+	\arrow["\simeq"', shorten <=3pt,  Rightarrow, from=0, to=1-2]
+	\arrow["\simeq"', shorten <=2pt, shorten >=2pt, Rightarrow, from=2-4, to=1]
+\end{tikzcd}\text{,}\]
+% https://q.uiver.app/#q=WzAsMTIsWzAsMCwiYyJdLFswLDEsImMnIl0sWzIsMCwiRmMiXSxbMiwxLCJGYyciXSxbMSwwLCJHRmMiXSxbMSwxLCJHRmMnIl0sWzQsMCwiR2QiXSxbNCwxLCJHZCciXSxbNiwwLCJkIl0sWzYsMSwiZCciXSxbNSwwLCJGR2QiXSxbNSwxLCJGR2QnIl0sWzAsNCwiXFxjb25nIl0sWzEsNSwiXFxjb25nIiwyXSxbMCwxLCJmIiwyXSxbMiwzLCJGZiJdLFs0LDUsIkdGZiJdLFs4LDksImciXSxbMTEsOSwiXFxjb25nIiwyXSxbMTAsOCwiXFxjb25nIl0sWzYsNywiR2QiLDJdLFsxMCwxMSwiRkdnIiwyXV0=
+\[\begin{tikzcd}
+	c & GFc & Fc && Gd & FGd & d \\
+	{c'} & {GFc'} & {Fc'} && {Gd'} & {FGd'} & {d'}
+	\arrow["\cong", from=1-1, to=1-2]
+	\arrow["f"', from=1-1, to=2-1]
+	\arrow["GFf", from=1-2, to=2-2]
+	\arrow["Ff", from=1-3, to=2-3]
+	\arrow["Gd"', from=1-5, to=2-5]
+	\arrow["\cong", from=1-6, to=1-7]
+	\arrow["FGg"', from=1-6, to=2-6]
+	\arrow["g", from=1-7, to=2-7]
+	\arrow["\cong"', from=2-1, to=2-2]
+	\arrow["\cong"', from=2-6, to=2-7]
+\end{tikzcd}\text{;}\]
+
+\item Related by an adjunction $F \dashv G$ given by $F: \mc{C} \to \mc{D}$, $G: \mc{D} \to \mc{C}$, if there exist natural transformations $\eta: \id_\mc{C} \to GF$, $\varepsilon: FG \to \id_\mc{D},$
+% https://q.uiver.app/#q=WzAsMTIsWzAsMCwiYyJdLFswLDEsImMnIl0sWzIsMCwiRmMiXSxbMiwxLCJGYyciXSxbMSwwLCJHRmMiXSxbMSwxLCJHRmMnIl0sWzQsMCwiR2QiXSxbNCwxLCJHZCciXSxbNiwwLCJkIl0sWzYsMSwiZCciXSxbNSwwLCJGR2QiXSxbNSwxLCJGR2QnIl0sWzAsNCwiXFxldGFfYyJdLFsxLDUsIlxcZXRhX3tjJ30iLDJdLFswLDEsImYiLDJdLFsyLDMsIkZmIl0sWzQsNSwiR0ZmIl0sWzgsOSwiZyJdLFsxMSw5LCJcXHZhcmVwc2lsb25fe2QnfSIsMl0sWzEwLDgsIlxcdmFyZXBzaWxvbl9kIl0sWzYsNywiR2QiLDJdLFsxMCwxMSwiRkdnIiwyXV0=
+\[\begin{tikzcd}
+	{\mc{C}} & {\mc{D}} && {\mc{D}} \\
+	& {\mc{C}} && {\mc{C}} & {\mc{D}}
+	\arrow["F", from=1-1, to=1-2]
+	\arrow[""{name=0, anchor=center, inner sep=0}, "{\id_{\mc{C}}}"', from=1-1, to=2-2]
+	\arrow["G", from=1-2, to=2-2]
+	\arrow["G"', from=1-4, to=2-4]
+	\arrow[""{name=1, anchor=center, inner sep=0}, "{\id_{\mc{D}}}", from=1-4, to=2-5]
+	\arrow["F"', from=2-4, to=2-5]
+	\arrow["\eta"', shorten <=3pt,  Rightarrow, from=0, to=1-2]
+	\arrow["\varepsilon"', shorten <=2pt, shorten >=2pt, Rightarrow, from=2-4, to=1]
+\end{tikzcd}\text{,}\]
+\[\begin{tikzcd}
+	c & GFc & Fc && Gd & FGd & d \\
+	{c'} & {GFc'} & {Fc'} && {Gd'} & {FGd'} & {d'}
+	\arrow["{\eta_c}", from=1-1, to=1-2]
+	\arrow["f"', from=1-1, to=2-1]
+	\arrow["GFf", from=1-2, to=2-2]
+	\arrow["Ff", from=1-3, to=2-3]
+	\arrow["Gd"', from=1-5, to=2-5]
+	\arrow["{\varepsilon_d}", from=1-6, to=1-7]
+	\arrow["FGg"', from=1-6, to=2-6]
+	\arrow["g", from=1-7, to=2-7]
+	\arrow["{\eta_{c'}}"', from=2-1, to=2-2]
+	\arrow["{\varepsilon_{d'}}"', from=2-6, to=2-7]
+\end{tikzcd}\text{,}\]
+
+satisfying the triangle identities (coherence relations):
+% https://q.uiver.app/#q=WzAsNixbMywwLCJGIl0sWzMsMSwiRkdGIl0sWzQsMSwiRiJdLFswLDAsIkciXSxbMSwwLCJHRkciXSxbMSwxLCJHIl0sWzMsNCwiXFxldGEgRyJdLFs0LDUsIkdcXHZhcmVwc2lsb24iXSxbMyw1LCJcXGlkX0ciLDJdLFswLDEsIkZcXGV0YSIsMl0sWzEsMiwiXFx2YXJlcHNpbG9uIEYiLDJdLFswLDIsIlxcaWRfRiJdXQ==
+\[\begin{tikzcd}
+	G & GFG && F \\
+	& G && FGF & F
+	\arrow["{\eta G}", from=1-1, to=1-2]
+	\arrow["{\id_G}"', from=1-1, to=2-2]
+	\arrow["{G\varepsilon}", from=1-2, to=2-2]
+	\arrow["{F\eta}"', from=1-4, to=2-4]
+	\arrow["{\id_F}", from=1-4, to=2-5]
+	\arrow["{\varepsilon F}"', from=2-4, to=2-5]
+\end{tikzcd}
+\text{.}
+\]
+
+\end{itemize}
+
+    ... (unfinished)
 
 
-\section{Adjoint functors}
+\section{Machinery and proofs}
 
 \begin{definition}[Adjoint functors via set-valued Hom functors]
     Let $F: \mc{C} \to \mc{D}$, $G: \mc{D} \to \mc{C}$, where $\mc{C}$ and $\mc{D}$ are locally small. $F$ is said to be left adjoint to $G$ (resp. $G$ is said to be right adjoint to $F$) if 
@@ -190,7 +307,10 @@ Special cases:
 \begin{definition}[Adjoint functors via Universal property]
     We can define adjunctions via the universal property using the data from the Hom-functor definition.
     \begin{itemize}
-        \item $F \dashv G :\Leftrightarrow$ for all $\psi: c \to Gd$ there exists unique morphism $\psi^\flat: Fc \to d$ satisfying the  diagram
+        \item $F \dashv G :\Leftrightarrow$ for all $c : \obj (\mc{C})$ there exists an initial morphism
+        $\eta_c: c \to GFc$, meaning that for this fixed morphism $\eta_c$ and for all
+        $\psi: c \to Gd$ there exists a unique morphism $\psi^\flat: Fc \to d$
+        satisfying the diagram
         % https://q.uiver.app/#q=WzAsNSxbMSwwLCJHRmMiXSxbMSwxLCJHZCJdLFswLDAsImMiXSxbMiwwLCJGYyJdLFsyLDEsImQiXSxbMiwwLCJcXGV0YV9jIl0sWzAsMSwiR1xccHNpXlxcZmxhdCIsMCx7InN0eWxlIjp7ImJvZHkiOnsibmFtZSI6ImRhc2hlZCJ9fX1dLFsyLDEsIlxccHNpIiwyXSxbMyw0LCJcXHBzaV5cXGZsYXQiLDAseyJzdHlsZSI6eyJib2R5Ijp7Im5hbWUiOiJkYXNoZWQifX19XV0=
     \[\begin{tikzcd}
     	c & GFc & Fc \\
@@ -200,7 +320,11 @@ Special cases:
     	\arrow["{G\psi^\flat}", dashed, from=1-2, to=2-2]
     	\arrow["{\psi^\flat}", dashed, from=1-3, to=2-3]
     \end{tikzcd}\text{;}\]
-        \item $F \dashv G :\Leftrightarrow$ for all $\varphi: Fc \to d$ there exists unique morphism $\varphi^\sharp: c \to Gd$ satisfying the diagram
+        \item $F \dashv G :\Leftrightarrow$ for all $d: \obj(\mc{D})$ there exists a terminal morphism
+        $\varepsilon_d: FGd \to d$, meaning that for this fixed morphism $\varepsilon_d$ and for all
+        $\varphi: Fc \to d$ there exists a unique morphism $\varphi^\sharp: c \to Gd$
+        satisfying the diagram
+
     \end{itemize}
     % https://q.uiver.app/#q=WzAsNSxbMSwwLCJGYyJdLFsyLDEsImQiXSxbMSwxLCJGR2QiXSxbMCwxLCJHZCJdLFswLDAsImMiXSxbMCwxLCJcXHZhcnBoaSJdLFsyLDEsIlxcdmFyZXBzaWxvbl9kIiwyXSxbMCwyLCJGXFx2YXJwaGkiLDIseyJzdHlsZSI6eyJib2R5Ijp7Im5hbWUiOiJkYXNoZWQifX19XSxbNCwzLCJcXHZhcnBoaV5cXHNoYXJwIiwyLHsic3R5bGUiOnsiYm9keSI6eyJuYW1lIjoiZGFzaGVkIn19fV1d
     % https://q.uiver.app/#q=WzAsNSxbMSwwLCJGYyJdLFsyLDEsImQiXSxbMSwxLCJGR2QiXSxbMCwxLCJHZCJdLFswLDAsImMiXSxbMCwxLCJcXHZhcnBoaSJdLFsyLDEsIlxcdmFyZXBzaWxvbl9kIiwyXSxbMCwyLCJGXFx2YXJwaGleXFxzaGFycCIsMix7InN0eWxlIjp7ImJvZHkiOnsibmFtZSI6ImRhc2hlZCJ9fX1dLFs0LDMsIlxcdmFycGhpXlxcc2hhcnAiLDIseyJzdHlsZSI6eyJib2R5Ijp7Im5hbWUiOiJkYXNoZWQifX19XV0=
@@ -215,9 +339,35 @@ Special cases:
     \text{.}\]
 \end{definition}
 
+\begin{proposition}[Equivalence of definitions via initial and via terminal morphisms]
+
+The definitions using initial and terminal morphisms are equivalent.
+
+\textbf{Proof.} 
+    \hfill
+    \begin{itemize}
+        \item[$(\Rightarrow):$] 
+        We are given an initial morphism $\eta_c$ for all $c : \obj({\mc{C}})$, our goal is to provide a terminal morphism $\varepsilon_d$ for all $d: \obj(\mc{D})$. Consider the special case $$c := G_d, \qquad \psi := \id_{Gd}.$$
+        $\varepsilon_d$ is then defined using the universality of $\eta_{Gd}:$
+        % https://q.uiver.app/#q=WzAsNSxbMCwwLCJHZCJdLFsxLDAsIkdGR2QiXSxbMSwxLCJHZCJdLFsyLDAsIkZHZCJdLFsyLDEsImQiXSxbMSwyLCJHIFxcdmFyZXBzaWxvbl9kIiwwLHsic3R5bGUiOnsiYm9keSI6eyJuYW1lIjoiZGFzaGVkIn19fV0sWzAsMSwiXFxldGFfe0dkfSJdLFswLDIsIlxcaWRfe0dkfSIsMl0sWzMsNCwiXFx2YXJlcHNpbG9uX2QgOj0gXFxpZF97R2R9XlxcZmxhdCIsMCx7InN0eWxlIjp7ImJvZHkiOnsibmFtZSI6ImRhc2hlZCJ9fX1dXQ==
+    \[\begin{tikzcd}
+    	Gd & GFGd & FGd \\
+    	& Gd & d
+    	\arrow["{\eta_{Gd}}", from=1-1, to=1-2]
+    	\arrow["{\id_{Gd}}"', from=1-1, to=2-2]
+    	\arrow["{G \varepsilon_d}", dashed, from=1-2, to=2-2]
+    	\arrow["{\varepsilon_d := \id_{Gd}^\flat}", dashed, from=1-3, to=2-3]
+    \end{tikzcd}\text{.}\]
+    
+    ... (unfinished)
+    \end{itemize}
+
+\end{proposition}
+
 \begin{proposition}[Equivalence of definitions via Hom functors and via Universal property]
     The Hom-functor and universal property definitions of adjoint functors (Defs 1.1 and 1.3) are equivalent.
     \begin{proof}
+        \hfill
         \begin{itemize}
             \item[($\Rightarrow$)]:
             \hfill
