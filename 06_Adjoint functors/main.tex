@@ -121,11 +121,15 @@ Adjoint functors are a rather subtle topic, involving a specific categorical mac
 
 Our primary goal is to provide both the necessary technical details and the underlying intuition. In this section, we present the high-level overview and the general flow of ideas without going into full proofs. The following section will be devoted to developing the full machinery and giving the detailed proofs.
 
-The most revealing high-level intuition for adjoint functors is probably the idea of the \emph{“best thing after equivalence.”} That is, we successively relax the notion of similarity between categories along the sequence: \emph{isomorphism → equivalence → adjunction}. Let’s see how this looks in practice.
+\paragraph{Definition via Triangle identities.}
 
-Two categories $\mc{C}$ and $\mc{D}$ are said to be:
+The most revealing high-level intuition for adjoint functors is probably the idea of \emph{“the best thing after equivalence.”} That is, we successively relax the notion of similarity between categories along the sequence: 
+\begin{center}
+    \emph{isomorphism → equivalence → adjunction}.
+\end{center}
+Let’s see how this looks in practice. Two categories $\mc{C}$ and $\mc{D}$ are said to be:
 \begin{itemize}
-    \item Isomorphic, if there exist $F: \mc{C} \to \mc{D}$ and $G: \mc{D} \to \mc{C}$ such that $\id_\mc{C} = GF$, $FG = \id_\mc{D}$:
+    \item \emph{Isomorphic}, if there exist $F: \mc{C} \to \mc{D}$ and $G: \mc{D} \to \mc{C}$ such that $\id_\mc{C} = GF$, $FG = \id_\mc{D}$:
     % https://q.uiver.app/#q=WzAsNixbMCwwLCJcXG1je0N9Il0sWzEsMSwiXFxtY3tDfSJdLFsxLDAsIlxcbWN7RH0iXSxbNCwxLCJcXG1je0R9Il0sWzMsMCwiXFxtY3tEfSJdLFszLDEsIlxcbWN7Q30iXSxbMCwxLCJcXGlkX3tcXG1je0N9fSA9RyBcXGNpcmMgRiAiLDJdLFswLDIsIkYiXSxbMiwxLCJHIiwxXSxbNCw1LCJHIiwyXSxbNSwzLCJGIiwyXSxbNCwzLCJGIFxcY2lyYyBHID0gXFxpZF97XFxtY3tEfX0iXV0=
     \[\begin{tikzcd}
     	{\mc{C}} & {\mc{D}} && {\mc{D}} \\
@@ -155,7 +159,7 @@ Two categories $\mc{C}$ and $\mc{D}$ are said to be:
 \end{tikzcd}
 \text{;}
 \]
-\item Equivalent, if there exist $F: \mc{C} \to \mc{D}$ and $G: \mc{D} \to \mc{C}$ such that $\id_\mc{C} \simeq GF$, $FG \simeq \id_\mc{D}$:
+\item \emph{Equivalent}, if there exist $F: \mc{C} \to \mc{D}$ and $G: \mc{D} \to \mc{C}$ such that $\id_\mc{C} \simeq GF$, $FG \simeq \id_\mc{D}$:
 % https://q.uiver.app/#q=WzAsNixbMCwwLCJcXG1je0N9Il0sWzEsMSwiXFxtY3tDfSJdLFsxLDAsIlxcbWN7RH0iXSxbMywxLCJcXG1je0N9Il0sWzMsMCwiXFxtY3tEfSJdLFs0LDEsIlxcbWN7RH0iXSxbMCwxLCJcXGlkX3tcXG1je0N9fSIsMl0sWzAsMiwiRiJdLFsyLDEsIkciXSxbNCwzLCJHIiwyXSxbMyw1LCJGIiwyXSxbNCw1LCJcXGlkX3tcXG1je0R9fSJdLFsyLDYsIlxcc2ltZXEiLDIseyJzaG9ydGVuIjp7InRhcmdldCI6MjB9fV0sWzMsMTEsIlxcc2ltZXEiLDIseyJzaG9ydGVuIjp7InRhcmdldCI6MjB9fV1d
 \[\begin{tikzcd}
 	{\mc{C}} & {\mc{D}} && {\mc{D}} \\
@@ -185,7 +189,7 @@ Two categories $\mc{C}$ and $\mc{D}$ are said to be:
 	\arrow["\cong"', from=2-6, to=2-7]
 \end{tikzcd}\text{;}\]
 
-\item Related by an adjunction $F \dashv G$ given by $F: \mc{C} \to \mc{D}$, $G: \mc{D} \to \mc{C}$, if there exist natural transformations $\eta: \id_\mc{C} \to GF$, $\varepsilon: FG \to \id_\mc{D},$
+\item \emph{Related by an adjunction} $F \dashv G$ given by $F: \mc{C} \to \mc{D}$, $G: \mc{D} \to \mc{C}$, if there exist natural transformations $\eta: \id_\mc{C} \to GF$ and $\varepsilon: FG \to \id_\mc{D},$
 % https://q.uiver.app/#q=WzAsMTIsWzAsMCwiYyJdLFswLDEsImMnIl0sWzIsMCwiRmMiXSxbMiwxLCJGYyciXSxbMSwwLCJHRmMiXSxbMSwxLCJHRmMnIl0sWzQsMCwiR2QiXSxbNCwxLCJHZCciXSxbNiwwLCJkIl0sWzYsMSwiZCciXSxbNSwwLCJGR2QiXSxbNSwxLCJGR2QnIl0sWzAsNCwiXFxldGFfYyJdLFsxLDUsIlxcZXRhX3tjJ30iLDJdLFswLDEsImYiLDJdLFsyLDMsIkZmIl0sWzQsNSwiR0ZmIl0sWzgsOSwiZyJdLFsxMSw5LCJcXHZhcmVwc2lsb25fe2QnfSIsMl0sWzEwLDgsIlxcdmFyZXBzaWxvbl9kIl0sWzYsNywiR2QiLDJdLFsxMCwxMSwiRkdnIiwyXV0=
 \[\begin{tikzcd}
 	{\mc{C}} & {\mc{D}} && {\mc{D}} \\
@@ -214,7 +218,7 @@ Two categories $\mc{C}$ and $\mc{D}$ are said to be:
 	\arrow["{\varepsilon_{d'}}"', from=2-6, to=2-7]
 \end{tikzcd}\text{,}\]
 
-satisfying the triangle identities (coherence relations):
+called \emph{unit} and \emph{counit} respectively, satisfying the \emph{triangle identities} (coherence relations):
 % https://q.uiver.app/#q=WzAsNixbMywwLCJGIl0sWzMsMSwiRkdGIl0sWzQsMSwiRiJdLFswLDAsIkciXSxbMSwwLCJHRkciXSxbMSwxLCJHIl0sWzMsNCwiXFxldGEgRyJdLFs0LDUsIkdcXHZhcmVwc2lsb24iXSxbMyw1LCJcXGlkX0ciLDJdLFswLDEsIkZcXGV0YSIsMl0sWzEsMiwiXFx2YXJlcHNpbG9uIEYiLDJdLFswLDIsIlxcaWRfRiJdXQ==
 \[\begin{tikzcd}
 	G & GFG && F \\
@@ -231,7 +235,44 @@ satisfying the triangle identities (coherence relations):
 
 \end{itemize}
 
-    ... (unfinished)
+\paragraph{Definitions via Universal property.}
+
+Expanding the triangle identities, we obtain the following diagrams (underlining is just an annotation to show which elements we will be varying):
+% https://q.uiver.app/#q=WzAsMTAsWzAsMCwiXFx1bmRlcmxpbmV7R2R9Il0sWzEsMCwiR0ZcXHVuZGVybGluZXtHZH0iXSxbMSwxLCJHZCJdLFsyLDAsIkZcXHVuZGVybGluZXtHZH0iXSxbMiwxLCJkIl0sWzUsMCwiRmMiXSxbNiwxLCJcXHVuZGVybGluZXtGY30iXSxbNSwxLCJGR1xcdW5kZXJsaW5le0ZjfSJdLFs0LDAsImMiXSxbNCwxLCJHXFx1bmRlcmxpbmV7RmN9Il0sWzEsMiwiR1xcdmFyZXBzaWxvbl9kIl0sWzAsMiwiXFxpZF97R2R9IiwyXSxbMyw0LCJcXHZhcmVwc2lsb25fZCJdLFs1LDYsIlxcaWRfe0ZjfSJdLFs1LDcsIkZcXGV0YV9jIiwyXSxbNyw2LCJcXHZhcmVwc2lsb25fe0ZjfSIsMl0sWzgsOSwiXFxldGFfYyIsMl0sWzAsMSwiXFxldGFfe0dkfSJdXQ==
+\[\begin{tikzcd}
+	{\underline{Gd}} & {GF\underline{Gd}} & {F\underline{Gd}} && c & Fc \\
+	& Gd & d && {G\underline{Fc}} & {FG\underline{Fc}} & {\underline{Fc}}
+	\arrow["{\eta_{Gd}}", from=1-1, to=1-2]
+	\arrow["{\id_{Gd}}"', from=1-1, to=2-2]
+	\arrow["{G\varepsilon_d}", from=1-2, to=2-2]
+	\arrow["{\varepsilon_d}", from=1-3, to=2-3]
+	\arrow["{\eta_c}"', from=1-5, to=2-5]
+	\arrow["{F\eta_c}"', from=1-6, to=2-6]
+	\arrow["{\id_{Fc}}", from=1-6, to=2-7]
+	\arrow["{\varepsilon_{Fc}}"', from=2-6, to=2-7]
+\end{tikzcd}
+\text{.}
+\]
+It turns out that these identities taken together force each $\eta_c$ for $c:\obj(\mc{C})$ to be an initial morphism, and each $\varepsilon_d$ for $d: \obj(\mc{D})$ to be a terminal morphism.The diagrams above are therefore just special cases of the following ones:
+
+% https://q.uiver.app/#q=WzAsMTAsWzAsMCwiYyJdLFsxLDAsIkdGYyJdLFsxLDEsIkdkIl0sWzIsMCwiRmMiXSxbMiwxLCJkIl0sWzUsMCwiRmMiXSxbNiwxLCJkIl0sWzUsMSwiRkdkIl0sWzQsMCwiYyJdLFs0LDEsIkdkIl0sWzEsMiwiR1xccHNpXlxcZmxhdCIsMCx7InN0eWxlIjp7ImJvZHkiOnsibmFtZSI6ImRhc2hlZCJ9fX1dLFswLDIsIlxccHNpIiwyXSxbMyw0LCJcXHBzaV5cXGZsYXQiLDAseyJzdHlsZSI6eyJib2R5Ijp7Im5hbWUiOiJkYXNoZWQifX19XSxbNSw2LCJcXHZhcnBoaSJdLFs1LDcsIkZcXHZhcnBoaV5cXHNoYXJwIiwyLHsic3R5bGUiOnsiYm9keSI6eyJuYW1lIjoiZGFzaGVkIn19fV0sWzcsNiwiXFx2YXJlcHNpbG9uX2QiLDJdLFswLDEsIlxcZXRhX2MiXSxbOCw5LCJcXHZhcnBoaV5cXHNoYXJwIiwyLHsic3R5bGUiOnsiYm9keSI6eyJuYW1lIjoiZGFzaGVkIn19fV1d
+\[\begin{tikzcd}
+	c & GFc & Fc && c & Fc \\
+	& Gd & d && Gd & FGd & d
+	\arrow["{\eta_c}", from=1-1, to=1-2]
+	\arrow["\psi"', from=1-1, to=2-2]
+	\arrow["{G\psi^\flat}", dashed, from=1-2, to=2-2]
+	\arrow["{\psi^\flat}", dashed, from=1-3, to=2-3]
+	\arrow["{\varphi^\sharp}"', dashed, from=1-5, to=2-5]
+	\arrow["{F\varphi^\sharp}"', dashed, from=1-6, to=2-6]
+	\arrow["\varphi", from=1-6, to=2-7]
+	\arrow["{\varepsilon_d}"', from=2-6, to=2-7]
+\end{tikzcd}
+\text{.}
+\]
+
+
+ ... (unfinished)
 
 
 \section{Machinery and proofs}
