@@ -114,6 +114,7 @@
     \item Local: //not implemented yet
 \end{itemize}
 
+\newpage
 
 \section{Introduction}
 
@@ -189,7 +190,7 @@ Let’s see how this looks in practice. Two categories $\mc{C}$ and $\mc{D}$ are
 	\arrow["\cong"', from=2-6, to=2-7]
 \end{tikzcd}\text{;}\]
 
-\item \emph{Related by an adjunction} $F \dashv G$ given by $F: \mc{C} \to \mc{D}$, $G: \mc{D} \to \mc{C}$, if there exist natural transformations $\eta: \id_\mc{C} \to GF$ and $\varepsilon: FG \to \id_\mc{D},$
+\item \emph{Related by an adjunction} $F \dashv G$ given by $F: \mc{C} \to \mc{D}$, $G: \mc{D} \to \mc{C}$, if there exist natural transformations $\eta: \id_\mc{C} \to GF$ and $\varepsilon: FG \to \id_\mc{D}$
 % https://q.uiver.app/#q=WzAsMTIsWzAsMCwiYyJdLFswLDEsImMnIl0sWzIsMCwiRmMiXSxbMiwxLCJGYyciXSxbMSwwLCJHRmMiXSxbMSwxLCJHRmMnIl0sWzQsMCwiR2QiXSxbNCwxLCJHZCciXSxbNiwwLCJkIl0sWzYsMSwiZCciXSxbNSwwLCJGR2QiXSxbNSwxLCJGR2QnIl0sWzAsNCwiXFxldGFfYyJdLFsxLDUsIlxcZXRhX3tjJ30iLDJdLFswLDEsImYiLDJdLFsyLDMsIkZmIl0sWzQsNSwiR0ZmIl0sWzgsOSwiZyJdLFsxMSw5LCJcXHZhcmVwc2lsb25fe2QnfSIsMl0sWzEwLDgsIlxcdmFyZXBzaWxvbl9kIl0sWzYsNywiR2QiLDJdLFsxMCwxMSwiRkdnIiwyXV0=
 \[\begin{tikzcd}
 	{\mc{C}} & {\mc{D}} && {\mc{D}} \\
@@ -253,7 +254,7 @@ Expanding the triangle identities, we obtain the following diagrams (underlining
 \end{tikzcd}
 \text{.}
 \]
-It turns out that these identities taken together force each $\eta_c$ for $c:\obj(\mc{C})$ to be an initial morphism, and each $\varepsilon_d$ for $d: \obj(\mc{D})$ to be a terminal morphism.The diagrams above are therefore just special cases of the following ones:
+It turns out that these identities taken together force each $\eta_c$ for $c:\obj(\mc{C})$ to be an initial morphism, and each $\varepsilon_d$ for $d: \obj(\mc{D})$ to be a terminal morphism. The diagrams above are therefore just special cases of the following ones:
 
 % https://q.uiver.app/#q=WzAsMTAsWzAsMCwiYyJdLFsxLDAsIkdGYyJdLFsxLDEsIkdkIl0sWzIsMCwiRmMiXSxbMiwxLCJkIl0sWzUsMCwiRmMiXSxbNiwxLCJkIl0sWzUsMSwiRkdkIl0sWzQsMCwiYyJdLFs0LDEsIkdkIl0sWzEsMiwiR1xccHNpXlxcZmxhdCIsMCx7InN0eWxlIjp7ImJvZHkiOnsibmFtZSI6ImRhc2hlZCJ9fX1dLFswLDIsIlxccHNpIiwyXSxbMyw0LCJcXHBzaV5cXGZsYXQiLDAseyJzdHlsZSI6eyJib2R5Ijp7Im5hbWUiOiJkYXNoZWQifX19XSxbNSw2LCJcXHZhcnBoaSJdLFs1LDcsIkZcXHZhcnBoaV5cXHNoYXJwIiwyLHsic3R5bGUiOnsiYm9keSI6eyJuYW1lIjoiZGFzaGVkIn19fV0sWzcsNiwiXFx2YXJlcHNpbG9uX2QiLDJdLFswLDEsIlxcZXRhX2MiXSxbOCw5LCJcXHZhcnBoaV5cXHNoYXJwIiwyLHsic3R5bGUiOnsiYm9keSI6eyJuYW1lIjoiZGFzaGVkIn19fV1d
 \[\begin{tikzcd}
@@ -270,9 +271,18 @@ It turns out that these identities taken together force each $\eta_c$ for $c:\ob
 \end{tikzcd}
 \text{.}
 \]
+Formally, this means that for all $c : \obj({\mc{C}})$ the object $(\eta_c, Fc)$ is initial in $(c \downarrow G)$, and for all $d : \obj({\mc{D}})$ the object $(Gd, \varepsilon_d)$ is terminal in $(F \downarrow d)$:
+$$ 1 \xto{c} \mc{C} \xfrom{G}  \mc{D}, \qquad \mc{C} \xto{F} \mc{D} \xfrom{d} 1.$$
+Moreover, these initial and terminal properties turn out to be equivalent, so it suffices to use either one of them to define the adjunction $F \dashv G$.
+
+\paragraph{Definition via Hom isomorphism.} Notice that the definitions via universal properties allow us, given an arrow $Fc \to d$, to obtain an arrow $c \to Gd$, as well as, given an arrow $c \to Gd$, to obtain an arrow $Fc \to d$, in a universal way. It turns out that this correspondence extends to a natural isomorphism.
+
+\noindent Let $\mc{C}$ and $\mc{D}$ be locally small for simplicity, so the set-valued Hom functors are defined for both categories. Then the correspondence above provides us with the natural isomorphism $\lambda cd.c, Gd \simeq\lambda cd. Fc, d$:
+$$\Hom_\mc{C}(c, Gd) \cong \Hom_\mc{D} (F c, d) . $$
 
 
- ... (unfinished)
+
+% ... (unfinished)
 
 
 \section{Machinery and proofs}
