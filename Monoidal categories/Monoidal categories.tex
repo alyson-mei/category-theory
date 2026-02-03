@@ -84,9 +84,11 @@
 \hfill
 \begin{itemize}
     \item We work in the arrow-first categorical setting;
-    \item Lambda-abstraction and left unitor use the same letter $\lambda$, but the first one is used only in the form of $\lambda x.y$, so the local meaning is clear;
-    \item Functors of the form $\lambda f_1...f_n.F$ are typed $\mc{C}^n \to \mc{D}$ with coherence for product's associativity considered to be known.
+    \item Functors of the form $\lambda f_1...f_n.F$ are typed $\mc{C}^n \to \mc{D}$, with coherence for the associativity of products assumed to be known;
+    \item Lambda abstraction and the left unitor use the same letter $\lambda$, but the first is used only in the form $\lambda x.y$, so the local meaning is clear;
+    \item In general, typing is assumed to be clear from the context.
 \end{itemize}
+
 
 \newpage
 
@@ -94,17 +96,15 @@
 
 \subsection{Core definitions}
 
-\subsubsection{Monoidal categories: basic types}
-
 \begin{definition}[Monoidal category]
-    \emph{Monoidal category (MC)} is a tuple
+    A \emph{monoidal category (MC)} is a tuple
     $$(\mc{C}, \otimes, I, \alpha, \lambda, \rho),$$
     where 
     \begin{itemize}
         \item[$\bullet$] $\mc{C}$ is a \emph{base category},
         \item[$\bullet$] $\otimes: \mc{C} \times \mc{C} \to \mc{C}$ is a \emph{monoidal product} (or \emph{tensor}), 
         \item[$\bullet$] $I : \obj(\mc{C})$ is a \emph{monoidal unit},
-        \item[$\bullet$] $\alpha: \lambda fgh. (f \otimes g) \otimes h \xto{\simeq} \lambda fgh.f \otimes (g \otimes h)$ is a \emph{associator},
+        \item[$\bullet$] $\alpha: \lambda fgh. f \otimes (g \otimes h) \xto{\simeq} \lambda fgh. (f \otimes g) \otimes h$ is an \emph{associator},
         \item[$\bullet$] $\lambda: \lambda f. I \otimes f \xto{\simeq} \id_{\mc{C}}$ is a \emph{left unitor},
         \item[$\bullet$] $\rho: \lambda f. f \otimes I \xto{\simeq} \id_{\mc{C}}$ is a \emph{right unitor}, 
     \end{itemize}
@@ -130,7 +130,7 @@
 \end{definition}
 
 \begin{definition}[Strict monoidal category]
-    \emph{Strict monoidal category} is an MC with $\alpha$, $\rho$ and $\lambda$ being identities. Thus,
+    A \emph{strict monoidal category} is an MC with $\alpha$, $\rho$ and $\lambda$ being identities. Thus,
     \begin{itemize}
         \item $(a \otimes b) \otimes c = a \otimes (b \otimes c)$,
         \item $I \otimes a = a \otimes I = a.$
@@ -139,7 +139,7 @@
 
 \begin{definition}[Braided monoidal category]
 \label{def:braided_mc}
-    \emph{Strict monoidal category} is an MC equipped with \emph{braiding} $$\sigma: \lambda fg. f \otimes g \to \lambda fg. g \otimes f$$ satisfying the \emph{hexagon} diagrams:
+    \emph{Braided monoidal category (BMC)} is an MC equipped with \emph{braiding} $$\sigma: \lambda fg. f \otimes g \to \lambda fg. g \otimes f$$ satisfying the \emph{hexagon} diagrams:
     % https://q.uiver.app/#q=WzAsNixbMSwwLCJhIFxcb3RpbWVzIChiIFxcb3RpbWVzIGMpIl0sWzIsMCwiKGIgXFxvdGltZXMgYykgXFxvdGltZXMgYSJdLFszLDEsImIgXFxvdGltZXMgKGMgXFxvdGltZXMgYSkiXSxbMCwxLCIoYSBcXG90aW1lcyBiKSBcXG90aW1lcyBjIl0sWzEsMiwiKGIgXFxvdGltZXMgYSkgXFxvdGltZXMgYyJdLFsyLDIsImIgXFxvdGltZXMgKGEgXFxvdGltZXMgYykiXSxbMSwyLCJcXGFscGhhIl0sWzAsMSwiXFxnYW1tYSJdLFszLDAsIlxcYWxwaGEiXSxbMyw0LCJcXGdhbW1hIFxcb3RpbWVzIFxcaWQiLDJdLFs0LDUsIlxcYWxwaGEiLDJdLFs1LDIsIlxcaWQgXFxvdGltZXMgXFxnYW1tYSIsMl1d
     \[\begin{tikzcd}[sep=scriptsize]
         & {a \otimes (b \otimes c)} & {(b \otimes c) \otimes a} \\
@@ -191,6 +191,10 @@
         \text{.}
         \]
     \end{enumerate}
+\end{definition}
+
+\begin{definition}[Closed monoidal category]
+    A \emph{closed monoidal category} is an MC where for each $f: \arr(\mc{C})$ partial tensor $f \otimes -$ has the right adjoint $[f, -]$. The functor $$[f, -]: \mc{C}^{\op} \times \mc{C} \to \mc{C}$$ is called \emph{internal hom} (note, that $f$ can also be typed as $\arr(\mc{C})$).
 \end{definition}
 
 \subsubsection{Monoidal functors}
@@ -264,14 +268,44 @@
     A \emph{symmetric monoidal functor} is a braided monoidal functor whose domains are SMCs.
 \end{definition}
 
-\begin{definition}[Monoidal natural transformaiton]
+\begin{definition}[Monoidal natural transformation] Let $$(F, \phi), (G, \psi):(\mc{C}, \otimes, I_{\mc{C}}) \to (\mc{C}, \bullet, I_{\mc{D}})$$
+    be monoidal. A \emph{monoidal natural transformation} $$\theta: (F, \phi) \to (G, \psi)$$ is a natural transformation $\theta: F \to G$ satisfying the diagrams
+    % https://q.uiver.app/#q=WzAsNyxbMCwwLCJGYSBcXGJ1bGxldCBGYiJdLFswLDEsIkYoYSBcXG90aW1lcyBiKSJdLFsxLDAsIkdhIFxcYnVsbGV0IEcgYiJdLFsxLDEsIkcoYSBcXG90aW1lcyBiKSJdLFszLDAsIklfe1xcbWF0aGNhbHtEfX0iXSxbMiwxLCJGSV97XFxtYXRoY2Fse0R9fSJdLFs0LDEsIkdJX3tcXG1hdGhjYWx7RH19Il0sWzAsMiwiXFx0aGV0YV9hIFxcYnVsbGV0IFxcdGhldGFfYiJdLFswLDEsIlxccGhpIiwyXSxbMSwzLCJcXHRoZXRhX3thIFxcb3RpbWVzIGJ9IiwyXSxbMiwzLCJcXHBzaSJdLFs0LDUsIlxccGhpXzAiLDJdLFs0LDYsIlxccHNpXzAiXSxbNSw2LCJcXHRoZXRhX0kiLDJdXQ==
+    \[\begin{tikzcd}
+        {Fa \bullet Fb} & {Ga \bullet G b} && {I_{\mathcal{D}}} \\
+        {F(a \otimes b)} & {G(a \otimes b)} & {FI_{\mathcal{D}}} && {GI_{\mathcal{D}}}
+        \arrow["{\theta_a \bullet \theta_b}", from=1-1, to=1-2]
+        \arrow["\phi"', from=1-1, to=2-1]
+        \arrow["\psi", from=1-2, to=2-2]
+        \arrow["{\phi_0}"', from=1-4, to=2-3]
+        \arrow["{\psi_0}", from=1-4, to=2-5]
+        \arrow["{\theta_{a \otimes b}}"', from=2-1, to=2-2]
+        \arrow["{\theta_I}"', from=2-3, to=2-5]
+    \end{tikzcd}\text{.}\]
     
 \end{definition}
 
 \subsection{Core results}
 
+\subsubsection{Coherence theorems}
 
-\section{Specialized definitions and results}
+\begin{theorem}[Mac Lane's Coherence Theorem]
+    Every MC is monoidally equivalent to a strict monoidal category. Moreover, every diagram of canonical isomorphisms (built from $\alpha$, $\lambda$, $\rho$) commutes.
+\end{theorem}
 
+\begin{theorem}[Coherence for Symmetric Monoidal Categories]
+    In a SMC, every diagram built from $\alpha$, $\lambda$, $\rho$, $\sigma$ (and their inverses) commutes.
+\end{theorem}
+
+\begin{theorem}[Coherence for Braided Monoidal Categories]
+     In a BMC, all diagrams of canonical maps commute (Joyal-Street).
+\end{theorem}
+
+\begin{theorem}[Kelly-Mac Lane Coherence]
+    For \emph{symmetric monoidal closed categories (SMCC)}, all diagrams of canonical maps (including those involving internal homs) commute.
+\end{theorem}
+% \section{Specialized definitions and results}
+
+% \subsection{Monoidal categories}
 
 \end{document}
