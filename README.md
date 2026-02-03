@@ -45,17 +45,17 @@ Status: Temporarily on hold while I’m working on a paper about tensor algebra
     - Yoneda embedding and its full faithfulness
     - Small rephrasings
 
-## 05 (Co)Limits
+## 05 (Co)limits
 
 1. Definitions
     - Comma category
-    - (Co)Limit
-    - (Co)Limit functor
+    - (Co)limit
+    - (Co)limit functor
 2. Examples
     - Terminal and initial objects
-    - (Co)Products
-    - (Co)Equalizers
-    - (Co)Kernels
+    - (Co)products
+    - (Co)equalizers
+    - (Co)kernels
     - Pullbacks and pushouts
 3. (Co)Continuous functors
 
@@ -72,7 +72,7 @@ Status: Temporarily on hold while I’m working on a paper about tensor algebra
 
 //experimental: GitHub references
 
-## 07 (Co)Monads
+## 07 (Co)monads
 
 ### Monads
 
@@ -86,3 +86,5 @@ Status: Temporarily on hold while I’m working on a paper about tensor algebra
 ### Comonads
 
 //not implemented
+
+## 08 Monoidal categories (work in progress)
