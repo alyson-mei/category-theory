@@ -1,0 +1,277 @@
+\documentclass[12pt]{article}
+% Page setup
+\usepackage[margin=1in]{geometry}
+\usepackage{parskip}
+\usepackage{titling}
+\setlength{\droptitle}{-6em} 
+
+% Math packages
+\usepackage{amsmath, amsthm, amssymb, amsfonts}
+\usepackage{mathtools}
+\makeatletter
+\g@addto@macro\th@plain{\normalfont} % remove italics from theorems (plain style)
+\makeatother
+
+% Commutative diagrams
+\usepackage{tikz-cd}
+
+
+% Theorem environments
+\newtheorem{theorem}{Theorem}[subsection]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{fact}[theorem]{Fact}
+\newtheorem{remark}[theorem]{Remark}
+
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+
+% Useful commands for category theory
+\newcommand{\mc}{\mathcal}
+\newcommand{\ini}{\operatorname{ini}}
+\newcommand{\ter}{\operatorname{ter}}
+\newcommand{\cod}{\operatorname{cod}}
+\newcommand{\dom}{\operatorname{dom}}
+
+\newcommand{\List}{\operatorname{List}}
+\newcommand{\lop}{\operatorname{[ \ ]}}
+\newcommand{\len}{\operatorname{len}}
+\newcommand{\type}{\operatorname{type}}
+
+\newcommand{\Exc}{\operatorname{Exception}}
+
+\newcommand{\Kl}{\operatorname{Kl}}
+\newcommand{\plus}{\operatorname{+}}
+
+\newcommand{\Cat}{\mathcal{C}at}
+\newcommand{\Vect}{\mathrm{Vect}_\mathbf{k}}
+\newcommand{\Hom}{\operatorname{Hom}}
+\newcommand{\Nat}{\operatorname{Nat}}
+\newcommand{\id}{\mathrm{id}}
+\newcommand{\op}{\mathrm{op}}
+\newcommand{\obj}{\operatorname{obj}}
+\newcommand{\arr}{\operatorname{arr}}
+\newcommand{\adj}{\operatorname{adj}}
+\newcommand{\coadj}{\operatorname{coadj}}
+\newcommand{\colim}{\operatorname*{colim}}
+
+% Arrows
+\newcommand{\ra}{\rightarrow}
+\newcommand{\from}{\leftarrow}
+\newcommand{\To}{\Rightarrow}
+\newcommand{\xto}{\xrightarrow}
+\newcommand{\xfrom}{\xleftarrow}
+
+\renewcommand{\labelitemi}{--} % Level 1: Dashes
+\renewcommand{\labelitemii}{$\circ$} % Level 2: Circles
+\renewcommand{\labelitemiii}{$\bullet$} % Level 3: Bullets (default)
+
+
+\title{Monoidal categories}
+\author{Alyson Mei}
+\date{\today}
+
+\begin{document}
+
+
+\maketitle
+
+\tableofcontents
+
+\paragraph{Conventions}
+\hfill
+\begin{itemize}
+    \item We work in the arrow-first categorical setting;
+    \item Lambda-abstraction and left unitor use the same letter $\lambda$, but the first one is used only in the form of $\lambda x.y$, so the local meaning is clear;
+    \item Functors of the form $\lambda f_1...f_n.F$ are typed $\mc{C}^n \to \mc{D}$ with coherence for product's associativity considered to be known.
+\end{itemize}
+
+\newpage
+
+\section{Core definitions and results}
+
+\subsection{Core definitions}
+
+\subsubsection{Monoidal categories: basic types}
+
+\begin{definition}[Monoidal category]
+    \emph{Monoidal category (MC)} is a tuple
+    $$(\mc{C}, \otimes, I, \alpha, \lambda, \rho),$$
+    where 
+    \begin{itemize}
+        \item[$\bullet$] $\mc{C}$ is a \emph{base category},
+        \item[$\bullet$] $\otimes: \mc{C} \times \mc{C} \to \mc{C}$ is a \emph{monoidal product} (or \emph{tensor}), 
+        \item[$\bullet$] $I : \obj(\mc{C})$ is a \emph{monoidal unit},
+        \item[$\bullet$] $\alpha: \lambda fgh. (f \otimes g) \otimes h \xto{\simeq} \lambda fgh.f \otimes (g \otimes h)$ is a \emph{associator},
+        \item[$\bullet$] $\lambda: \lambda f. I \otimes f \xto{\simeq} \id_{\mc{C}}$ is a \emph{left unitor},
+        \item[$\bullet$] $\rho: \lambda f. f \otimes I \xto{\simeq} \id_{\mc{C}}$ is a \emph{right unitor}, 
+    \end{itemize}
+    satisfying the \emph{associativity (pentagon)} and \emph{unit (triangle)} diagrams:
+    % https://q.uiver.app/#q=WzAsNSxbMCwwLCJhIFxcb3RpbWVzIChiIFxcb3RpbWVzIChjIFxcb3RpbWVzIGQpKSJdLFsxLDAsIihhIFxcb3RpbWVzIGIpIFxcb3RpbWVzIChjIFxcb3RpbWVzIGQpIl0sWzIsMCwiKChhIFxcb3RpbWVzIGIpIFxcb3RpbWVzIGMpIFxcb3RpbWVzIGQiXSxbMCwxLCJhIFxcb3RpbWVzICgoYiBcXG90aW1lcyBjKSBcXG90aW1lcyBkKSJdLFsyLDEsIihhIFxcb3RpbWVzIChiIFxcb3RpbWVzIGMpKSBcXG90aW1lcyBkIl0sWzAsMSwiXFxhbHBoYV97YSwgYiwgKGMgXFxvdGltZXMgZCl9Il0sWzEsMiwiXFxhbHBoYV97KGEgXFxvdGltZXMgYiksIGMsIGR9Il0sWzAsMywiXFxpZF9hIFxcb3RpbWVzIFxcYWxwaGFfe2IsIGMsIGR9IiwyXSxbMyw0LCJcXGFscGhhX3thLCBiXFxvdGltZXMgYywgZH0iLDJdLFs0LDIsIlxcYWxwaGFfe2EsIGIsIGN9IFxcb3RpbWVzIFxcaWRfZCIsMl1d
+    \[\begin{tikzcd}
+        {a \otimes (b \otimes (c \otimes d))} & {(a \otimes b) \otimes (c \otimes d)} & {((a \otimes b) \otimes c) \otimes d} \\
+        {a \otimes ((b \otimes c) \otimes d)} && {(a \otimes (b \otimes c)) \otimes d}
+        \arrow["{\alpha_{a, b, (c \otimes d)}}", from=1-1, to=1-2]
+        \arrow["{\id_a \otimes \alpha_{b, c, d}}"', from=1-1, to=2-1]
+        \arrow["{\alpha_{(a \otimes b), c, d}}", from=1-2, to=1-3]
+        \arrow["{\alpha_{a, b\otimes c, d}}"', from=2-1, to=2-3]
+        \arrow["{\alpha_{a, b, c} \otimes \id_d}"', from=2-3, to=1-3]
+    \end{tikzcd},\]
+    % https://q.uiver.app/#q=WzAsMyxbMCwwLCJhIFxcb3RpbWVzIChJIFxcb3RpbWVzIGIpIl0sWzIsMCwiKGEgXFxvdGltZXMgSSkgXFxvdGltZXMgYiJdLFsxLDEsImEgXFxvdGltZXMgYiJdLFswLDEsIlxcYWxwaGFfe2EsIEksIGJ9Il0sWzAsMiwiXFxpZF9hIFxcb3RpbWVzIFxcbGFtYmRhX2IiLDJdLFsyLDEsIlxccmhvX2EgXFxvdGltZXMgXFxpZF9iIiwyXV0=
+    \[\begin{tikzcd}
+        {a \otimes (I \otimes b)} && {(a \otimes I) \otimes b} \\
+        & {a \otimes b}
+        \arrow["{\alpha_{a, I, b}}", from=1-1, to=1-3]
+        \arrow["{\id_a \otimes \lambda_b}"', from=1-1, to=2-2]
+        \arrow["{\rho_a \otimes \id_b}"', from=2-2, to=1-3]
+    \end{tikzcd}\text{.}\]
+\end{definition}
+
+\begin{definition}[Strict monoidal category]
+    \emph{Strict monoidal category} is an MC with $\alpha$, $\rho$ and $\lambda$ being identities. Thus,
+    \begin{itemize}
+        \item $(a \otimes b) \otimes c = a \otimes (b \otimes c)$,
+        \item $I \otimes a = a \otimes I = a.$
+    \end{itemize}
+\end{definition}
+
+\begin{definition}[Braided monoidal category]
+\label{def:braided_mc}
+    \emph{Strict monoidal category} is an MC equipped with \emph{braiding} $$\sigma: \lambda fg. f \otimes g \to \lambda fg. g \otimes f$$ satisfying the \emph{hexagon} diagrams:
+    % https://q.uiver.app/#q=WzAsNixbMSwwLCJhIFxcb3RpbWVzIChiIFxcb3RpbWVzIGMpIl0sWzIsMCwiKGIgXFxvdGltZXMgYykgXFxvdGltZXMgYSJdLFszLDEsImIgXFxvdGltZXMgKGMgXFxvdGltZXMgYSkiXSxbMCwxLCIoYSBcXG90aW1lcyBiKSBcXG90aW1lcyBjIl0sWzEsMiwiKGIgXFxvdGltZXMgYSkgXFxvdGltZXMgYyJdLFsyLDIsImIgXFxvdGltZXMgKGEgXFxvdGltZXMgYykiXSxbMSwyLCJcXGFscGhhIl0sWzAsMSwiXFxnYW1tYSJdLFszLDAsIlxcYWxwaGEiXSxbMyw0LCJcXGdhbW1hIFxcb3RpbWVzIFxcaWQiLDJdLFs0LDUsIlxcYWxwaGEiLDJdLFs1LDIsIlxcaWQgXFxvdGltZXMgXFxnYW1tYSIsMl1d
+    \[\begin{tikzcd}[sep=scriptsize]
+        & {a \otimes (b \otimes c)} & {(b \otimes c) \otimes a} \\
+        {(a \otimes b) \otimes c} &&& {b \otimes (c \otimes a)} \\
+        & {(b \otimes a) \otimes c} & {b \otimes (a \otimes c)}
+        \arrow["\sigma", from=1-2, to=1-3]
+        \arrow["\alpha", from=1-3, to=2-4]
+        \arrow["\alpha", from=2-1, to=1-2]
+        \arrow["{\sigma \otimes \id}"', from=2-1, to=3-2]
+        \arrow["\alpha"', from=3-2, to=3-3]
+        \arrow["{\id \otimes \sigma}"', from=3-3, to=2-4]
+    \end{tikzcd},\]
+    % https://q.uiver.app/#q=WzAsNixbMSwwLCIoYSBcXG90aW1lcyBiKSBcXG90aW1lcyBjIl0sWzIsMCwiYyBcXG90aW1lcyAoYSBcXG90aW1lcyBiKSJdLFszLDEsIihjIFxcb3RpbWVzIGEpIFxcb3RpbWVzIGIiXSxbMCwxLCJhIFxcb3RpbWVzIChiIFxcb3RpbWVzIGMpIl0sWzEsMiwiYSBcXG90aW1lcyAoYyBcXG90aW1lcyBiKSJdLFsyLDIsIihhIFxcb3RpbWVzIGMpIFxcb3RpbWVzIGIiXSxbMSwyLCJcXGFscGhhXnstMX0iXSxbMCwxLCJcXGdhbW1hIl0sWzMsMCwiXFxhbHBoYV57LTF9Il0sWzMsNCwiXFxpZCBcXG90aW1lcyBcXGdhbW1hIiwyXSxbNCw1LCJcXGFscGhhXnstMX0iLDJdLFs1LDIsIlxcZ2FtbWEgXFxvdGltZXMgXFxpZCIsMl1d
+    \[\begin{tikzcd}[sep=scriptsize]
+        & {(a \otimes b) \otimes c} & {c \otimes (a \otimes b)} \\
+        {a \otimes (b \otimes c)} &&& {(c \otimes a) \otimes b} \\
+        & {a \otimes (c \otimes b)} & {(a \otimes c) \otimes b}
+        \arrow["\sigma", from=1-2, to=1-3]
+        \arrow["{\alpha^{-1}}", from=1-3, to=2-4]
+        \arrow["{\alpha^{-1}}", from=2-1, to=1-2]
+        \arrow["{\id \otimes \sigma}"', from=2-1, to=3-2]
+        \arrow["{\alpha^{-1}}"', from=3-2, to=3-3]
+        \arrow["{\sigma \otimes \id}"', from=3-3, to=2-4]
+    \end{tikzcd}
+    \text{.}
+    \]
+\end{definition}
+
+\begin{definition}[Symmetric monoidal category]
+    \hfill\break
+    \emph{Symmetric monoidal category (SMC)} can be defined in two equivalent ways:
+    \begin{enumerate}
+        \item[a)] SMC is a braided MC with braiding $\sigma$ being iso and thus called a \emph{swap}:
+        $$\sigma_{f, g}: f \otimes g \xto{\cong} g \otimes f;$$
+        \item[b)] SMC is an MC with a \emph{swap} iso
+        $$\sigma: \lambda fg. f \otimes g \xto{\simeq} \lambda fg. g \otimes f,$$
+        satisfying the \emph{associativity coherence} (that is exactly the first hexagon diagram from the Def \ref{def:braided_mc}) with additional \emph{unit coherence} and \emph{inverse law} diagrams:
+        % https://q.uiver.app/#q=WzAsNixbMCwwLCJhIFxcb3RpbWVzIEkiXSxbMiwwLCJJIFxcb3RpbWVzIGEiXSxbMSwxLCJhIl0sWzMsMSwiYSBcXG90aW1lcyBiIl0sWzUsMSwiYSBcXG90aW1lcyBiIl0sWzQsMCwiYiBcXG90aW1lcyBhIl0sWzAsMSwiXFxzaWdtYV97YSwgSX0iXSxbMCwyLCJcXHJob19hIiwyXSxbMSwyLCJcXGxhbWJkYV9iIl0sWzMsNCwiXFxpZF97YSBcXG90aW1lcyBifSIsMl0sWzMsNSwiXFxzaWdtYV97YSwgYn0iXSxbNSw0LCJcXHNpZ21hX3tiLCBhfSJdXQ==
+        \[\begin{tikzcd}
+            {a \otimes I} && {I \otimes a} && {b \otimes a} \\
+            & a && {a \otimes b} && {a \otimes b}
+            \arrow["{\sigma_{a, I}}", from=1-1, to=1-3]
+            \arrow["{\rho_a}"', from=1-1, to=2-2]
+            \arrow["{\lambda_b}", from=1-3, to=2-2]
+            \arrow["{\sigma_{b, a}}", from=1-5, to=2-6]
+            \arrow["{\sigma_{a, b}}", from=2-4, to=1-5]
+            \arrow["{\id_{a \otimes b}}"', from=2-4, to=2-6]
+        \end{tikzcd}
+        \text{.}
+        \]
+    \end{enumerate}
+\end{definition}
+
+\subsubsection{Monoidal functors}
+
+\begin{definition}[(Op)lax monoidal functor]
+    Let $(\mc{C}, \otimes, I_{\mc{C}})$ and $(\mc{C}, \bullet, I_{\mc{D}})$ be monoidal.
+    \begin{itemize}
+        \item A \emph{lax monoidal functor} (or just \emph{monoidal functor}) from $\mc{C}$ to $\mc{D}$ is a triple $$(F, \phi, \phi_0),$$
+        where \begin{itemize}
+            \item[$\bullet$] $F: \mc{C} \to \mc{D}$,
+            \item[$\bullet$] $\phi: \lambda fg. Ff \bullet Fg \to \lambda fg. F(f \otimes g), $
+            \item[$\bullet$] $\phi_0: I_{\mc{D}} \to FI_{\mc{C}},$ 
+        \end{itemize}
+        satisfying the diagrams:
+        % https://q.uiver.app/#q=WzAsNixbMCwxLCIoRmEgXFxidWxsZXQgRmIpIFxcYnVsbGV0IEZjIl0sWzEsMiwiRihhIFxcb3RpbWVzIGIpIFxcYnVsbGV0IEZjIl0sWzEsMCwiRmEgXFxidWxsZXQgKEZiIFxcYnVsbGV0IEZjKSJdLFsyLDIsIkYoKGEgXFxvdGltZXMgYikgXFxvdGltZXMgYykiXSxbMywxLCJGKGEgXFxvdGltZXMgKGIgXFxvdGltZXMgYykpIl0sWzIsMCwiRmEgXFxidWxsZXQgRihiIFxcb3RpbWVzIGMpIl0sWzAsMSwiXFxwaGkgXFxidWxsZXQgXFxpZCIsMl0sWzAsMiwiXFxhbHBoYV97XFxtYXRoY2Fse0R9fSJdLFsxLDMsIlxccGhpIiwyXSxbMyw0LCJGXFxhbHBoYV97XFxtYXRoY2Fse0N9fSIsMl0sWzIsNSwiXFxpZCBcXGJ1bGxldCBcXHBoaSJdLFs1LDQsIlxccGhpIl1d
+        \[\begin{tikzcd}[sep=scriptsize]
+            & {Fa \bullet (Fb \bullet Fc)} & {Fa \bullet F(b \otimes c)} \\
+            {(Fa \bullet Fb) \bullet Fc} &&& {F(a \otimes (b \otimes c))} \\
+            & {F(a \otimes b) \bullet Fc} & {F((a \otimes b) \otimes c)}
+            \arrow["{\id \bullet \phi}", from=1-2, to=1-3]
+            \arrow["\phi", from=1-3, to=2-4]
+            \arrow["{\alpha_{\mathcal{D}}}", from=2-1, to=1-2]
+            \arrow["{\phi \bullet \id}"', from=2-1, to=3-2]
+            \arrow["\phi"', from=3-2, to=3-3]
+            \arrow["{F\alpha_{\mathcal{C}}}"', from=3-3, to=2-4]
+        \end{tikzcd},\]
+        % https://q.uiver.app/#q=WzAsOCxbMywxLCJGYSBcXGJ1bGxldCBJX3tcXG1hdGhjYWx7RH19Il0sWzQsMSwiRmEgXFxidWxsZXQgRklfe1xcbWF0aGNhbHtEfX0iXSxbMywwLCJGYSJdLFs0LDAsIkYoYSBcXG90aW1lcyBJX3tcXG1hdGhjYWx7Q319KSJdLFsxLDAsIklfXFxtYXRoY2Fse0R9IFxcYnVsbGV0IEZiIl0sWzAsMCwiRklfe1xcbWF0aGNhbHtDfX0gXFxidWxsZXQgRmIiXSxbMSwxLCJGYiJdLFswLDEsIkYoSV9cXG1hdGhjYWx7Q30gXFxvdGltZXMgQikiXSxbMCwyLCJcXHJob197XFxtYXRoY2Fse0R9fSJdLFszLDIsIkZcXHJob197XFxtYXRoY2Fse0N9fSIsMl0sWzEsMywiXFxwaGkiLDJdLFswLDEsIlxcaWQgXFxidWxsZXQgXFxwaGkiLDJdLFs0LDYsIlxcbGFtYmRhX3tcXG1hdGhjYWx7RH19Il0sWzQsNSwiXFxwaGkgXFxidWxsZXQgXFxpZCIsMl0sWzUsNywiXFxwaGkiLDJdLFs3LDYsIkZcXGxhbWJkYV97XFxtYXRoY2Fse0N9fSIsMl1d
+    % https://q.uiver.app/#q=WzAsOCxbMywxLCJGYSBcXGJ1bGxldCBJX3tcXG1hdGhjYWx7RH19Il0sWzQsMSwiRmEgXFxidWxsZXQgRklfe1xcbWF0aGNhbHtEfX0iXSxbMywwLCJGYSJdLFs0LDAsIkYoYSBcXG90aW1lcyBJX3tcXG1hdGhjYWx7Q319KSJdLFsxLDAsIklfXFxtYXRoY2Fse0R9IFxcYnVsbGV0IEZiIl0sWzAsMCwiRklfe1xcbWF0aGNhbHtDfX0gXFxidWxsZXQgRmIiXSxbMSwxLCJGYiJdLFswLDEsIkYoSV9cXG1hdGhjYWx7Q30gXFxvdGltZXMgQikiXSxbMCwyLCJcXHJob197XFxtYXRoY2Fse0R9fSJdLFszLDIsIkZcXHJob197XFxtYXRoY2Fse0N9fSIsMl0sWzEsMywiXFxwaGkiLDJdLFswLDEsIlxcaWQgXFxidWxsZXQgXFxwaGlfMCIsMl0sWzQsNiwiXFxsYW1iZGFfe1xcbWF0aGNhbHtEfX0iXSxbNCw1LCJcXHBoaV8wIFxcYnVsbGV0IFxcaWQiLDJdLFs1LDcsIlxccGhpIiwyXSxbNyw2LCJGXFxsYW1iZGFfe1xcbWF0aGNhbHtDfX0iLDJdXQ==
+    \[\begin{tikzcd}
+        {FI_{\mathcal{C}} \bullet Fb} & {I_\mathcal{D} \bullet Fb} && Fa & {F(a \otimes I_{\mathcal{C}})} \\
+        {F(I_\mathcal{C} \otimes B)} & Fb && {Fa \bullet I_{\mathcal{D}}} & {Fa \bullet FI_{\mathcal{D}}}
+        \arrow["\phi"', from=1-1, to=2-1]
+        \arrow["{\phi_0 \bullet \id}"', from=1-2, to=1-1]
+        \arrow["{\lambda_{\mathcal{D}}}", from=1-2, to=2-2]
+        \arrow["{F\rho_{\mathcal{C}}}"', from=1-5, to=1-4]
+        \arrow["{F\lambda_{\mathcal{C}}}"', from=2-1, to=2-2]
+        \arrow["{\rho_{\mathcal{D}}}", from=2-4, to=1-4]
+        \arrow["{\id \bullet \phi_0}"', from=2-4, to=2-5]
+        \arrow["\phi"', from=2-5, to=1-5]
+    \end{tikzcd}\text{.}\]
+    \item An \emph{oplax monoidal functor} (or \emph{comonoidal functor}) from $\mc{D}$ to $\mc{C}$ is a dual to lax monoidal functor.
+    \end{itemize}
+\end{definition}
+
+\begin{definition}[Strong monoidal functor]
+    A \emph{strong monoidal functor} is a monoidal functors with the coherence maps $\phi$ and $\phi_0$ being iso. Thus,
+    $$Ff \otimes Fg \cong F(f \otimes g), \qquad I_{\mc{D}} \cong FI_{\mc{C}}.$$ 
+\end{definition}
+
+\begin{definition}[Strict monoidal functor]
+    A \emph{strict monoidal functor} is a monoidal functor with the coherence maps $\phi$ and $\phi_0$ being identities. Thus,
+    $$Ff \otimes Fg = F(f \otimes g), \qquad I_{\mc{D}} = FI_{\mc{C}}.$$ 
+\end{definition}
+
+\begin{definition}[Braided monoidal functor]
+    A \emph{braided monoidal functor} is a monoidal functor between braided categories satisfying the diagram
+    % https://q.uiver.app/#q=WzAsNCxbMSwwLCJGYSBcXGJ1bGxldCBGYiJdLFswLDAsIkZhIFxcYnVsbGV0IEZiIl0sWzAsMSwiRihhIFxcb3RpbWVzIGIpIl0sWzEsMSwiRihiIFxcb3RpbWVzIGEpIl0sWzEsMiwiXFxwaGkiLDJdLFsyLDMsIkZcXHNpZ21hX3tcXG1hdGhjYWx7RH19IiwyXSxbMSwwLCJcXHNpZ21hX3tcXG1hdGhjYWx7Q319Il0sWzAsMywiXFxwaGkiXV0=
+    \[\begin{tikzcd}
+        {Fa \bullet Fb} & {Fa \bullet Fb} \\
+        {F(a \otimes b)} & {F(b \otimes a)}
+        \arrow["{\sigma_{\mathcal{C}}}", from=1-1, to=1-2]
+        \arrow["\phi"', from=1-1, to=2-1]
+        \arrow["\phi", from=1-2, to=2-2]
+        \arrow["{F\sigma_{\mathcal{D}}}"', from=2-1, to=2-2]
+    \end{tikzcd}
+    \text{.}
+    \]
+\end{definition}
+
+\begin{definition}[Symmetric monoidal functor]
+    A \emph{symmetric monoidal functor} is a braided monoidal functor whose domains are SMCs.
+\end{definition}
+
+\begin{definition}[Monoidal natural transformaiton]
+    
+\end{definition}
+
+\subsection{Core results}
+
+
+\section{Specialized definitions and results}
+
+
+\end{document}
