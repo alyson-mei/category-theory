@@ -12,6 +12,9 @@
 \g@addto@macro\th@plain{\normalfont} % remove italics from theorems (plain style)
 \makeatother
 
+\usepackage{hyperref}
+\hypersetup{hidelinks}
+
 % Commutative diagrams and proofs
 \usepackage{tikz-cd}
 \usepackage{proof}
@@ -91,13 +94,16 @@
 \begin{document}
 
 \maketitle
+
+These notes are intended as a concise overview of the book \href{https://emilyriehl.github.io/files/context.pdf}{Category Theory in Context} by Emiliy Riehl.  
+
 \tableofcontents
 
 \section{Categories, functors, natural transformaions}
 
 \subsection{Abstract and concrete categories}
 
-\begin{definition}[Category]
+\begin{definition}[Category] Notation: $\mc{C}, \mc{D}, \mc{E}, \ldots$
 \end{definition}
 
 \begin{remark}[Correspondence between objects and identity morphisms]
@@ -222,13 +228,47 @@
 \begin{lemma}[Compositions of mono / epi]
     \hfill
     \begin{enumerate}
-        \item Composable $f$ and $g$ are mono $\Rightarrow$ $gf$ is mono.
-        \item $gf$ is mono $\Rightarrow$ $f$ is mono.
-        \item Composable $f$ and $g$ are epi $\Rightarrow$ $gf$ is epi.
-        \item $gf$ is epi $\Rightarrow$ $g$ is epi.
+        \item Composable $f$ and $g$ are mono $\Rightarrow$ $gf$ is mono. Dually, $f$ and $g$ are epi $\Rightarrow$ $gf$ is epi.
+        \item $gf$ is mono $\Rightarrow$ $f$ is mono. Dually, $gf$ is epi $\Rightarrow$ $g$ is epi.
     \end{enumerate}
 \end{lemma}
 
 \subsection{Functoriality}
+
+\begin{definition}[Functor] Notation: $F: \mc{C} \to \mc{D}$.
+\end{definition}
+
+\begin{example}[Functors]
+    \hfill
+    \begin{itemize}
+        \item Power set functor $P: \mc{S}et \to \mc{S}et$;
+        \item Forgetful functors $U: \mc{C} \to \mc{S}et$, itermediate forgetful functors (e.g. $\mc{M}od_R \to \mc{A}b$, $\mc{G}r \to \mc{S}et_*$);
+        \item Homotopy class functors $\mc{T}op_{(*)} \to \mc{H}tpy_{(*)}$;
+        \item Fundamental group $\pi_1: \mc{T}op_* \to \mc{G}rp$ and its factor $\pi_1: \mc{H}tpy_* \to \mc{G}rp$ through $\mc{T}op_* \to \mc{H}tpy_*$, fundamental groupoid $\Pi_1: \mc{T}op \to \mc{G}roupoid$;
+        \item $n$-cycles $Z_n$, $n$-boundary $B_n$ and $n$-th homology $H_n$ typed $\mc{C}h_R \to \mc{M}od_R$, all degrees simultaneously give $Z_*, B_*, H_*: \mc{C}h_R \to \mc{G}r\mc{M}od_R$ (codomain is the category of graded $R$-modules);
+        \item Free functors $F: \mc{S}et \to \mc{C}$ (left adjoints to forgetful functors);
+        \item Derivative $D: \mc{E}uclid_* \to \mc{M}at_\mathbb{R}$;
+        \item $M^-: \mc{F}in_* \to \mc{S}et$ for a commutative monoid $M$.
+    \end{itemize}
+\end{example}
+
+\begin{theorem}[Brouwer Fixed Point Theorem] Any continuous endomorphism of a 2-dimensional disk $D^2$ has a fixed point.
+\end{theorem}
+
+\begin{example}[Example for topological data analysis]
+\end{example}
+
+\begin{definition}[Contravariant functor] $F: \mc{C}^\op \to \mc{D}$.
+\end{definition}
+
+\addtocounter{theorem}{1}
+
+\begin{example}[Contravariant functors]
+    \hfill
+    \begin{enumerate}
+        \item Contravariant power set $P: \mc{S}et^\op \to \mc{S}et$;
+        \item Dual vector space functor $*: \mc{V}ect_\mathbf{k}^\op \to \mc{V}ect_\mathbf{k}$;
+    \end{enumerate}
+\end{example}
 
 \end{document}
