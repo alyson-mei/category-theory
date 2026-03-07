@@ -6,7 +6,13 @@
 
 Unpolished notes with my personal pov on category theory — a high-level approach (mostly), lots of diagrams, and polymorphic notation. Mostly focused on the topics I need for my research and the ones I want to have a nice understanding of. I hope to include all standard concepts sooner or later and refactor everything for smoother navigation (though lack of resources will probably interfere)
 
-Status: Temporarily on hold while I’m working on a paper about tensor algebra
+Status: Updated as needed; many entries are still rough working notes.
+
+## Category Theory out of Context (early stage)
+A concise overview of category theory focused on proofs and formal machinery rather than examples.
+
+## Notes: Category Theory in Context (early stage)
+Concise notes on the Category Theory in Context by Emily Riehl.
 
 ## 00 Category Theory Basics
 

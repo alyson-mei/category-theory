@@ -12,13 +12,12 @@
 \g@addto@macro\th@plain{\normalfont} % remove italics from theorems (plain style)
 \makeatother
 
-% Commutative diagrams and proofs
+% Commutative diagrams
 \usepackage{tikz-cd}
-\usepackage{proof}
 
 
 % Theorem environments
-\newtheorem{theorem}{Theorem}[section]
+\newtheorem{theorem}{Theorem}[subsection]
 \newtheorem{lemma}[theorem]{Lemma}
 \newtheorem{proposition}[theorem]{Proposition}
 \newtheorem{corollary}[theorem]{Corollary}
@@ -57,7 +56,7 @@
 \newcommand{\adj}{\operatorname{adj}}
 \newcommand{\coadj}{\operatorname{coadj}}
 \newcommand{\colim}{\operatorname*{colim}}
-\newcommand{\lcoim}{\operatorname*{(co)lim}}
+\newcommand{\lcoim}{\operatorname*{(co)lim)}}
 
 % Arrows
 \newcommand{\ra}{\rightarrow}
@@ -69,6 +68,7 @@
 \renewcommand{\labelitemi}{--} % Level 1: Dashes
 \renewcommand{\labelitemii}{$\circ$} % Level 2: Circles
 \renewcommand{\labelitemiii}{$\bullet$} % Level 3: Bullets (default)
+
 
 
 \title{(Co)Limits}
@@ -96,9 +96,9 @@ $$\mc{A} \xto{S} \mc{C} \xfrom{T} \mc{B},$$
 the category $(S \downarrow T)$ is defined as follows:
 
 \begin{itemize}
-\item Objects of are the triples $(a: \obj(\mc{A}), h:\arr(\mc{C}), b: \obj(\mc{B})),$
+\item[$\bullet$] Objects of are the triples $(a: \obj(\mc{A}), h:\arr(\mc{C}), b: \obj(\mc{B})),$
 
-\item Morphisms are pairs $(f: \arr(\mc{A}), g:\arr(\mc{B}))$ satisfying the condition:
+\item[$\bullet$] Morphisms are pairs $(f: \arr(\mc{A}), g:\arr(\mc{B}))$ satisfying the condition:
 % https://q.uiver.app/#q=WzAsNixbMCwwLCIoYSwgaCwgYikiXSxbMCwxLCIoYScsIGgnLCBiJykiXSxbMSwwLCJTYSJdLFsxLDEsIlNhJyJdLFsyLDAsIlRiIl0sWzIsMSwiVGInIl0sWzAsMSwiKGYsIGcpIl0sWzIsNCwiaCJdLFszLDUsImgnIiwyXSxbMiwzLCJTZiIsMl0sWzQsNSwiVGYiXV0=
 \[\begin{tikzcd}
 	{(a, h, b)} & Sa & Tb \\
@@ -116,7 +116,7 @@ the category $(S \downarrow T)$ is defined as follows:
 
 The concept of a comma category allows us to define (co)limits in a uniform way.
 \begin{definition}[(Co)Limit]
-The limit of a diagram $D$ is defined as a terminal object of the category $(\Delta \downarrow D)$. Dually, the colimit of a diagram $E$ is defined as an initial object of the category $(E \downarrow \Delta)$.
+The \emph{limit of a diagram $D$} is defined as a terminal object of the category $(\Delta \downarrow D)$. Dually, the \emph{colimit of a diagram $E$} is defined as an initial object of the category $(E \downarrow \Delta)$.
 \[
 \mc{D} \xrightarrow{\Delta} \mc{D}^{\mc{J}} \xleftarrow{D} 1;
 \qquad

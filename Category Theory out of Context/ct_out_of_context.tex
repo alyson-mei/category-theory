@@ -1,0 +1,168 @@
+\documentclass[12pt]{article}
+% Page setup
+\usepackage[margin=1in]{geometry}
+\usepackage{parskip}
+\usepackage{titling}
+\setlength{\droptitle}{-6em} 
+
+% Math packages
+\usepackage{amsmath, amsthm, amssymb, amsfonts}
+\usepackage{mathtools}
+\makeatletter
+\g@addto@macro\th@plain{\normalfont} % remove italics from theorems (plain style)
+\makeatother
+
+% Commutative diagrams and proofs
+\usepackage{tikz-cd}
+\usepackage{proof}
+\usepackage{stmaryrd}
+
+% Unordered lists
+\usepackage{enumitem}
+\newlist{related}{itemize}{1}
+\setlist[related]{label=\textbullet}
+\newlist{distinct}{itemize}{1}
+\setlist[distinct]{label=--}
+
+
+% Theorem environments
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{fact}[theorem]{Fact}
+\newtheorem{remark}[theorem]{Remark}
+
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+
+% Useful commands for category theory
+\newcommand{\alp}{\mathbf{Alph}}
+\newcommand{\mc}{\mathcal}
+\newcommand{\ini}{\operatorname{ini}}
+\newcommand{\ter}{\operatorname{ter}}
+\newcommand{\cod}{\operatorname{cod}}
+\newcommand{\dom}{\operatorname{dom}}
+
+\newcommand{\List}{\operatorname{List}}
+\newcommand{\lop}{\operatorname{[ \ ]}}
+\newcommand{\len}{\operatorname{len}}
+\newcommand{\type}{\operatorname{type}}
+
+\newcommand{\Exc}{\operatorname{Exception}}
+
+\newcommand{\Kl}{\operatorname{Kl}}
+\newcommand{\plus}{\operatorname{+}}
+
+\newcommand{\Cat}{\mathcal{C}at}
+\newcommand{\Vect}{\mathrm{Vect}_\mathbf{k}}
+\newcommand{\Hom}{\operatorname{Hom}}
+\newcommand{\Nat}{\operatorname{Nat}}
+\newcommand{\id}{\mathrm{id}}
+\newcommand{\op}{\mathrm{op}}
+\newcommand{\obj}{\operatorname{obj}}
+\newcommand{\arr}{\operatorname{arr}}
+\newcommand{\adj}{\operatorname{adj}}
+\newcommand{\Par}{\operatorname{par}}
+
+\newcommand{\coadj}{\operatorname{coadj}}
+\newcommand{\colim}{\operatorname*{colim}}
+
+% Arrows
+\newcommand{\ra}{\rightarrow}
+\newcommand{\from}{\leftarrow}
+\newcommand{\To}{\Rightarrow}
+\newcommand{\xto}{\xrightarrow}
+\newcommand{\xfrom}{\xleftarrow}
+
+\renewcommand{\labelitemi}{--} % Level 1: Dashes
+\renewcommand{\labelitemii}{$\circ$} % Level 2: Circles
+\renewcommand{\labelitemiii}{$\bullet$} % Level 3: Bullets (default)
+
+
+\title{Category Theory out of Context}
+\author{Alyson Mei}
+\date{\today}
+
+
+\begin{document}
+
+\maketitle
+
+%\tableofcontents
+
+
+\section{Basics}
+
+\paragraph{Base definitions}
+
+\begin{definition}[Category] A \emph{category $\mc{C}$} consists of the following data:
+\begin{enumerate}
+    \item A collection of \emph{objects} $\obj(\mc{C})$;
+    \item A collection of \emph{arrows} $\arr(\mc{C})$ of form $f: c \to d$ for $c, d: \obj(\mc{C})$ satisfying the \emph{composition}, \emph{identity} and \emph{associativity} axioms:
+    % https://q.uiver.app/#q=WzAsMTEsWzEsMCwiZCJdLFsxLDEsImQiXSxbMCwwLCJjIl0sWzIsMCwiYyJdLFsyLDEsImMiXSxbMywxLCJkIl0sWzMsMCwiZCJdLFs0LDAsImMiXSxbNSwwLCJkIl0sWzUsMSwiZSJdLFs2LDEsInciXSxbMiwwLCJmIl0sWzAsMSwiZyJdLFsyLDEsImcgXFxjaXJjIGYiLDJdLFszLDQsIlxcaWRfYyIsMl0sWzQsNSwiZiIsMl0sWzMsNSwiZiIsMV0sWzMsNiwiZiJdLFs2LDUsIlxcaWRfZCJdLFs3LDgsImYiXSxbOCw5LCJnIiwxXSxbOSwxMCwiaCIsMl0sWzcsOSwiZyBcXGNpcmMgZiIsMl0sWzgsMTAsImggXFxjaXJjIGciXV0=
+    \[\begin{tikzcd}
+        c & d & c & d & c & d & \\
+        & d & c & d && e & w
+        \arrow["f", from=1-1, to=1-2]
+        \arrow["{g \circ f}"', from=1-1, to=2-2]
+        \arrow["g", from=1-2, to=2-2]
+        \arrow["f", from=1-3, to=1-4]
+        \arrow["{\id_c}"', from=1-3, to=2-3]
+        \arrow["f"{description}, from=1-3, to=2-4]
+        \arrow["{\id_d}", from=1-4, to=2-4]
+        \arrow["f", from=1-5, to=1-6]
+        \arrow["{g \circ f}"', from=1-5, to=2-6]
+        \arrow["g"{description}, from=1-6, to=2-6]
+        \arrow["{h \circ g}", from=1-6, to=2-7]
+        \arrow["f"', from=2-3, to=2-4]
+        \arrow["h"', from=2-6, to=2-7]
+    \end{tikzcd}\text{.}\] 
+\end{enumerate}
+\end{definition}
+
+\begin{remark}[Arrow-first approach]
+    We identify objects with their identity arrows, so we may to assume that categories consist of arrows only. We use this viewpoint when convenient. 
+\end{remark}
+
+\begin{definition}[Functor]
+    A functor $F: \mc{C} \to \mc{D}$ is a structure-preserving map between categories:
+    \[
+        F(c \xto{\id_c} c) = Fc \xto{\id_{Fc}} Fc, \qquad F(c \xto{f} d \xto{g} e) = Fc \xto{Ff} Fd \xto{Fg} Fe.
+    \]
+\end{definition}
+
+\begin{definition}[Natural transformation] A \emph{natural transformation} $\alpha: F \to G$ between $F, G: \mc{C} \to \mc{D}$ is given by a collection of arrows 
+\[
+    (\alpha_c: Fc \to Gc \mid c: \obj(\mc{C})),
+\]
+that for each $c \xto{f} c': \arr(\mc{C})$ satisfies the 
+naturality condition
+% https://q.uiver.app/#q=WzAsNCxbMCwwLCJGYyJdLFsxLDAsIkdjIl0sWzEsMSwiR2MnIl0sWzAsMSwiRmMnIl0sWzAsMywiRmYiLDJdLFsxLDIsIkdmIl0sWzAsMSwiXFxhbHBoYV9jIl0sWzMsMiwiXFxhbHBoYV97Yyd9IiwyXV0=
+\[\begin{tikzcd}
+	Fc & Gc \\
+	{Fc'} & {Gc'}
+	\arrow["{\alpha_c}", from=1-1, to=1-2]
+	\arrow["Ff"', from=1-1, to=2-1]
+	\arrow["Gf", from=1-2, to=2-2]
+	\arrow["{\alpha_{c'}}"', from=2-1, to=2-2]
+\end{tikzcd}.\]
+\end{definition}
+
+\paragraph{Special objects and arrows}
+
+\begin{definition}[Universal objects]
+\hfill
+\begin{distinct}
+    \item \emph{Initial object} $\ini(\mc{C})$
+    \item \emph{Terminal object} $\ter(\mc{C})$
+    \item \emph{Universal object} is either initial or terminal.
+\end{distinct}
+\end{definition}
+
+\begin{definition}[Monomorphisms and epimorphisms]
+    
+\end{definition}
+
+\end{document}
