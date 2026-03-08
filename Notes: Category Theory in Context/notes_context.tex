@@ -35,8 +35,9 @@
 \newtheorem{corollary}[theorem]{Corollary}
 \newtheorem{fact}[theorem]{Fact}
 \newtheorem{remark}[theorem]{Remark}
-\newtheorem*{remark*}{Remark}
 \newtheorem*{definition*}{Definition}
+\newtheorem*{remark*}{Remark}
+\newtheorem*{example*}{Example}
 
 \theoremstyle{definition}
 \newtheorem{definition}[theorem]{Definition}
@@ -99,7 +100,7 @@ These notes are intended as a concise overview of the book \href{https://emilyri
 
 \tableofcontents
 
-\section{Categories, functors, natural transformaions}
+\section{Categories, functors, natural transformations}
 
 \subsection{Abstract and concrete categories}
 
@@ -308,7 +309,109 @@ These notes are intended as a concise overview of the book \href{https://emilyri
     \begin{itemize}
         \item $(-)^\op: \mc{CAT} \to \mc{CAT}$;
         \item $(-)^{-1}: \mc{B}G \to \mc{B}G^\op$;
+        \item Groupoid is isomorphic to its opposite;
+        \item $\mc{M}od_R \simeq {}_{R^\op} \mc{M}od$;
+        \item $\mc{M}at_R \simeq \mc{M}at_R^\op$.
     \end{itemize}
 \end{example}
+
+\begin{example}[Galois extension]
+\end{example}
+
+\subsection{Naturality}
+
+\begin{definition}[Natural transformation, natural isomorphism]
+    Notation: $\alpha: F \to G$.
+\end{definition}
+
+\addtocounter{theorem}{1}
+\begin{example}[Natural transformations]
+    \hfill
+    \begin{itemize}
+        \item $\text{ev}: \id_{\mc{V}ect} \to **$, iso on $\mc{F}d\mc{V}ect$;
+        \item $G$-equivariant map $\mc{B}G \to \mc{C}$;
+        \item Open and closed subset functors $O, C: \mc{T}op^\op \to \mc{S}et$ are naturally isomorphic;
+    \end{itemize}
+\end{example}
+
+\begin{proposition}[Example of an iso that is not natural (torsion subgroup)]
+\end{proposition}
+
+\begin{example}[Riesz representation theorem]
+\end{example}
+
+\begin{example}[Natural transformation between hom functors]
+\end{example}
+
+\addtocounter{theorem}{1}
+\begin{example}[Categorification of natural numbers]
+\end{example}
+
+\subsection{Equivalence of categories}
+
+\begin{lemma}[Internal representation of natural transformations]
+    Fixing a parallel pair of functors $F, G:\mc{C} \to \mc{D}$, natural transformations $\alpha: F \to G$ correspond bijectively to functors $H:  \mc{C} \times 2 \to \mc{D}$ such that
+    % https://q.uiver.app/#q=WzAsNCxbMSwwLCJcXG1hdGhjYWx7Q30gXFx0aW1lcyAyIl0sWzAsMCwiXFxtYXRoY2Fse0N9Il0sWzIsMCwiXFxtYXRoY2Fse0N9Il0sWzEsMSwiXFxtYXRoY2Fse0R9Il0sWzEsMCwiaV8wIl0sWzIsMCwiaV8xIiwyXSxbMCwzLCJIIl0sWzEsMywiRiIsMl0sWzIsMywiRyJdXQ==
+    \[\begin{tikzcd}
+        {\mathcal{C}} & {\mathcal{C} \times 2} & {\mathcal{C}} \\
+        & {\mathcal{D}}
+        \arrow["{i_0}", from=1-1, to=1-2]
+        \arrow["F"', from=1-1, to=2-2]
+        \arrow["H", from=1-2, to=2-2]
+        \arrow["{i_1}"', from=1-3, to=1-2]
+        \arrow["G", from=1-3, to=2-2]
+    \end{tikzcd}.\]
+\end{lemma}
+
+\addtocounter{theorem}{2}
+\begin{definition}[Equivalence of categories] Notation: $\mc{C} \sim \mc{D}.$
+\end{definition}
+
+\begin{lemma}[Equivalence of categories defines an equivalence relation]
+\end{lemma}
+
+\begin{example}[Equivalence between the category of pointed sets and the category of sets with partial functions]
+\end{example}
+
+\begin{definition}[Full, faithful, essentially surjective on objects functors]
+\end{definition}
+
+\begin{remark}[(Full) embedding, full subcategory]
+\end{remark}
+
+\begin{theorem}[Characterizing equivalence of categories]
+    A functor defininig an equivalence of categories is full, faithful and essentially surjective on objects. Assumming the axiom of choice, any functor with these properties defines an equivalence of categories.
+\end{theorem}
+
+\addtocounter{theorem}{1}
+
+\begin{corollary}[An equivalence between abstract and concrete linear algebra]
+\end{corollary}
+
+\begin{proposition}
+    Any connected groupoid is equivalent to the automorphism group of any of its objects.
+\end{proposition}
+
+\begin{corollary}
+    In a path-connected space $X$, any choice of basepoint $x \in X$ yields an isomorphic fundamental group $\pi_1(X, x)$.
+\end{corollary}
+
+\begin{remark}
+    Frequently, one functor of an equivalence of categories can be defined canonically, while the inverse requires the axiom of choice.
+\end{remark}
+
+\begin{definition}[Skeleton and skeletal category] Notation: $\text{sk}\mc{C}$.
+\end{definition}
+
+\begin{remark}[Construction of skeleton]
+\end{remark}
+
+\begin{example}[Skeletons]
+\end{example}
+
+\begin{example}[A categorification of the orbit-stabilizer theorem]
+\end{example}
+
+\subsection{The art of the diagram chase}
 
 \end{document}
