@@ -414,4 +414,92 @@ These notes are intended as a concise overview of the book \href{https://emilyri
 
 \subsection{The art of the diagram chase}
 
+\addtocounter{theorem}{1}
+
+\begin{definition}[Monoid object]
+    \hfill
+    \begin{itemize}
+        \item Monoid in $\mc{S}et$;
+        \item Topological monoid;
+        \item Unital ring;
+        \item $\mathbf{k}$-algebra.
+    \end{itemize}
+\end{definition}
+
+\addtocounter{theorem}{1}
+
+\begin{lemma}[Functors preserve commutative diagrams]
+\end{lemma}
+
+\addtocounter{theorem}{6}
+
+\begin{lemma}[Rewriting in compositions of morphisms]
+    \[ 
+        f_j \ldots f_k = g_m \ldots g_1   \Rightarrow f_1 \ldots f_j \ldots f_k \ldots f_n = f_1 \ldots g_m \ldots g_1 \ldots f_n.
+    \]
+\end{lemma}
+
+\begin{lemma}[Reversing iso on the diagram]
+\end{lemma}
+
+\begin{lemma}[Reversing multimple isos on the diagram]
+\end{lemma}
+
+\begin{definition}[Initial and terminal objects]
+\end{definition}
+
+\begin{example}[Examples of initial and terminal objects]
+    \hfill
+    \begin{itemize}
+        \item Empty set / one-element set in $\mc{S}et$;
+        \item Empty and singleton space in $\mc{T}op$;
+        \item Every one-element set in $\mc{S}et_*$;
+        \item Zero module is both initial and terminal in $\mc{M}od_R$, the trivial group is both initial and terminal in $\mc{G}r$;
+        \item $\mathbb{Z}$ is the initial object in $\mc{R}ing$;
+        \item $\mc{F}ield$ has neigher initial nor terminal objects;
+        \item The empty category is initial and the category $1$ is terminal in $\mc{C}at$;
+        \item A global minimal and a global maximal elements (if they exist) are the initial and terminal ojbects in a preorder.
+    \end{itemize}
+\end{example}
+
+\begin{lemma}[Compositions from initial / to terminal objects]
+\end{lemma}
+
+\begin{definition}[Concrete category]
+    A concrete category is a category $\mc{C}$ equipped with a faithful functor $U: \mc{C} \to \mc{S}et$.
+\end{definition}
+
+\begin{lemma}[Faithful preimage of a commutative diagram]
+    $U: \mc{C} \to \mc{D}$ is faithful $\Rightarrow$ preimage of commutative diagram in $\mc{D}$ is commutative in $\mc{C}$.
+\end{lemma}
+
+\addtocounter{theorem}{1}
+
+\begin{remark}[On cancellability]
+    Adjacent squares commute $\Rightarrow$ external square commutes. Converse need not hold.
+\end{remark}
+
+\begin{lemma}
+    Consider morphisms with the indicated sources and targets
+    % https://q.uiver.app/#q=WzAsNixbMCwwLCJhIl0sWzEsMCwiYiJdLFsxLDEsImInIl0sWzAsMSwiYSciXSxbMiwwLCJjIl0sWzIsMSwiYyciXSxbMCwzLCJnIiwyXSxbMSwyLCJoIiwyXSxbNCw1LCJ0IiwyXSxbMCwxLCJmIl0sWzEsNCwiaiJdLFszLDIsImsiLDJdLFsyLDUsIm0iLDJdXQ==
+    \[\begin{tikzcd}
+        a & b & c \\
+        {a'} & {b'} & {c'}
+        \arrow["f", from=1-1, to=1-2]
+        \arrow["g"', from=1-1, to=2-1]
+        \arrow["j", from=1-2, to=1-3]
+        \arrow["h"', from=1-2, to=2-2]
+        \arrow["t"', from=1-3, to=2-3]
+        \arrow["k"', from=2-1, to=2-2]
+        \arrow["m"', from=2-2, to=2-3]
+    \end{tikzcd}\]
+    and suppose that the outer rectangle commutes. This data defines a commutative rectangle if either:
+    \begin{enumerate}
+        \item[$(i)$] the right-hand square commutes and $m$ is a mono;
+        \item[$(ii)$] the left-hand square commutes and $f$ is an epi.  
+    \end{enumerate}
+\end{lemma}
+
+\subsection{The 2-category of categories}
+
 \end{document}
