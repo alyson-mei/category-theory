@@ -553,4 +553,160 @@ These notes are intended as a concise overview of the book \href{https://emilyri
     \end{itemize}
 \end{definition}
 
+\newpage
+
+\section{Universal Properties, Representability and the Yoneda Lemma}
+
+Illustration: coloring of the graph.
+\[
+    n\text{-Color}: \text{Graph}^\op \to \mc{S}et
+\]
+% https://q.uiver.app/#q=WzAsMyxbMCwwLCJHIl0sWzAsMSwiRyciXSxbMiwwLCJcXHRleHR7ZGlzY3J9KG4pIl0sWzEsMCwiZiJdLFswLDIsIlxcdGV4dHtjb2xvcmluZ30iXSxbMSwyLCJcXHRleHR7Y29sb3Jpbmd9JyIsMl1d
+\[\begin{tikzcd}
+	G && {\text{discr}(n)} \\
+	{G'}
+	\arrow["{\text{coloring}}", from=1-1, to=1-3]
+	\arrow["f", from=2-1, to=1-1]
+	\arrow["{\text{coloring}'}"', from=2-1, to=1-3]
+\end{tikzcd}\]
+
+$K_n$ represents the $n\text{-Color}$: 
+\[
+    \Hom(-, K_n) \simeq n\text{-Color}
+\]
+
++ in 2.3 we define the notion of the universal element that witnesses a universal property of some object in a locally small category. The universal element witnessing the universal property of the complete graph is an $n$-coloring of $K_n$, an element of the set $n\text{-Color}(K_n)$. In 2.4, we use the Yoneda lemma to show that the pair comprised of an object characterized by a universal property and its universal element defines a universal object in a category of elements of the functor that it represents.
+
+\subsection{Representable functors}
+
+\begin{example}[Discrete dynamic system]
+    $(X, f: X \to X, x_0 \in X)$. $f(x_n) = x_{n + 1}$. Natural numbers is the universal discrete dynamic system. Consider the category with objects $(1 \xto{q} X \xto{f} X)$; the $(1 \xto{0} \mathbb{N} \xto{s} \mathbb{N})$ is its initial object:
+    % https://q.uiver.app/#q=WzAsMTAsWzEsMCwiXFxtYXRoYmJ7Tn0iXSxbMiwwLCJcXG1hdGhiYntOfSJdLFsxLDEsIlgiXSxbMiwxLCJYIl0sWzAsMCwiMSJdLFszLDAsIioiXSxbNCwwLCIwIl0sWzUsMCwicygwKSJdLFs0LDEsInEgPSByKDApIl0sWzUsMSwiZihxKSA9IHIocygwKSkiXSxbMCwxLCJzIl0sWzAsMiwiciIsMix7InN0eWxlIjp7ImJvZHkiOnsibmFtZSI6ImRhc2hlZCJ9fX1dLFsxLDMsInIiLDAseyJzdHlsZSI6eyJib2R5Ijp7Im5hbWUiOiJkYXNoZWQifX19XSxbMiwzLCJmIl0sWzQsMCwiMCJdLFs0LDIsInEiLDJdLFs1LDYsIiIsMix7InN0eWxlIjp7InRhaWwiOnsibmFtZSI6Im1hcHMgdG8ifX19XSxbNiw3LCIiLDIseyJzdHlsZSI6eyJ0YWlsIjp7Im5hbWUiOiJtYXBzIHRvIn19fV0sWzUsOCwiIiwwLHsic3R5bGUiOnsidGFpbCI6eyJuYW1lIjoibWFwcyB0byJ9fX1dLFs2LDgsIiIsMCx7InN0eWxlIjp7InRhaWwiOnsibmFtZSI6Im1hcHMgdG8ifX19XSxbOCw5LCIiLDAseyJzdHlsZSI6eyJ0YWlsIjp7Im5hbWUiOiJtYXBzIHRvIn19fV0sWzcsOSwiIiwyLHsic3R5bGUiOnsidGFpbCI6eyJuYW1lIjoibWFwcyB0byJ9fX1dXQ==
+    \[\begin{tikzcd}
+        1 & {\mathbb{N}} & {\mathbb{N}} & {*} & 0 & {s(0)} \\
+        & X & X && {q = r(0)} & {f(q) = r(s(0))}
+        \arrow["0", from=1-1, to=1-2]
+        \arrow["q"', from=1-1, to=2-2]
+        \arrow["s", from=1-2, to=1-3]
+        \arrow["r"', dashed, from=1-2, to=2-2]
+        \arrow["r", dashed, from=1-3, to=2-3]
+        \arrow[maps to, from=1-4, to=1-5]
+        \arrow[maps to, from=1-4, to=2-5]
+        \arrow[maps to, from=1-5, to=1-6]
+        \arrow[maps to, from=1-5, to=2-5]
+        \arrow[maps to, from=1-6, to=2-6]
+        \arrow["f", from=2-2, to=2-3]
+        \arrow[maps to, from=2-5, to=2-6]
+    \end{tikzcd}\]
+\end{example}
+
+\addtocounter{theorem}{1}
+
+\begin{definition}[A representable characterization of initial or terminal objects]
+    \hfill
+    \begin{itemize}
+        \item $c$ in $\mc{C}$ is initial iff $\mc{C}(c, -): \mc{C} \to \mc{S}et$ is isomorphic to a constant functor $\lambda -. \lbrace * \rbrace: \mc{C} \to \mc{S}et$
+        \item $c \in \mc{C}$ is terminal iff the functor $\mc{C}(-, c): \mc{C}^\op \to \mc{S}et$ is iso to a functor $\lambda -. \lbrace * \rbrace: \mc{C}^\op \to \mc{S}et$
+    \end{itemize}
+\end{definition}
+
+\begin{definition}[Representable functor and representation]
+    \hfill
+    \begin{itemize}
+        \item $F: \mc{C} \to \mc{S}et$ is representable if isomorphic to $\mc{C}(c, -)$ for some $c: \obj(\mc{C})$
+        \item Representation -- a choice of object with a specified isomorphism.
+    \end{itemize}
+\end{definition}
+
+\begin{example}[Covariant representable functors]
+    \begin{enumerate}
+        \item $\id_{\mc{S}et}$ by a singleton;
+        \item $U: \mc{G}rp \to \mc{S}et$ by group $\mathbb{Z}$;
+        \item $U: \mc{M}od_R \to \mc{S}et$ is represented by the $R$-module $R$ ($R$ - unital);
+        \item $U: \mc{R}ing \to \mc{S}et$ is represented by the unital ring $\mathbb{Z}[x]$;
+        \item (group presentation);
+        \item $(-)^X: \mc{R}ing \to \mc{S}et$ is represented by Laurent polynomials $\mathbb{Z}[x, x^{-1}]$;
+        \item The forgetful functor $U: \mc{T}op \to \mc{Set}$ by the singleton space;
+        \item ($\mc{C}at$ stuff);
+        \item $U: \mc{S}et_* \to \mc{S}et$;
+        \item $\mc{P}ath: \mc{T}op \to \mc{S}et$.
+    \end{enumerate}
+\end{example}
+
+\begin{example}[Contravariant representable functors]
+    \hfill
+    \begin{enumerate}
+        \item Power set $P: \mc{S}et^\op \to \mc{S}et$, represented by $\lbrace \top, \bot \rbrace$;
+        \item $O: \mc{T}op^\op \to \mc{S}et$ that sends a space to its set of open subsets is represented by the Sierpinski space $S$ -- a space with two points, one closed and one open. $S$ also represents $C: \mc{T}op^\op \to \mc{S}et$ (closed subsets);
+        \item $\Hom(- \times A, B): \mc{S}et^\op \to \mc{S}et$ is represented by the set $B^A$ of functions from $A$ to $B$;
+        \item $U(-)^*: \Vect^\op \to \mc{S}et$ is represented by $\mathbf{k}$;
+        \item (topology / homological algebra)
+    \end{enumerate}
+\end{example}
+
+\subsection{The Yoneda lemma}
+
+Q: Given a functor $F: \mc{C} \to \mc{S}et$, what data is needed to define a morphism $\mc{C}(c, -) \to F$?
+
+\begin{example}[Ordinal category]    
+\end{example}
+
+\begin{example}[$\mc{B}G$]
+\end{example}
+
+\begin{proposition}
+    $G$-equivariant maps $G \to X$ correspond bijectively to elements of $X$.
+\end{proposition}
+
+\begin{theorem}[Yoneda lemma]
+    For any $F: \mc{C} \to \mc{S}et$, whose domain $\mc{C}$ is locally small and any object $c : \obj(\mc{C})$, there is a bijection
+    \[
+        \Hom(\mc{C}(c, -), F) \cong Fc
+    \]
+    that associates a natural transformation $\alpha: \mc{C}(c, -) \to F$ to the element $\alpha_c(\id_c)$. Morover, this correspondence is natural in both $c$ and $F$.
+\end{theorem}
+
+\addtocounter{theorem}{2}
+
+\begin{remark}[Size issues vs. concise formulation]
+    \[
+        \Hom(y(-), -) := \mc{C} \times \mc{S}et^\mc{C} \to (\mc{S}et^\mc{C})^\op \times \mc{S}et^\mc{C} \xto{\Hom} \mc{SET}
+    \]
+    
+    Though everything is fine with the composite. Some strange notation here in general; can be written this way (here $A, B$ denotes a hom-set):
+    \[
+    \begin{tikzcd}
+	{} &&& {} & {} \\
+	{\mathcal{C} \times \mathcal{S}et^\mathcal{C}} && {\mathcal{S}et} && {\mathcal{C}^\op \times \mathcal{S}et^{\mathcal{C}^\op}} && {\mathcal{S}et} \\
+	&&& {}
+	\arrow[no head, from=1-4, to=3-4]
+	\arrow[""{name=0, anchor=center, inner sep=0}, "{\lambda AF. \mathcal{C}(A, \_), F}", bend left = 36pt, from=2-1, to=2-3]
+	\arrow[""{name=1, anchor=center, inner sep=0}, "{\lambda AF. FA}"', bend right = 36pt, from=2-1, to=2-3]
+	\arrow[""{name=2, anchor=center, inner sep=0}, "{\lambda AF. \mathcal{C}(\_, A), F}", bend left = 36pt, from=2-5, to=2-7]
+	\arrow[""{name=3, anchor=center, inner sep=0}, "{\lambda AF. FA}"', bend right = 36pt, from=2-5, to=2-7]
+	\arrow["\simeq", shorten <=4pt, shorten >=4pt, Rightarrow, from=0, to=1]
+	\arrow["\simeq", shorten <=4pt, shorten >=4pt, Rightarrow, from=2, to=3]
+    \end{tikzcd}
+    \]
+
+\end{remark}
+
+\begin{corollary}[Yoneda embedding]
+    \[
+        Y = \lambda f. \mc{C}(-, f): \mc{C} \to \mc{S}et^{\mc{C}}, \quad Y' = \lambda f. \mc{C}(f, -): \mc{C} \to \mc{S}et^{\mc{C}^\op} 
+    \]
+    define full and faithful embeddings.
+\end{corollary}
+
+\begin{corollary}[Matrices]
+\end{corollary}
+
+\begin{corollary}[Permutation group]
+    Any group is isomorphic to a subgroup of a permutation group.
+\end{corollary}
+
+\begin{proof}
+    Consider $\mc{B}G$. The image of its single object under the covariant Yoneda embedding $\mc{B}G \to \mc{S}et^{\mc{B}G^\op}$ is the right $G$-set. 
+\end{proof}
+
 \end{document}
