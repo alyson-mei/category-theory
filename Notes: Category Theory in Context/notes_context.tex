@@ -673,7 +673,7 @@ Q: Given a functor $F: \mc{C} \to \mc{S}et$, what data is needed to define a mor
         \Hom(y(-), -) := \mc{C} \times \mc{S}et^\mc{C} \to (\mc{S}et^\mc{C})^\op \times \mc{S}et^\mc{C} \xto{\Hom} \mc{SET}
     \]
     
-    Though everything is fine with the composite. Some strange notation here in general; can be written this way (here $A, B$ denotes a hom-set):
+    Though everything is fine with the composite. Some unclear notation here in general; can be written this way (here $A, B$ denotes a hom-set):
     \[
     \begin{tikzcd}
 	{} &&& {} & {} \\
@@ -691,11 +691,45 @@ Q: Given a functor $F: \mc{C} \to \mc{S}et$, what data is needed to define a mor
 
 \end{remark}
 
+(unfinished story below)
+
 \begin{corollary}[Yoneda embedding]
+    \label{cor:yoneda_embedding}
     \[
-        Y = \lambda f. \mc{C}(-, f): \mc{C} \to \mc{S}et^{\mc{C}}, \quad Y' = \lambda f. \mc{C}(f, -): \mc{C} \to \mc{S}et^{\mc{C}^\op} 
+        Y = \lambda f. \mc{C}(-, f): \mc{C} \to \mc{S}et^{\mc{C}^\op}, \quad Y' = \lambda f. \mc{C}(f, -): \mc{C} \to \mc{S}et^{\mc{C}}, 
     \]
-    define full and faithful embeddings.
+    % https://q.uiver.app/#q=WzAsNixbMCwwLCJjIl0sWzAsMSwiZCJdLFsyLDAsIlxcSG9tKC0sIGMpIDogIFxcbWF0aGNhbHtTfWV0XntcXG1hdGhjYWx7Q31eXFxvcH0iXSxbMiwxLCJcXEhvbSgtLCBkKSA6ICBcXG1hdGhjYWx7U31ldF57XFxtYXRoY2Fse0N9Xlxcb3B9Il0sWzMsMCwiXFxIb20oYywgLSkgOiAgXFxtYXRoY2Fse1N9ZXRee1xcbWF0aGNhbHtDfX0iXSxbMywxLCJcXEhvbShkLCAtKSA6IFxcbWF0aGNhbHtTfWV0XntcXG1hdGhjYWx7Q319Il0sWzAsMSwiZiIsMl0sWzIsMywiXFxIb20oLSwgZikiLDJdLFs1LDQsIlxcSG9tKGYsIC0pIl1d
+    \[\begin{tikzcd}
+        c && {\Hom(-, c) :  \mathcal{S}et^{\mathcal{C}^\op}} & {\Hom(c, -) :  \mathcal{S}et^{\mathcal{C}}} \\
+        d && {\Hom(-, d) :  \mathcal{S}et^{\mathcal{C}^\op}} & {\Hom(d, -) : \mathcal{S}et^{\mathcal{C}}}
+        \arrow["f"', from=1-1, to=2-1]
+        \arrow["{\Hom(-, f)}"', from=1-3, to=2-3]
+        \arrow["{\Hom(f, -)}", from=2-4, to=1-4]
+    \end{tikzcd}\]
+    define full and faithful embeddings. Here objects $c$, $d$ in Hom functor expressions are indentified with $\id_c$, $\id_d$.
+
+    Explicitly:
+    % https://q.uiver.app/#q=WzAsMTIsWzAsMSwieCJdLFswLDIsInkiXSxbMSwxLCJcXEhvbSh4LCBjKSJdLFsxLDIsIlxcSG9tKHksIGMpIl0sWzIsMSwiXFxIb20oeCwgZCkiXSxbMiwyLCJcXEhvbSh5LCBkKSJdLFsxLDAsImMiXSxbMiwwLCJkIl0sWzMsMSwiXFxIb20oYywgeCkiXSxbMywyLCJcXEhvbShjLCB5KSJdLFs0LDEsIlxcSG9tKGQsIHgpIl0sWzQsMiwiXFxIb20oZCwgeSkiXSxbMCwxLCJnIiwyXSxbMywyLCItIFxcY2lyYyBnIl0sWzUsNCwiLSBcXGNpcmMgZyIsMl0sWzIsNCwiZiBcXGNpcmMgLSJdLFszLDUsImYgXFxjaXJjIC0gIiwyXSxbNiw3LCJmIl0sWzgsOSwiZyBcXGNpcmMgLSIsMl0sWzEwLDExLCJnIFxcY2lyYyAtIl0sWzEwLDgsIi0gXFxjaXJjIGYiLDJdLFsxMSw5LCItIFxcY2lyYyBmIl1d
+    \[\begin{tikzcd}
+        & c & d && \\
+        x & {\Hom(x, c)} & {\Hom(x, d)} & {\Hom(c, x)} & {\Hom(d, x)} \\
+        y & {\Hom(y, c)} & {\Hom(y, d)} & {\Hom(c, y)} & {\Hom(d, y)}
+        \arrow["f", from=1-2, to=1-3]
+        \arrow["g"', from=2-1, to=3-1]
+        \arrow["{f \circ -}", from=2-2, to=2-3]
+        \arrow["{g \circ -}"', from=2-4, to=3-4]
+        \arrow["{- \circ f}"', from=2-5, to=2-4]
+        \arrow["{g \circ -}", from=2-5, to=3-5]
+        \arrow["{- \circ g}", from=3-2, to=2-2]
+        \arrow["{f \circ - }"', from=3-2, to=3-3]
+        \arrow["{- \circ g}"', from=3-3, to=2-3]
+        \arrow["{- \circ f}", from=3-5, to=3-4]
+    \end{tikzcd} \text{.}\]
+    
+    The fully faithfullness: 
+    \[
+        \mc{C}(c, d) \xto{\cong} \mc{S}et^{\mc{C}^\op}(\mc{C}(-, c), \mc{D}(-, d)), \quad \mc{C}(c, d) \xto{\cong} \mc{S}et^{\mc{C}^\op}(\mc{C}(d, -), \mc{D}(c, -)).
+    \]
 \end{corollary}
 
 \begin{corollary}[Matrices]
@@ -706,7 +740,34 @@ Q: Given a functor $F: \mc{C} \to \mc{S}et$, what data is needed to define a mor
 \end{corollary}
 
 \begin{proof}
-    Consider $\mc{B}G$. The image of its single object under the covariant Yoneda embedding $\mc{B}G \to \mc{S}et^{\mc{B}G^\op}$ is the right $G$-set. 
+    Consider $\mc{B}G$. The image of its single object under the covariant Yoneda embedding $Y: \mc{B}G \to \mc{S}et^{\mc{B}G^\op}$ is the right $G$-set:
+    % https://q.uiver.app/#q=WzAsNCxbMCwwLCJHIl0sWzAsMSwiRyJdLFsxLDAsIlxcbWF0aGNhbHtCfUcoLSwgRykiXSxbMSwxLCJcXG1hdGhjYWx7Qn1HKC0sIEcpIl0sWzAsMSwiaCIsMl0sWzMsMiwiaCBcXGNpcmMgLSJdXQ==
+    \[\begin{tikzcd}
+        G & {\mathcal{B}G(-, G)} \\
+        G & {\mathcal{B}G(-, G)}
+        \arrow["h"', from=1-1, to=2-1]
+        \arrow["{h \circ -}", from=2-2, to=1-2]
+    \end{tikzcd}\]
+    % https://q.uiver.app/#q=WzAsOCxbMCwxLCJHIl0sWzAsMiwiRyJdLFsxLDEsIlxcbWF0aGNhbHtCfUcoRywgRykiXSxbMSwyLCJcXG1hdGhjYWx7Qn1HKEcsIEcpIl0sWzIsMSwiXFxtYXRoY2Fse0J9RyhHLCBHKSJdLFsyLDIsIlxcbWF0aGNhbHtCfUcoRywgRykiXSxbMSwwLCJHIl0sWzIsMCwiRyJdLFswLDEsImciLDJdLFszLDIsIi0gXFxjaXJjIGciXSxbMiw0LCJoIFxcY2lyYyAtIl0sWzMsNSwiaCBcXGNpcmMgLSIsMl0sWzUsNCwiLSBcXGNpcmMgZyIsMl0sWzYsNywiaCJdXQ==
+    \[\begin{tikzcd}
+        & G & G \\
+        G & {\mathcal{B}G(G, G)} & {\mathcal{B}G(G, G)} \\
+        G & {\mathcal{B}G(G, G)} & {\mathcal{B}G(G, G)}
+        \arrow["h", from=1-2, to=1-3]
+        \arrow["g"', from=2-1, to=3-1]
+        \arrow["{h \circ -}", from=2-2, to=2-3]
+        \arrow["{- \circ g}", from=3-2, to=2-2]
+        \arrow["{h \circ -}"', from=3-2, to=3-3]
+        \arrow["{- \circ g}"', from=3-3, to=2-3]
+    \end{tikzcd}\text{.}\]
+
+    The fully faithfullness (Cor. \ref{cor:yoneda_embedding}) 
+    \[
+        \mc{B}G(G, G) \xto{\cong} \mc{S}et^{\mc{B}G^\op}(\mc{B}G(-, G), \mc{B}G(-, G)).
+    \]
+    of the embedding matches automorphisms of object $G$ ()
+    
+    tells us that only $G$-equivariant endomorphisms of the right $G$-set are those maps defined by left multiplication with a fixed element of $G$. 
 \end{proof}
 
 \end{document}
