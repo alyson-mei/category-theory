@@ -689,6 +689,10 @@ Q: Given a functor $F: \mc{C} \to \mc{S}et$, what data is needed to define a mor
     \end{tikzcd}
     \]
 
+    Essentially this says that natural transformations $\mc{C}(A, -) \to F$ correspond to evaluations $F(A)$. More precise typing:
+    \[
+        \lambda f F. [\lambda g. \mc{C}(f, g), F] \to \lambda fF.F(f).
+    \]
 \end{remark}
 
 (unfinished story below)
@@ -706,7 +710,7 @@ Q: Given a functor $F: \mc{C} \to \mc{S}et$, what data is needed to define a mor
         \arrow["{\Hom(-, f)}"', from=1-3, to=2-3]
         \arrow["{\Hom(f, -)}", from=2-4, to=1-4]
     \end{tikzcd}\]
-    define full and faithful embeddings. Here objects $c$, $d$ in Hom functor expressions are indentified with $\id_c$, $\id_d$.
+    define full and faithful embeddings. Here objects $c$, $d$ in Hom functor expressions are indentified with $\id_c$, $\id_d$. Note, that this is essentially obtained by 2-categorical currying adjunction.
 
     Explicitly:
     % https://q.uiver.app/#q=WzAsMTIsWzAsMSwieCJdLFswLDIsInkiXSxbMSwxLCJcXEhvbSh4LCBjKSJdLFsxLDIsIlxcSG9tKHksIGMpIl0sWzIsMSwiXFxIb20oeCwgZCkiXSxbMiwyLCJcXEhvbSh5LCBkKSJdLFsxLDAsImMiXSxbMiwwLCJkIl0sWzMsMSwiXFxIb20oYywgeCkiXSxbMywyLCJcXEhvbShjLCB5KSJdLFs0LDEsIlxcSG9tKGQsIHgpIl0sWzQsMiwiXFxIb20oZCwgeSkiXSxbMCwxLCJnIiwyXSxbMywyLCItIFxcY2lyYyBnIl0sWzUsNCwiLSBcXGNpcmMgZyIsMl0sWzIsNCwiZiBcXGNpcmMgLSJdLFszLDUsImYgXFxjaXJjIC0gIiwyXSxbNiw3LCJmIl0sWzgsOSwiZyBcXGNpcmMgLSIsMl0sWzEwLDExLCJnIFxcY2lyYyAtIl0sWzEwLDgsIi0gXFxjaXJjIGYiLDJdLFsxMSw5LCItIFxcY2lyYyBmIl1d
@@ -736,38 +740,111 @@ Q: Given a functor $F: \mc{C} \to \mc{S}et$, what data is needed to define a mor
 \end{corollary}
 
 \begin{corollary}[Permutation group]
-    Any group is isomorphic to a subgroup of a permutation group.
+    Any group is isomorphic to a subgroup of a permutation group. 
+
+    (note: Emiliy Riehl's proof contains a lot of handwaving, and the typing is not clear; mine requires polish too)
 \end{corollary}
 
 \begin{proof}
     Consider $\mc{B}G$. The image of its single object under the covariant Yoneda embedding $Y: \mc{B}G \to \mc{S}et^{\mc{B}G^\op}$ is the right $G$-set:
-    % https://q.uiver.app/#q=WzAsNCxbMCwwLCJHIl0sWzAsMSwiRyJdLFsxLDAsIlxcbWF0aGNhbHtCfUcoLSwgRykiXSxbMSwxLCJcXG1hdGhjYWx7Qn1HKC0sIEcpIl0sWzAsMSwiaCIsMl0sWzMsMiwiaCBcXGNpcmMgLSJdXQ==
-    \[\begin{tikzcd}
-        G & {\mathcal{B}G(-, G)} \\
-        G & {\mathcal{B}G(-, G)}
-        \arrow["h"', from=1-1, to=2-1]
-        \arrow["{h \circ -}", from=2-2, to=1-2]
-    \end{tikzcd}\]
-    % https://q.uiver.app/#q=WzAsOCxbMCwxLCJHIl0sWzAsMiwiRyJdLFsxLDEsIlxcbWF0aGNhbHtCfUcoRywgRykiXSxbMSwyLCJcXG1hdGhjYWx7Qn1HKEcsIEcpIl0sWzIsMSwiXFxtYXRoY2Fse0J9RyhHLCBHKSJdLFsyLDIsIlxcbWF0aGNhbHtCfUcoRywgRykiXSxbMSwwLCJHIl0sWzIsMCwiRyJdLFswLDEsImciLDJdLFszLDIsIi0gXFxjaXJjIGciXSxbMiw0LCJoIFxcY2lyYyAtIl0sWzMsNSwiaCBcXGNpcmMgLSIsMl0sWzUsNCwiLSBcXGNpcmMgZyIsMl0sWzYsNywiaCJdXQ==
-    \[\begin{tikzcd}
-        & G & G \\
-        G & {\mathcal{B}G(G, G)} & {\mathcal{B}G(G, G)} \\
-        G & {\mathcal{B}G(G, G)} & {\mathcal{B}G(G, G)}
-        \arrow["h", from=1-2, to=1-3]
-        \arrow["g"', from=2-1, to=3-1]
-        \arrow["{h \circ -}", from=2-2, to=2-3]
-        \arrow["{- \circ g}", from=3-2, to=2-2]
-        \arrow["{h \circ -}"', from=3-2, to=3-3]
-        \arrow["{- \circ g}"', from=3-3, to=2-3]
+    % https://q.uiver.app/#q=WzAsMTMsWzAsMSwiRyJdLFswLDMsIkciXSxbMSwxLCJcXG1hdGhjYWx7Qn1HKC0sIEcpIl0sWzEsMywiXFxtYXRoY2Fse0J9RygtLCBHKSJdLFszLDEsIkciXSxbMywzLCJHIl0sWzUsMCwiRyJdLFs3LDAsIkciXSxbMiwyLCI7Il0sWzUsMSwiXFxtYXRoY2Fse0J9RyhHLCBHKSJdLFs1LDMsIlxcbWF0aGNhbHtCfUcoRywgRykiXSxbNywzLCJcXG1hdGhjYWx7Qn1HKEcsIEcpIl0sWzcsMSwiXFxtYXRoY2Fse0J9RyhHLCBHKSJdLFswLDEsImgiLDJdLFszLDIsImggXFxjaXJjIC0iXSxbNiw3LCJoIl0sWzQsNSwiZyIsMl0sWzksMTIsImggXFxjaXJjIC0iXSxbMTAsOSwiLSBcXGNpcmMgZyJdLFsxMCwxMSwiaCBcXGNpcmMgLSIsMl0sWzExLDEyLCItIFxcY2lyYyBnIiwyXV0=
+    \[\begin{tikzcd}[sep=small]
+        &&&&& G && G \\
+        G & {\mathcal{B}G(-, G)} && G && {\mathcal{B}G(G, G)} && {\mathcal{B}G(G, G)} \\
+        && {;} \\
+        G & {\mathcal{B}G(-, G)} && G && {\mathcal{B}G(G, G)} && {\mathcal{B}G(G, G)}
+        \arrow["h", from=1-6, to=1-8]
+        \arrow["h"', from=2-1, to=4-1]
+        \arrow["g"', from=2-4, to=4-4]
+        \arrow["{h \circ -}", from=2-6, to=2-8]
+        \arrow["{h \circ -}", from=4-2, to=2-2]
+        \arrow["{- \circ g}", from=4-6, to=2-6]
+        \arrow["{h \circ -}"', from=4-6, to=4-8]
+        \arrow["{- \circ g}"', from=4-8, to=2-8]
     \end{tikzcd}\text{.}\]
 
-    The fully faithfullness (Cor. \ref{cor:yoneda_embedding}) 
+    The functoriality of $Y$ implies that the images of the arrows of $\mc{B}G$ are automorphisms. The fully faithfullness of $Y$ (Cor. \ref{cor:yoneda_embedding}) 
     \[
         \mc{B}G(G, G) \xto{\cong} \mc{S}et^{\mc{B}G^\op}(\mc{B}G(-, G), \mc{B}G(-, G)).
     \]
-    of the embedding matches automorphisms of object $G$ ()
+    implies that all of the endomorphisms of $\mc{B}G(-, G)$ (equivariant maps) are automorphisms and correspond to the arrows of $\mc{B}G$ (elements of group $G$). Concretely, they are given by left multiplication with elements of $G$.
     
-    tells us that only $G$-equivariant endomorphisms of the right $G$-set are those maps defined by left multiplication with a fixed element of $G$. 
+    So, Yoneda embedding defines a bijection between $G$ and $G$-set $G$. The bijection extends to an isomorphism on $\mc{G}r$ due to the functoriality of $Y$, and $\text{Aut}_{G\text{-}\mc{S}et}(G)$ is a subgroup of $\text{Sym}(G)$:
+    \[
+        G \simeq \text{Aut}_{G\text{-}\mc{S}et}(G) \hookrightarrow \text{Sym}(G).
+    \]
 \end{proof}
+
+\subsection{Universal properties and universal elements}
+
+In a locally small $\mc{C}$, $x \simeq y$ are represetably isomorphic (by functoriality):
+\[
+    \mc{C}(-, x) \cong \mc{C}(-, y), \quad \mc{C}(x, -) \cong \mc{C}(y, -).
+\]
+
+\begin{proposition}
+    Isomorphisms of representable objects $\Leftrightarrow$ isomorphism of functors represented by them.
+\end{proposition}
+
+\begin{corollary}
+    The full subcategory of $\mc{C}$ spanned by its terminal objects is either empty or is a contractible groupoid. In particular, any two terminal objects in $\mc{C}$ are uniquely isomorphic.
+\end{corollary}
+
+\begin{definition}[Universal property, universal element]
+    A universal property of an object $c \in \mc{C}$ is expressed by a representable functor $F$ together with a universal element $x \in Fc$ that defines a natural iso $\mc{C}(c, -) \simeq F$ (or $\mc{C}(-, c) \simeq F$).    
+\end{definition}
+
+\begin{example}
+    For $U: \mc{R}ing \to \mc{S}et$, $U \simeq \mc{R}ing(\mathbb{Z}[x], -)$:
+    \[
+        \mc{R}ing(\mathbb{Z}[x], R) \cong UR,
+    \]
+    % https://q.uiver.app/#q=WzAsMTAsWzEsMCwiXFxtYXRoY2Fse1J9aW5nKFxcbWF0aGJie1p9W3hdLCBcXG1hdGhiYntafVt4XSkiXSxbMSwxLCJcXG1hdGhjYWx7Un1pbmcoXFxtYXRoYmJ7Wn1beF0sIFIpIl0sWzIsMCwiVVxcbWF0aGJie1p9W3hdIl0sWzIsMSwiVVIiXSxbMCwwLCJcXG1hdGhiYntafVt4XSJdLFswLDEsIlIiXSxbMywwLCJcXGlkX3tcXG1hdGhiYntafVt4XX0iXSxbMywxLCJmIl0sWzQsMSwiXFxhbHBoYV9SKGYpID0gVWYgKFxcYWxwaGFfe1xcbWF0aGJie1p9W3hdfShcXGlkX3tcXG1hdGhiYntafVt4XX0pKSJdLFs0LDAsIlxcYWxwaGFfe1xcbWF0aGJie1p9W3hdfShcXGlkX3tcXG1hdGhiYntafVt4XX0pIl0sWzAsMSwiZiBcXGNpcmMgLSIsMl0sWzIsMywiVWYiXSxbMSwzLCJcXGFscGhhX3tSfSIsMl0sWzAsMiwiXFxhbHBoYV97XFxtYXRoYmJ7Wn1beF19Il0sWzQsNSwiZiIsMl0sWzYsNywiIiwyLHsic3R5bGUiOnsidGFpbCI6eyJuYW1lIjoibWFwcyB0byJ9fX1dLFs3LDgsIiIsMix7InN0eWxlIjp7InRhaWwiOnsibmFtZSI6Im1hcHMgdG8ifX19XSxbOSw4LCIiLDAseyJzdHlsZSI6eyJ0YWlsIjp7Im5hbWUiOiJtYXBzIHRvIn19fV0sWzYsOSwiIiwwLHsic3R5bGUiOnsidGFpbCI6eyJuYW1lIjoibWFwcyB0byJ9fX1dXQ==
+    \[\begin{tikzcd}
+        {\mathbb{Z}[x]} & {\mathcal{R}ing(\mathbb{Z}[x], \mathbb{Z}[x])} & {U\mathbb{Z}[x]} & {\id_{\mathbb{Z}[x]}} & {\alpha_{\mathbb{Z}[x]}(\id_{\mathbb{Z}[x]})} \\
+        R & {\mathcal{R}ing(\mathbb{Z}[x], R)} & UR & f & {\alpha_R(f) = Uf (\alpha_{\mathbb{Z}[x]}(\id_{\mathbb{Z}[x]}))}
+        \arrow["f"', from=1-1, to=2-1]
+        \arrow["{\alpha_{\mathbb{Z}[x]}}", from=1-2, to=1-3]
+        \arrow["{f \circ -}"', from=1-2, to=2-2]
+        \arrow["Uf", from=1-3, to=2-3]
+        \arrow[maps to, from=1-4, to=1-5]
+        \arrow[maps to, from=1-4, to=2-4]
+        \arrow[maps to, from=1-5, to=2-5]
+        \arrow["{\alpha_{R}}"', from=2-2, to=2-3]
+        \arrow[maps to, from=2-4, to=2-5]
+    \end{tikzcd}.\]
+    The natural iso is determined by the image of $\id_{\mathbb{Z}[x]}$. 
+\end{example}
+
+\addtocounter{theorem}{1}
+
+\begin{example}
+    $E: \mc{B}G \to \mc{S}et$ is representable iff there is an isomorphism $G \simeq E$ of left $G$-sets. This implies that the action of $G$ on $E$ is free and transitive. A representable $G$-set is called a $G$-torsor.
+\end{example}
+
+\begin{example} For $\text{Bilin}(V, W; -): \mc{V}ect_\mathbf{k} \to \mc{S}et$,
+    \[
+        \mc{V}ect_\mathbf{k}(V \otimes W, U) \cong \text{Bilin}(V, W; U).
+    \]
+\end{example}
+
+\addtocounter{theorem}{1}
+
+\begin{proposition}[Symmetry of $\otimes$]
+\end{proposition}
+
+\addtocounter{theorem}{1}
+
+\begin{remark}[Explicit symmetry iso]
+\end{remark}
+
+\begin{example}[Group ring]
+    $\mathbb{Z}[G]$,
+    \[
+        \mathcal{R}ing \xto{\text{Group}(G, (-)^\times)} \mathcal{S}et.
+    \]
+\end{example}
+
+\subsection{Category of elements}
 
 \end{document}
